@@ -1,0 +1,80 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: light;
+  --font-inter: "Inter", system-ui, -apple-system, sans-serif;
+  --font-fraunces: "Fraunces", Georgia, "Times New Roman", serif;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: #fcfbf8;
+  color: #1c2a2a;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* Respect reduced motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Subtle scroll-reveal */
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.reveal {
+  animation: fadeUp 0.5s ease both;
+}
+
+/* Prose styling for MDX article bodies */
+.prose-txsn h2 {
+  font-family: var(--font-fraunces), Georgia, serif;
+  font-size: 1.5rem;
+  font-weight: 500;
+  color: #0e4a4a;
+  margin-top: 2rem;
+  margin-bottom: 0.75rem;
+}
+
+.prose-txsn p {
+  margin-bottom: 1.1rem;
+  line-height: 1.75;
+  color: #3a4a47;
+}
+
+.prose-txsn ul {
+  margin-bottom: 1.1rem;
+  padding-left: 1.25rem;
+  list-style: disc;
+}
+
+.prose-txsn li {
+  margin-bottom: 0.4rem;
+  line-height: 1.7;
+  color: #3a4a47;
+}
+
+.prose-txsn strong {
+  color: #0e4a4a;
+  font-weight: 600;
+}
