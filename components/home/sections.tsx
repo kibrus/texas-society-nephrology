@@ -1,7 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { Icon, Container } from "@/components/ui";
-import { pillars, corporatePartners } from "@/lib/site";
+import { pillars, corporatePartners, annualMeeting } from "@/lib/site";
 import { SponsorLogo } from "./SponsorLogo";
 import { NewsPost, EventItem, formatDate, formatDateShort } from "@/lib/content";
 
@@ -59,11 +59,11 @@ export function Hero() {
 export function Pillars() {
   return (
     <section className="bg-txsn-paper">
-      <Container className="py-16 lg:py-20">
-        <div className="text-[11px] tracking-wide text-txsn-gold font-medium mb-2">
+      <Container className="py-8 lg:py-10">
+        <div className="text-[11px] tracking-wide text-txsn-gold font-medium mb-1">
           WHAT WE DO
         </div>
-        <h2 className="font-serif text-[1.75rem] lg:text-[2rem] text-txsn-teal-deep font-medium mb-8">
+        <h2 className="font-serif text-[1.75rem] lg:text-[2rem] text-txsn-teal-deep font-medium mb-4">
           Four ways we move nephrology forward
         </h2>
         <div className="grid gap-3.5 sm:grid-cols-2">
@@ -104,8 +104,8 @@ export function NewsPreview({ posts }: { posts: NewsPost[] }) {
   const accents = ["bg-txsn-teal", "bg-txsn-gold", "bg-txsn-teal"];
   return (
     <section className="bg-txsn-wash">
-      <Container className="py-16 lg:py-20">
-        <div className="flex items-end justify-between mb-7 gap-4">
+      <Container className="py-8 lg:py-10">
+        <div className="flex items-end justify-between mb-4 gap-4">
           <div>
             <div className="text-[11px] tracking-wide text-txsn-gold font-medium mb-1">
               STAY INFORMED
@@ -152,10 +152,14 @@ export function NewsPreview({ posts }: { posts: NewsPost[] }) {
 }
 
 export function EventsPreview({ events }: { events: EventItem[] }) {
+  // Annual meeting is always on the left (from site config); all upcoming events on the right
+  const others = events;
+
   return (
     <section className="bg-txsn-paper">
-      <Container className="py-16 lg:py-20">
-        <div className="flex items-end justify-between mb-7 gap-4">
+      <Container className="py-10 lg:py-12">
+        {/* Section header */}
+        <div className="flex items-end justify-between mb-5 gap-4">
           <div>
             <div className="text-[11px] tracking-wide text-txsn-gold font-medium mb-1">
               MARK YOUR CALENDAR
@@ -171,50 +175,96 @@ export function EventsPreview({ events }: { events: EventItem[] }) {
             View all events <Icon name="arrow" size={14} />
           </Link>
         </div>
-        <div className="flex flex-col gap-2.5">
-          {events.map((ev, i) => {
-            const d = formatDateShort(ev.date);
-            return (
-              <div
-                key={ev.slug}
-                className="flex items-center gap-4 bg-txsn-wash rounded-xl p-4 lg:px-5"
-              >
-                <div
-                  className={`flex-shrink-0 text-center rounded-lg px-3 py-2 ${
-                    i === 0 ? "bg-txsn-teal text-white" : "bg-txsn-mint text-txsn-teal-deep"
-                  }`}
-                >
-                  <div className="text-[9px] tracking-wide">{d.month}</div>
-                  <div className="font-serif text-xl font-medium leading-none">
-                    {d.day}
-                  </div>
-                </div>
-                <div className="flex-1 min-w-0">
-                  <div className="text-[14px] font-medium text-txsn-teal-deep truncate">
-                    {ev.title}
-                  </div>
-                  <div className="text-[12px] text-txsn-slate mt-0.5 flex items-center gap-1 flex-wrap">
-                    <Icon name={ev.location === "Online" ? "video" : "pin"} size={12} />
-                    {ev.location}
-                    <span className="mx-1">·</span>
-                    {ev.isFree ? (
-                      <span className="text-txsn-teal font-medium">Free</span>
-                    ) : (
-                      <span className="text-txsn-gold font-medium">
-                        Paid{ev.memberDiscount ? " · Member discount" : ""}
-                      </span>
-                    )}
-                  </div>
-                </div>
-                <Link
-                  href={ev.href ?? `/events/${ev.slug}`}
-                  className="flex-shrink-0 text-[12px] font-medium text-txsn-teal border border-txsn-mint bg-white px-3 py-1.5 rounded-md hover:bg-txsn-paper transition-colors"
-                >
-                  Details
-                </Link>
+
+        {/* Two-column: left = annual meeting (narrow), right = other events (wider) */}
+        <div className="grid lg:grid-cols-[2fr_3fr] gap-4 items-stretch">
+
+          {/* Left — Annual Meeting (from site config) */}
+          <div className="relative bg-txsn-teal-deep rounded-xl overflow-hidden flex flex-col justify-end p-7">
+            <div className="absolute inset-0 bg-gradient-to-t from-txsn-teal-deep/95 via-txsn-teal-deep/55 to-txsn-teal/15" />
+            <div className="relative z-10">
+              <span className="text-[10px] tracking-widest text-txsn-mint font-semibold uppercase mb-2.5 block">
+                Annual Meeting
+              </span>
+              <h3 className="font-serif text-[1.4rem] text-white font-medium leading-snug mb-2">
+                {annualMeeting.title}
+              </h3>
+              <div className="flex items-center gap-1.5 text-white/60 text-[12px] mb-1">
+                <Icon name="pin" size={11} />
+                {annualMeeting.location}
               </div>
-            );
-          })}
+              <div className="flex items-center gap-1.5 text-white/60 text-[12px] mb-4">
+                <Icon name="calendar" size={11} />
+                {annualMeeting.dateLabel}
+              </div>
+              <p className="text-[12.5px] text-white/70 leading-relaxed mb-5 line-clamp-2">
+                {annualMeeting.summary}
+              </p>
+              <Link
+                href="/annual-meeting"
+                className="inline-flex items-center gap-2 border border-white/40 hover:bg-white hover:text-txsn-teal-deep text-white text-[12.5px] font-semibold px-5 py-2 rounded-md transition-colors"
+              >
+                Register Today <Icon name="arrow" size={13} />
+              </Link>
+            </div>
+          </div>
+
+          {/* Right — All other upcoming events */}
+          <div className="flex flex-col gap-3">
+            <div className="text-[10px] tracking-widest text-txsn-gold font-semibold uppercase mb-1">
+              More Upcoming Events
+            </div>
+            {others.length > 0 ? (
+              others.map((ev) => {
+                const d = formatDateShort(ev.date);
+                return (
+                  <div
+                    key={ev.slug}
+                    className="flex items-center gap-4 bg-txsn-wash rounded-xl p-4 lg:px-5"
+                  >
+                    <div className="flex-shrink-0 text-center rounded-lg px-3 py-2 bg-txsn-teal text-white">
+                      <div className="text-[9px] tracking-wide">{d.month}</div>
+                      <div className="font-serif text-xl font-medium leading-none">{d.day}</div>
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <div className="text-[13.5px] font-medium text-txsn-teal-deep truncate">
+                        {ev.title}
+                      </div>
+                      <div className="text-[12px] text-txsn-slate mt-0.5 flex items-center gap-1 flex-wrap">
+                        <Icon name={ev.location === "Online" ? "video" : "pin"} size={12} />
+                        {ev.location}
+                        <span className="mx-1">·</span>
+                        {ev.isFree ? (
+                          <span className="text-txsn-teal font-medium">Free</span>
+                        ) : (
+                          <span className="text-txsn-gold font-medium">
+                            Paid{ev.memberDiscount ? " · Member discount" : ""}
+                          </span>
+                        )}
+                      </div>
+                    </div>
+                    <Link
+                      href={ev.href ?? `/events/${ev.slug}`}
+                      className="flex-shrink-0 text-[12px] font-medium text-txsn-teal border border-txsn-mint bg-white px-3 py-1.5 rounded-md hover:bg-txsn-paper transition-colors"
+                    >
+                      Details
+                    </Link>
+                  </div>
+                );
+              })
+            ) : (
+              <div className="flex-1 flex items-center justify-center bg-txsn-wash rounded-xl p-6 text-center">
+                <div>
+                  <Icon name="calendar" size={24} className="text-txsn-mint mx-auto mb-2" />
+                  <p className="text-[13px] text-txsn-slate">More events coming soon.</p>
+                  <Link href="/events" className="mt-2 inline-flex items-center gap-1 text-txsn-teal text-[12px] font-medium hover:underline">
+                    View all events <Icon name="arrow" size={12} />
+                  </Link>
+                </div>
+              </div>
+            )}
+          </div>
+
         </div>
       </Container>
     </section>
