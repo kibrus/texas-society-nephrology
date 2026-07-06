@@ -1,58 +1,51 @@
 import Link from "next/link";
 import Image from "next/image";
-import { TexasMark } from "@/components/layout/Logo";
 import { Icon, Container } from "@/components/ui";
 import { pillars, corporatePartners } from "@/lib/site";
+import { SponsorLogo } from "./SponsorLogo";
 import { NewsPost, EventItem, formatDate, formatDateShort } from "@/lib/content";
 
-// HERO BACKGROUND IMAGE PLACEHOLDER
-// To add a background photo:
-//   1. Place your image in /public/images/ (e.g. hero.jpg)
-//   2. Uncomment the <Image> and overlay <div> below
-//   3. Change the section className from "bg-txsn-wash" to just "relative overflow-hidden"
-//   4. Update text colors (h1, p) from teal/slate to white for contrast
+// HERO IMAGE PLACEHOLDER — swap the src below with your own photo when ready.
+// Place your image in /public/images/hero.jpg and update the src.
 export function Hero() {
   return (
-    <section className="relative bg-txsn-wash overflow-hidden">
-      {/* -- UNCOMMENT TO ENABLE BACKGROUND IMAGE --
+    <section className="relative overflow-hidden">
+      {/* Background photo */}
       <Image
         src="/images/hero.jpg"
         alt=""
         fill
         className="object-cover object-center"
+        style={{ transform: "scaleX(-1)" }}
         priority
       />
-      <div className="absolute inset-0 bg-txsn-teal-deep/65" />
-      */}
+      {/* Left-only fade — right side (60%+) is fully transparent so photo is clear */}
+      <div className="absolute inset-0 bg-gradient-to-r from-txsn-teal-deep/90 from-[0%] via-txsn-teal-deep/60 via-[40%] to-transparent to-[65%]" />
 
-      {/* Texas silhouette watermark */}
-      <div className="absolute right-[-40px] top-[-20px] opacity-[0.07] pointer-events-none hidden sm:block">
-        <TexasMark size={300} color="#0F6E56" opacity={1} />
-      </div>
-      <Container className="py-20 lg:py-24 relative z-10">
+      <Container className="relative z-10 py-20 lg:py-28">
         <div className="max-w-2xl reveal">
-          <span className="inline-flex items-center gap-1.5 bg-white text-txsn-teal text-[12px] font-medium px-3.5 py-1.5 rounded-full border border-txsn-mint-soft mb-5">
+          <span className="inline-flex items-center gap-1.5 bg-white/15 text-white text-[12px] font-medium px-3.5 py-1.5 rounded-full border border-white/30 mb-6">
             <Icon name="pin" size={13} />
             Serving nephrology across Texas
           </span>
-          <h1 className="font-serif text-4xl lg:text-[3.25rem] leading-[1.1] text-txsn-teal-deep font-medium">
+          <h1 className="font-serif text-4xl lg:text-[3.5rem] leading-[1.1] text-white font-medium">
             The home of kidney care professionals in Texas
           </h1>
-          <p className="mt-5 text-[16px] lg:text-[17px] leading-relaxed text-txsn-slate max-w-xl">
+          <p className="mt-5 text-[16px] lg:text-[17px] leading-relaxed text-white/80">
             We bring together physicians, fellows, and kidney care leaders to
             advance patient care, sharpen practice, and shape the future of
             nephrology across the state.
           </p>
-          <div className="mt-7 flex flex-wrap gap-3">
+          <div className="mt-8 flex flex-wrap gap-3">
             <Link
               href="/membership"
-              className="inline-flex items-center gap-2 bg-txsn-teal hover:bg-txsn-teal-mid text-white text-[14px] font-medium px-5 py-3 rounded-md transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-txsn-teal/40"
+              className="inline-flex items-center gap-2 bg-txsn-teal hover:bg-txsn-teal-mid text-white text-[14px] font-semibold px-6 py-3 rounded-md transition-colors shadow-lg"
             >
               Become a member <Icon name="arrow" size={16} />
             </Link>
             <Link
               href="/annual-meeting"
-              className="inline-flex items-center bg-white hover:bg-txsn-paper text-txsn-teal text-[14px] font-medium px-5 py-3 rounded-md border border-txsn-mint transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-txsn-mint"
+              className="inline-flex items-center bg-white/15 hover:bg-white/25 text-white text-[14px] font-medium px-6 py-3 rounded-md border border-white/40 transition-colors backdrop-blur-sm"
             >
               2026 Annual Meeting
             </Link>
@@ -231,18 +224,13 @@ export function EventsPreview({ events }: { events: EventItem[] }) {
 export function Partners() {
   return (
     <section className="bg-white border-t border-b border-txsn-mint-soft/40">
-      <Container className="py-10 text-center">
-        <div className="text-[10px] tracking-wide text-txsn-slate/60 font-medium mb-5">
-          SUPPORTED BY OUR CORPORATE PARTNERS
-        </div>
-        <div className="flex justify-center gap-x-10 gap-y-4 flex-wrap items-center">
-          {corporatePartners.slice(0, 5).map((p) => (
-            <div
-              key={p.name}
-              className="text-[14px] font-medium text-txsn-slate/50"
-            >
-              {p.name}
-            </div>
+      <Container className="py-5">
+        <p className="text-center text-[10px] tracking-widest text-txsn-slate/40 font-medium mb-4 uppercase">
+          Supported by our corporate partners
+        </p>
+        <div className="flex justify-between items-center gap-6">
+          {corporatePartners.map((p) => (
+            <SponsorLogo key={p.name} name={p.name} logo={p.logo} color={p.color} />
           ))}
         </div>
       </Container>

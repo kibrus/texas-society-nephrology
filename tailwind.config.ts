@@ -11,18 +11,18 @@ const config: Config = {
       colors: {
         // Pulled directly from the TxSN logo — teal mark + gold gradient
         txsn: {
-          teal: "#0F6E56",       // primary brand — logo mark & wordmark
-          "teal-deep": "#0E4A4A", // headings, deep sections
-          "teal-mid": "#1A8A6C",  // hover states
-          mint: "#5DCAA5",        // borders, soft accents
-          "mint-soft": "#9FE1CB", // lighter borders
-          wash: "#F0F7F4",        // soft teal section backgrounds
-          gold: "#BA7517",        // accent — CTAs, highlights (logo gradient)
+          teal: "#1A56A0",        // primary brand blue
+          "teal-deep": "#0D1F3C", // dark navy — header, footer, headings
+          "teal-mid": "#2568B8",  // hover blue
+          mint: "#5A9FD4",        // borders, soft accents
+          "mint-soft": "#B3D4ED", // lighter borders
+          wash: "#F0F6FC",        // soft blue section backgrounds
+          gold: "#BA7517",        // accent — CTAs, highlights
           "gold-soft": "#FAF3E6", // warm gold-tinted backgrounds
           sand: "#F6EFE2",        // warm neutral background
-          ink: "#1C2A2A",         // body text (warm near-black)
-          slate: "#3A4A47",       // secondary text
-          paper: "#FCFBF8",       // page background (warm white)
+          ink: "#0d1e30",         // body text
+          slate: "#3a4f65",       // secondary text (blue-gray)
+          paper: "#FCFCFF",       // page background
         },
       },
       fontFamily: {
