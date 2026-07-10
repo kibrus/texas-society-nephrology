@@ -5,7 +5,7 @@
 :root {
   color-scheme: light;
   --font-inter: "Inter", system-ui, -apple-system, sans-serif;
-  --font-fraunces: "Playfair Display", Georgia, "Times New Roman", serif;
+  --font-fraunces: "Merriweather", Georgia, "Times New Roman", serif;
 }
 
 html {
