@@ -3,7 +3,7 @@ import Image from "next/image";
 import { Icon, Container } from "@/components/ui";
 import { pillars, corporatePartners, annualMeeting } from "@/lib/site";
 import { SponsorLogo } from "./SponsorLogo";
-import { NewsPost, EventItem, formatDate, formatDateShort } from "@/lib/content";
+import { NewsPost, EventItem, formatDate, formatDateShort, isPastDate } from "@/lib/content";
 
 // HERO IMAGE PLACEHOLDER — swap the src below with your own photo when ready.
 // Place your image in /public/images/hero.jpg and update the src.
@@ -19,8 +19,7 @@ export function Hero() {
         style={{ transform: "scaleX(-1)" }}
         priority
       />
-      {/* Left-only fade — right side (60%+) is fully transparent so photo is clear */}
-      <div className="absolute inset-0 bg-gradient-to-r from-txsn-teal-deep/90 from-[0%] via-txsn-teal-deep/60 via-[40%] to-transparent to-[65%]" />
+      <div className="absolute inset-0 bg-gradient-to-r from-txsn-teal-deep from-[0%] via-txsn-teal-deep/90 via-[45%] to-txsn-teal-deep/10 to-[72%]" />
 
       <Container className="relative z-10 py-20 lg:py-28">
         <div className="max-w-2xl reveal">
@@ -28,10 +27,10 @@ export function Hero() {
             <Icon name="pin" size={13} />
             Serving nephrology across Texas
           </span>
-          <h1 className="font-serif text-4xl lg:text-[3.5rem] leading-[1.1] text-white font-medium">
+          <h1 className="font-serif text-4xl lg:text-[3.5rem] leading-[1.1] text-amber-200 font-medium [text-shadow:0_2px_16px_rgba(0,0,0,0.9),0_0_40px_rgba(0,0,0,0.5)]">
             The home of kidney care professionals in Texas
           </h1>
-          <p className="mt-5 text-[16px] lg:text-[17px] leading-relaxed text-white/80">
+          <p className="mt-5 text-[16px] lg:text-[17px] leading-relaxed text-amber-100 [text-shadow:0_1px_8px_rgba(0,0,0,0.8)]">
             We bring together physicians, fellows, and kidney care leaders to
             advance patient care, sharpen practice, and shape the future of
             nephrology across the state.
@@ -45,7 +44,7 @@ export function Hero() {
             </Link>
             <Link
               href="/annual-meeting"
-              className="inline-flex items-center bg-white/15 hover:bg-white/25 text-white text-[14px] font-medium px-6 py-3 rounded-md border border-white/40 transition-colors backdrop-blur-sm"
+              className="inline-flex items-center bg-white hover:bg-txsn-wash text-txsn-teal-deep text-[14px] font-medium px-6 py-3 rounded-md border border-txsn-mint transition-colors"
             >
               2026 Annual Meeting
             </Link>
@@ -165,7 +164,7 @@ export function EventsPreview({ events }: { events: EventItem[] }) {
               MARK YOUR CALENDAR
             </div>
             <h2 className="font-serif text-[1.75rem] lg:text-[2rem] text-txsn-teal-deep font-medium">
-              Upcoming Events
+              Events
             </h2>
           </div>
           <Link
@@ -182,6 +181,14 @@ export function EventsPreview({ events }: { events: EventItem[] }) {
           {/* Left — Annual Meeting (from site config) */}
           <div className="relative bg-txsn-teal-deep rounded-xl overflow-hidden flex flex-col justify-end p-7">
             <div className="absolute inset-0 bg-gradient-to-t from-txsn-teal-deep/95 via-txsn-teal-deep/55 to-txsn-teal/15" />
+            {/* Past event badge */}
+            {isPastDate(annualMeeting.isoDate) && (
+              <div className="absolute top-4 right-4 z-20">
+                <span className="inline-flex items-center bg-white/15 border border-white/25 text-white/80 text-[11px] font-medium px-3 py-1 rounded-full backdrop-blur-sm">
+                  Past event
+                </span>
+              </div>
+            )}
             <div className="relative z-10">
               <span className="text-[10px] tracking-widest text-txsn-mint font-semibold uppercase mb-2.5 block">
                 Annual Meeting
