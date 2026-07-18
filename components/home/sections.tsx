@@ -3,7 +3,6 @@ import Image from "next/image";
 import { Icon, Container } from "@/components/ui";
 import { pillars, corporatePartners, annualMeeting } from "@/lib/site";
 import { SponsorLogo } from "./SponsorLogo";
-import { MemberCTAButton } from "./MemberCTAButton";
 import { NewsPost, EventItem, formatDate, formatDateShort, isPastDate } from "@/lib/content";
 
 // HERO IMAGE PLACEHOLDER — swap the src below with your own photo when ready.
@@ -37,7 +36,12 @@ export function Hero() {
             nephrology across the state.
           </p>
           <div className="mt-8 flex flex-wrap gap-3">
-            <MemberCTAButton />
+            <Link
+              href="/membership"
+              className="inline-flex items-center gap-2 bg-txsn-teal hover:bg-txsn-teal-mid text-white text-[14px] font-semibold px-6 py-3 rounded-md transition-colors shadow-lg"
+            >
+              Become a member <Icon name="arrow" size={16} />
+            </Link>
             <Link
               href="/annual-meeting"
               className="inline-flex items-center bg-white hover:bg-txsn-wash text-txsn-teal-deep text-[14px] font-medium px-6 py-3 rounded-md border border-txsn-mint transition-colors"

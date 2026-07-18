@@ -4,12 +4,10 @@ import { useState } from "react";
 import Link from "next/link";
 import { navigation } from "@/lib/site";
 import { Logo } from "./Logo";
-import { useAuth } from "@/lib/auth-context";
 
 export function Header() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
-  const { user, signOut } = useAuth();
 
   return (
     <header className="sticky top-0 z-50">
@@ -18,18 +16,9 @@ export function Header() {
       <div className="hidden lg:block bg-white border-b border-gray-200">
         <div className="mx-auto max-w-content px-5 lg:px-8">
           <div className="flex items-center justify-end gap-5 h-9">
-            {user ? (
-              <button
-                onClick={() => signOut()}
-                className="text-[12px] text-txsn-slate hover:text-txsn-teal transition-colors"
-              >
-                Sign out
-              </button>
-            ) : (
-              <Link href="/sign-in" className="text-[12px] text-txsn-slate hover:text-txsn-teal transition-colors">
-                Sign in
-              </Link>
-            )}
+            <Link href="/sign-in" className="text-[12px] text-txsn-slate hover:text-txsn-teal transition-colors">
+              Sign in
+            </Link>
             <span className="text-gray-300">|</span>
             <Link href="/contact" className="text-[12px] text-txsn-slate hover:text-txsn-teal transition-colors">
               Contact Us
@@ -92,26 +81,18 @@ export function Header() {
                             {child.label}
                           </Link>
                         ))}
-                        {item.label === "Membership" && user && (
-                          <a
-                            href="http://localhost:3001/member"
-                            className="block px-4 py-2 text-[13px] text-txsn-slate hover:bg-txsn-wash hover:text-txsn-teal transition-colors"
-                          >
-                            Account
-                          </a>
-                        )}
                       </div>
                     </div>
                   )}
                 </div>
               ))}
 
-              <a
-                href={user ? "http://localhost:3001/member" : "http://localhost:3001/sign-up"}
+              <Link
+                href="/membership/join"
                 className="ml-3 bg-txsn-gold hover:bg-txsn-gold/90 text-white text-[15px] font-medium px-4 py-2 rounded-md transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-txsn-gold/50"
               >
-                {user ? "My Account" : "Join TxSN"}
-              </a>
+                Join TxSN
+              </Link>
             </nav>
 
             {/* Mobile toggle */}
@@ -162,28 +143,20 @@ export function Header() {
                 </div>
               ))}
               <div className="flex gap-2 mt-3 mb-2">
-                {user ? (
-                  <button
-                    onClick={() => { signOut(); setMobileOpen(false); }}
-                    className="flex-1 text-center text-white border border-white/30 text-[14px] font-medium px-4 py-2.5 rounded-md"
-                  >
-                    Sign out
-                  </button>
-                ) : (
-                  <Link
-                    href="/sign-in"
-                    className="flex-1 text-center text-white border border-white/30 text-[14px] font-medium px-4 py-2.5 rounded-md"
-                    onClick={() => setMobileOpen(false)}
-                  >
-                    Sign in
-                  </Link>
-                )}
-                <a
-                  href={user ? "http://localhost:3001/member" : "http://localhost:3001/sign-up"}
-                  className="flex-1 text-center bg-txsn-gold text-white text-[14px] font-medium px-4 py-2.5 rounded-md"
+                <Link
+                  href="/sign-in"
+                  className="flex-1 text-center text-white border border-white/30 text-[14px] font-medium px-4 py-2.5 rounded-md"
+                  onClick={() => setMobileOpen(false)}
                 >
-                  {user ? "My Account" : "Join TxSN"}
-                </a>
+                  Sign in
+                </Link>
+                <Link
+                  href="/membership/join"
+                  className="flex-1 text-center bg-txsn-gold text-white text-[14px] font-medium px-4 py-2.5 rounded-md"
+                  onClick={() => setMobileOpen(false)}
+                >
+                  Join TxSN
+                </Link>
               </div>
             </nav>
           </div>
