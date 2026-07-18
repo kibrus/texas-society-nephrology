@@ -12,11 +12,10 @@ export function Hero() {
     <section className="relative overflow-hidden">
       {/* Background photo */}
       <Image
-        src="/images/hero.jpg"
+        src="/images/hero2.png"
         alt=""
         fill
         className="object-cover object-center"
-        style={{ transform: "scaleX(-1)" }}
         priority
       />
       <div className="absolute inset-0 bg-gradient-to-r from-txsn-teal-deep from-[0%] via-txsn-teal-deep/90 via-[45%] to-txsn-teal-deep/10 to-[72%]" />

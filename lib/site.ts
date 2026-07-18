@@ -46,17 +46,6 @@ export const navigation: NavItem[] = [
     ],
   },
   {
-    label: "Annual Meeting",
-    href: "/annual-meeting",
-    phase: 1,
-    children: [
-      { label: "Overview", href: "/annual-meeting", phase: 1 },
-      { label: "Schedule", href: "/annual-meeting/schedule", phase: 1 },
-      { label: "Abstract Submission", href: "/annual-meeting/abstracts", phase: 1 },
-      { label: "Register", href: "/annual-meeting/register", phase: 3 },
-    ],
-  },
-  {
     label: "Resources",
     href: "/resources",
     phase: 1,
@@ -69,6 +58,17 @@ export const navigation: NavItem[] = [
     ],
   },
   { label: "All Events", href: "/events", phase: 1 },
+  {
+    label: "Annual Meeting",
+    href: "/annual-meeting",
+    phase: 1,
+    children: [
+      { label: "Overview", href: "/annual-meeting", phase: 1 },
+      { label: "Schedule", href: "/annual-meeting/schedule", phase: 1 },
+      { label: "Abstract Submission", href: "/annual-meeting/abstracts", phase: 1 },
+      { label: "Register", href: "/annual-meeting/register", phase: 3 },
+    ],
+  },
 ];
 
 export const pillars = [
