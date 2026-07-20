@@ -15,7 +15,7 @@ export function Hero() {
         src="/images/hero2.png"
         alt=""
         fill
-        className="object-cover object-center"
+        className="hero-img"
         priority
       />
       <div className="absolute inset-0 bg-gradient-to-r from-txsn-teal-deep from-[0%] via-txsn-teal-deep/90 via-[45%] to-txsn-teal-deep/10 to-[72%]" />

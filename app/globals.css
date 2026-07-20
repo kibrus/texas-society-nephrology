@@ -46,6 +46,18 @@ body {
   animation: fadeUp 0.5s ease both;
 }
 
+/* Hero image: anchor right on mobile so the right side stays visible when squeezed */
+.hero-img {
+  object-fit: cover;
+  object-position: right center;
+}
+
+@media (min-width: 1024px) {
+  .hero-img {
+    object-position: center center;
+  }
+}
+
 /* Prose styling for MDX article bodies */
 .prose-txsn h2 {
   font-family: var(--font-fraunces), Georgia, serif;
