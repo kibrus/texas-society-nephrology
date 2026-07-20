@@ -8,7 +8,8 @@ export const metadata: Metadata = {
   description:
     "The professional home for kidney care professionals across Texas, advancing patient care, education, and the future of nephrology.",
   icons: {
-    icon: "/images/favicon.png",
+    icon: [{ url: "/images/favicon2.png", sizes: "any", type: "image/png" }],
+    apple: "/images/favicon2.png",
   },
 };
 
