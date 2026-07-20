@@ -7,6 +7,9 @@ export const metadata: Metadata = {
   title: "Texas Society of Nephrology",
   description:
     "The professional home for kidney care professionals across Texas, advancing patient care, education, and the future of nephrology.",
+  icons: {
+    icon: "/images/favicon.png",
+  },
 };
 
 export default function RootLayout({

@@ -1,12 +1,16 @@
+"use client";
+
+import Image from "next/image";
+
 export function Logo({ light = false }: { light?: boolean }) {
   return (
-    <div className="flex items-center gap-2.5">
-      <img
+    <div className="flex items-center gap-2.5 ml-2.5">
+      <Image
         src="/images/logo.png"
         alt="TxSN logo"
         width={100}
         height={67}
-        style={{ objectFit: "contain", marginLeft: "10px" }}
+        className="object-contain"
       />
       <div className="leading-tight">
         <div className={`text-[10px] font-semibold tracking-widest uppercase ${light ? "text-white/70" : "text-txsn-slate/70"}`}>
