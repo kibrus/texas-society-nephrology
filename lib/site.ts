@@ -107,12 +107,12 @@ export const leadership = [
 
 // All corporate partners are presented equally for now (no tier distinction).
 export const corporatePartners = [
-  { name: "Genentech",  color: "#e11130", logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/7/75/Genentech_logo.svg/320px-Genentech_logo.svg.png" },
-  { name: "Apellis",   color: "#5a5a5a", logo: "" },
-  { name: "Ardelyx",   color: "#e8701a", logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/45/Ardelyx_logo.svg/320px-Ardelyx_logo.svg.png" },
-  { name: "Alnylam",   color: "#00337f", logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/f/fc/Alnylam_Pharmaceuticals_logo.svg/320px-Alnylam_Pharmaceuticals_logo.svg.png" },
-  { name: "Otsuka",    color: "#003087", logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3b/Otsuka_Logo.svg/320px-Otsuka_Logo.svg.png" },
-  { name: "Amgen",     color: "#003da5", logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/17/Amgen.svg/320px-Amgen.svg.png" },
+  { name: "Partner 1", color: "#1A56A0" },
+  { name: "Partner 2", color: "#1A56A0" },
+  { name: "Partner 3", color: "#1A56A0" },
+  { name: "Partner 4", color: "#1A56A0" },
+  { name: "Partner 5", color: "#1A56A0" },
+  { name: "Partner 6", color: "#1A56A0" },
 ];
 
 export const membershipTiers = [

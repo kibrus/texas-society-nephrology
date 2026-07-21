@@ -19,12 +19,15 @@ export type EventItem = {
   title: string;
   date: string;
   endDate?: string;
+  time?: string;
   location: string;
   isFree: boolean;
   memberDiscount: boolean;
   excerpt: string;
   content: string;
   href?: string;
+  brochurePdf?: string;
+  sponsor?: string;
 };
 
 function readCollection(folder: string) {
@@ -69,12 +72,15 @@ export function getAllEvents(): EventItem[] {
     title: data.title ?? "Untitled",
     date: data.date ?? "",
     endDate: data.endDate,
+    time: data.time,
     location: data.location ?? "TBD",
     isFree: data.isFree ?? true,
     memberDiscount: data.memberDiscount ?? false,
     excerpt: data.excerpt ?? "",
     content,
     href: data.href,
+    brochurePdf: data.brochurePdf,
+    sponsor: data.sponsor,
   }));
 
   const upcoming = events.filter((e) => !isPastDate(e.date)).sort((a, b) => (a.date > b.date ? 1 : -1));

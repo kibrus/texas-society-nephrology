@@ -5,6 +5,45 @@ import { pillars, corporatePartners, annualMeeting } from "@/lib/site";
 import { SponsorLogo } from "./SponsorLogo";
 import { NewsPost, EventItem, formatDate, formatDateShort, isPastDate } from "@/lib/content";
 
+export function FeaturedEvent({ event }: { event: EventItem }) {
+  return (
+    <section className="bg-txsn-wash border-b border-txsn-mint-soft/50">
+      <Container className="py-4">
+        <div className="flex flex-col sm:flex-row sm:items-center gap-4 justify-between">
+          {/* Left — label + title */}
+          <div className="flex items-center gap-4 min-w-0">
+            <div className="flex-shrink-0 bg-txsn-teal text-white text-[10px] font-semibold tracking-widest uppercase px-3 py-1.5 rounded-full">
+              Next Event
+            </div>
+            <div className="min-w-0">
+              <span className="text-txsn-teal-deep font-semibold text-[15px] truncate block">
+                {event.title}
+              </span>
+              <div className="flex items-center gap-3 mt-0.5 flex-wrap">
+                <span className="flex items-center gap-1 text-txsn-slate/70 text-[12px]">
+                  <Icon name="calendar" size={12} />
+                  {formatDate(event.date)}{event.time ? ` · ${event.time}` : ""}
+                </span>
+                <span className="flex items-center gap-1 text-txsn-slate/70 text-[12px]">
+                  <Icon name="pin" size={12} />
+                  {event.location}
+                </span>
+              </div>
+            </div>
+          </div>
+          {/* Right — CTA */}
+          <Link
+            href={`/events/${event.slug}`}
+            className="flex-shrink-0 inline-flex items-center gap-2 bg-txsn-teal hover:bg-txsn-teal-mid text-white text-[13px] font-medium px-5 py-2 rounded-md transition-colors"
+          >
+            View event <Icon name="arrow" size={14} />
+          </Link>
+        </div>
+      </Container>
+    </section>
+  );
+}
+
 // HERO IMAGE PLACEHOLDER — swap the src below with your own photo when ready.
 // Place your image in /public/images/hero.jpg and update the src.
 export function Hero() {
@@ -22,10 +61,6 @@ export function Hero() {
 
       <Container className="relative z-10 py-20 lg:py-28">
         <div className="max-w-2xl reveal">
-          <span className="inline-flex items-center gap-1.5 bg-white/15 text-white text-[12px] font-medium px-3.5 py-1.5 rounded-full border border-white/30 mb-6">
-            <Icon name="pin" size={13} />
-            Serving nephrology across Texas
-          </span>
           <h1 className="font-serif text-4xl lg:text-[3.5rem] leading-[1.1] text-amber-200 font-medium [text-shadow:0_2px_16px_rgba(0,0,0,0.9),0_0_40px_rgba(0,0,0,0.5)]">
             The home of kidney care professionals in Texas
           </h1>
@@ -210,7 +245,7 @@ export function EventsPreview({ events }: { events: EventItem[] }) {
                 href="/annual-meeting"
                 className="inline-flex items-center gap-2 border border-white/40 hover:bg-white hover:text-txsn-teal-deep text-white text-[12.5px] font-semibold px-5 py-2 rounded-md transition-colors"
               >
-                Register Today <Icon name="arrow" size={13} />
+                Review program <Icon name="arrow" size={13} />
               </Link>
             </div>
           </div>

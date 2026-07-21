@@ -1,5 +1,4 @@
 import { PageHeader, Container, Icon, PastBadge } from "@/components/ui";
-import Link from "next/link";
 import { annualMeeting } from "@/lib/site";
 import { isPastDate } from "@/lib/content";
 
@@ -13,12 +12,6 @@ export default function AnnualMeetingPage() {
     <>
       <PageHeader eyebrow="ANNUAL MEETING" title={annualMeeting.title} />
       <Container className="py-14">
-        <div className="max-w-2xl mb-10">
-          <p className="text-[15px] leading-relaxed text-txsn-slate">
-            {annualMeeting.blurb}
-          </p>
-        </div>
-
         <div className="bg-white border border-txsn-mint-soft/50 rounded-xl p-7 lg:p-9 mb-10">
           <div className="flex items-start justify-between gap-4 flex-wrap mb-2">
             <div className="text-[11px] tracking-wide text-txsn-gold font-medium">
@@ -63,14 +56,6 @@ export default function AnnualMeetingPage() {
           </div>
         </div>
 
-        <div className="flex flex-wrap gap-3">
-          <Link href="/annual-meeting/abstracts" className="inline-flex items-center gap-2 bg-txsn-teal text-white text-[14px] font-medium px-5 py-3 rounded-md hover:bg-txsn-teal-mid transition-colors">
-            Call for abstracts <Icon name="arrow" size={16} />
-          </Link>
-          <Link href="/annual-meeting/register" className="inline-flex items-center bg-white text-txsn-teal text-[14px] font-medium px-5 py-3 rounded-md border border-txsn-mint hover:bg-txsn-wash transition-colors">
-            Register
-          </Link>
-        </div>
       </Container>
     </>
   );
