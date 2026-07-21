@@ -321,7 +321,7 @@ export function Partners() {
         </p>
         <div className="flex justify-between items-center gap-6">
           {corporatePartners.map((p) => (
-            <SponsorLogo key={p.name} name={p.name} logo={p.logo} color={p.color} />
+            <SponsorLogo key={p.name} name={p.name} color={p.color} />
           ))}
         </div>
       </Container>
