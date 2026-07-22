@@ -24,6 +24,9 @@ const config: Config = {
           slate: "#3a4f65",       // secondary text (blue-gray)
           paper: "#FCFCFF",       // page background
         },
+        "heritage-navy": "#002855",
+        "clinical-blue": "#E8F1F8",
+        "amber-accent":  "#C5934C",
       },
       fontFamily: {
         serif: ["var(--font-fraunces)", "Georgia", "serif"],

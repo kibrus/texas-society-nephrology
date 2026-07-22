@@ -60,9 +60,9 @@ export default function EventDetailPage({ params }: { params: { slug: string } }
           <div className="mt-5 flex flex-wrap gap-x-6 gap-y-2">
             <div className="flex items-center gap-2 text-[13px] text-txsn-slate">
               <Icon name="calendar" size={14} className="text-txsn-teal flex-shrink-0" />
-              {formatDate(event.date)}
-              {event.time && <span className="text-txsn-slate/50 mx-1">·</span>}
-              {event.time && <span>{event.time}</span>}
+              {event.dateLabel ?? formatDate(event.date)}
+              {event.time && !event.dateLabel && <span className="text-txsn-slate/50 mx-1">·</span>}
+              {event.time && !event.dateLabel && <span>{event.time}</span>}
             </div>
             <div className="flex items-center gap-2 text-[13px] text-txsn-slate">
               <Icon name={event.location === "Online" ? "video" : "pin"} size={14} className="text-txsn-teal flex-shrink-0" />
@@ -127,7 +127,7 @@ export default function EventDetailPage({ params }: { params: { slug: string } }
               <div className="space-y-3">
                 <div>
                   <div className="text-[10px] text-txsn-slate/60 uppercase tracking-wide font-medium mb-0.5">Date</div>
-                  <div className="text-[13.5px] text-txsn-teal-deep font-medium">{formatDate(event.date)}</div>
+                  <div className="text-[13.5px] text-txsn-teal-deep font-medium">{event.dateLabel ?? formatDate(event.date)}</div>
                 </div>
                 {event.time && (
                   <div>

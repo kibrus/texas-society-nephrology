@@ -7,22 +7,21 @@ import { NewsPost, EventItem, formatDate, formatDateShort, isPastDate } from "@/
 
 export function FeaturedEvent({ event }: { event: EventItem }) {
   return (
-    <section className="bg-txsn-wash border-b border-txsn-mint-soft/50">
-      <Container className="py-4">
+    <section className="bg-clinical-blue border-b border-txsn-mint-soft/50">
+      <Container className="py-5">
         <div className="flex flex-col sm:flex-row sm:items-center gap-4 justify-between">
-          {/* Left — label + title */}
           <div className="flex items-center gap-4 min-w-0">
-            <div className="flex-shrink-0 bg-txsn-teal text-white text-[10px] font-semibold tracking-widest uppercase px-3 py-1.5 rounded-full">
+            <div className="flex-shrink-0 bg-heritage-navy text-white text-[10px] font-semibold tracking-widest uppercase px-3 py-1.5 rounded-full">
               Next Event
             </div>
             <div className="min-w-0">
-              <span className="text-txsn-teal-deep font-semibold text-[15px] truncate block">
+              <span className="text-heritage-navy font-semibold text-[15px] truncate block">
                 {event.title}
               </span>
               <div className="flex items-center gap-3 mt-0.5 flex-wrap">
                 <span className="flex items-center gap-1 text-txsn-slate/70 text-[12px]">
                   <Icon name="calendar" size={12} />
-                  {formatDate(event.date)}{event.time ? ` · ${event.time}` : ""}
+                  {event.dateLabel ?? formatDate(event.date)}{event.time && !event.dateLabel ? ` · ${event.time}` : ""}
                 </span>
                 <span className="flex items-center gap-1 text-txsn-slate/70 text-[12px]">
                   <Icon name="pin" size={12} />
@@ -31,10 +30,9 @@ export function FeaturedEvent({ event }: { event: EventItem }) {
               </div>
             </div>
           </div>
-          {/* Right — CTA */}
           <Link
             href={`/events/${event.slug}`}
-            className="flex-shrink-0 inline-flex items-center gap-2 bg-txsn-teal hover:bg-txsn-teal-mid text-white text-[13px] font-medium px-5 py-2 rounded-md transition-colors"
+            className="flex-shrink-0 inline-flex items-center gap-2 bg-heritage-navy hover:opacity-90 text-white text-[13px] font-medium px-5 py-2.5 rounded-sm transition-colors"
           >
             View event <Icon name="arrow" size={14} />
           </Link>
@@ -44,12 +42,9 @@ export function FeaturedEvent({ event }: { event: EventItem }) {
   );
 }
 
-// HERO IMAGE PLACEHOLDER — swap the src below with your own photo when ready.
-// Place your image in /public/images/hero.jpg and update the src.
 export function Hero() {
   return (
     <section className="relative overflow-hidden">
-      {/* Background photo */}
       <Image
         src="/images/hero2.png"
         alt=""
@@ -72,13 +67,13 @@ export function Hero() {
           <div className="mt-8 flex flex-wrap gap-3">
             <Link
               href="/membership"
-              className="inline-flex items-center gap-2 bg-txsn-teal hover:bg-txsn-teal-mid text-white text-[14px] font-semibold px-6 py-3 rounded-md transition-colors shadow-lg"
+              className="inline-flex items-center gap-2 bg-amber-accent hover:opacity-90 text-white text-[14px] font-semibold px-6 py-3 rounded-sm transition-colors shadow-lg"
             >
               Become a member <Icon name="arrow" size={16} />
             </Link>
             <Link
               href="/annual-meeting"
-              className="inline-flex items-center bg-white hover:bg-txsn-wash text-txsn-teal-deep text-[14px] font-medium px-6 py-3 rounded-md border border-txsn-mint transition-colors"
+              className="inline-flex items-center bg-white/10 hover:bg-white/20 backdrop-blur-sm text-white text-[14px] font-medium px-6 py-3 rounded-sm border border-white/30 transition-colors"
             >
               2026 Annual Meeting
             </Link>
@@ -89,41 +84,58 @@ export function Hero() {
   );
 }
 
+export function Partners() {
+  return (
+    <section className="py-5 border-b border-txsn-mint-soft/40">
+      <Container>
+        <p className="text-center text-[10px] tracking-[0.2em] text-txsn-slate/50 font-medium mb-4 uppercase">
+          Supported by our corporate partners
+        </p>
+        <div className="flex flex-wrap justify-center items-center gap-x-10 gap-y-4 opacity-35">
+          {corporatePartners.map((p) => (
+            <SponsorLogo key={p.name} name={p.name} color={p.color} />
+          ))}
+        </div>
+      </Container>
+    </section>
+  );
+}
+
 export function Pillars() {
   return (
-    <section className="bg-txsn-paper">
-      <Container className="py-8 lg:py-10">
-        <div className="text-[11px] tracking-wide text-txsn-gold font-medium mb-1">
-          WHAT WE DO
+    <section className="bg-white">
+      <Container className="py-10 lg:py-12">
+        <div className="mb-6">
+          <div className="text-[11px] tracking-[0.2em] text-amber-accent font-semibold mb-1 uppercase">
+            WHAT WE DO
+          </div>
+          <h2 className="font-serif text-[1.75rem] lg:text-[2rem] text-heritage-navy font-bold">
+            Four ways we move nephrology forward
+          </h2>
         </div>
-        <h2 className="font-serif text-[1.75rem] lg:text-[2rem] text-txsn-teal-deep font-medium mb-4">
-          Four ways we move nephrology forward
-        </h2>
-        <div className="grid gap-3.5 sm:grid-cols-2">
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {pillars.map((p) => {
             const isTeal = p.accent === "teal";
             return (
               <div
                 key={p.title}
-                className={`group rounded-xl p-5 flex gap-4 transition-transform hover:-translate-y-0.5 ${
-                  isTeal ? "bg-txsn-wash" : "bg-txsn-gold-soft"
+                className={`group rounded-lg p-6 flex flex-col transition-all hover:-translate-y-1 hover:shadow-md border-t-4 ${
+                  isTeal
+                    ? "bg-clinical-blue border-heritage-navy"
+                    : "bg-txsn-paper border-amber-accent"
                 }`}
               >
-                <div
-                  className={`flex-shrink-0 w-11 h-11 rounded-[10px] flex items-center justify-center text-white ${
-                    isTeal ? "bg-txsn-teal" : "bg-txsn-gold"
-                  }`}
-                >
-                  <Icon name={p.icon} size={21} />
+                <div className={`w-11 h-11 rounded-lg flex items-center justify-center text-white mb-4 flex-shrink-0 ${
+                  isTeal ? "bg-heritage-navy" : "bg-amber-accent"
+                }`}>
+                  <Icon name={p.icon} size={20} />
                 </div>
-                <div>
-                  <h3 className="text-[15px] font-medium text-txsn-teal-deep mb-1">
-                    {p.title}
-                  </h3>
-                  <p className="text-[13px] text-txsn-slate leading-relaxed">
-                    {p.body}
-                  </p>
-                </div>
+                <h3 className="text-[15px] font-semibold text-heritage-navy mb-2">
+                  {p.title}
+                </h3>
+                <p className="text-[13px] text-txsn-slate leading-relaxed">
+                  {p.body}
+                </p>
               </div>
             );
           })}
@@ -134,45 +146,43 @@ export function Pillars() {
 }
 
 export function NewsPreview({ posts }: { posts: NewsPost[] }) {
-  const accents = ["bg-txsn-teal", "bg-txsn-gold", "bg-txsn-teal"];
   return (
-    <section className="bg-txsn-wash">
-      <Container className="py-8 lg:py-10">
-        <div className="flex items-end justify-between mb-4 gap-4">
+    <section className="bg-[#f4f3f7]">
+      <Container className="py-10 lg:py-12">
+        <div className="flex items-end justify-between mb-6 gap-4">
           <div>
-            <div className="text-[11px] tracking-wide text-txsn-gold font-medium mb-1">
+            <div className="text-[11px] tracking-[0.2em] text-amber-accent font-semibold mb-1 uppercase">
               STAY INFORMED
             </div>
-            <h2 className="font-serif text-[1.75rem] lg:text-[2rem] text-txsn-teal-deep font-medium">
+            <h2 className="font-serif text-[1.75rem] lg:text-[2rem] text-heritage-navy font-bold">
               Latest News
             </h2>
           </div>
           <Link
             href="/news"
-            className="flex-shrink-0 inline-flex items-center gap-1.5 bg-white text-txsn-teal text-[13px] font-medium px-4 py-2 rounded-md border border-txsn-mint hover:bg-txsn-paper transition-colors"
+            className="flex-shrink-0 inline-flex items-center gap-1.5 text-heritage-navy text-[13px] font-semibold px-4 py-2 rounded-sm border-2 border-heritage-navy hover:bg-heritage-navy hover:text-white transition-all"
           >
             View all news <Icon name="arrow" size={14} />
           </Link>
         </div>
-        <div className="grid gap-3.5 md:grid-cols-3">
-          {posts.map((post, i) => (
+        <div className="grid gap-4 md:grid-cols-3">
+          {posts.map((post) => (
             <Link
               key={post.slug}
               href={`/news/${post.slug}`}
-              className="group bg-white rounded-xl overflow-hidden border border-txsn-mint-soft/50 hover:border-txsn-mint transition-colors flex flex-col"
+              className="group bg-white rounded-lg overflow-hidden border border-txsn-mint-soft/50 hover:border-txsn-mint hover:-translate-y-1 hover:shadow-md transition-all flex flex-col"
             >
-              <div className={`h-1.5 ${accents[i % 3]}`} />
               <div className="p-5 flex flex-col flex-1">
-                <div className="text-[10px] uppercase tracking-wide text-txsn-gold font-medium mb-2">
+                <div className="text-[10px] uppercase tracking-wider text-amber-accent font-semibold mb-3">
                   {formatDate(post.date)}
                 </div>
-                <h3 className="text-[14px] font-medium text-txsn-teal-deep leading-snug mb-2 group-hover:text-txsn-teal transition-colors">
+                <h3 className="text-[14px] font-semibold text-heritage-navy leading-snug mb-3 group-hover:text-amber-accent transition-colors">
                   {post.title}
                 </h3>
                 <p className="text-[12.5px] text-txsn-slate leading-relaxed mb-4 flex-1">
                   {post.excerpt}
                 </p>
-                <span className="text-[12px] font-medium text-txsn-teal inline-flex items-center gap-1">
+                <span className="text-[12px] font-semibold text-heritage-navy inline-flex items-center gap-1.5 group-hover:gap-2.5 transition-all">
                   Read more <Icon name="arrow" size={13} />
                 </span>
               </div>
@@ -185,122 +195,122 @@ export function NewsPreview({ posts }: { posts: NewsPost[] }) {
 }
 
 export function EventsPreview({ events }: { events: EventItem[] }) {
-  // Annual meeting is always on the left (from site config); all upcoming events on the right
   const others = events;
 
   return (
-    <section className="bg-txsn-paper">
+    <section className="bg-white">
       <Container className="py-10 lg:py-12">
-        {/* Section header */}
-        <div className="flex items-end justify-between mb-5 gap-4">
+        <div className="flex items-end justify-between mb-6 gap-4">
           <div>
-            <div className="text-[11px] tracking-wide text-txsn-gold font-medium mb-1">
+            <div className="text-[11px] tracking-[0.2em] text-amber-accent font-semibold mb-1 uppercase">
               MARK YOUR CALENDAR
             </div>
-            <h2 className="font-serif text-[1.75rem] lg:text-[2rem] text-txsn-teal-deep font-medium">
+            <h2 className="font-serif text-[1.75rem] lg:text-[2rem] text-heritage-navy font-bold">
               Events
             </h2>
           </div>
           <Link
             href="/events"
-            className="flex-shrink-0 inline-flex items-center gap-1.5 text-txsn-teal text-[13px] font-medium px-4 py-2 rounded-md border border-txsn-mint hover:bg-txsn-wash transition-colors"
+            className="flex-shrink-0 inline-flex items-center gap-1.5 text-heritage-navy text-[13px] font-semibold px-4 py-2 rounded-sm border-2 border-heritage-navy hover:bg-heritage-navy hover:text-white transition-all"
           >
             View all events <Icon name="arrow" size={14} />
           </Link>
         </div>
 
-        {/* Two-column: left = annual meeting (narrow), right = other events (wider) */}
-        <div className="grid lg:grid-cols-[2fr_3fr] gap-4 items-stretch">
+        <div className="grid grid-cols-1 lg:grid-cols-[5fr_7fr] gap-5 items-start">
 
-          {/* Left — Annual Meeting (from site config) */}
-          <div className="relative bg-txsn-teal-deep rounded-xl overflow-hidden flex flex-col justify-end p-7">
-            <div className="absolute inset-0 bg-gradient-to-t from-txsn-teal-deep/95 via-txsn-teal-deep/55 to-txsn-teal/15" />
-            {/* Past event badge */}
+          {/* Featured Annual Meeting */}
+          <div className="relative rounded-xl overflow-hidden bg-heritage-navy text-white p-5 lg:p-6 flex flex-col justify-between">
             {isPastDate(annualMeeting.isoDate) && (
-              <div className="absolute top-4 right-4 z-20">
-                <span className="inline-flex items-center bg-white/15 border border-white/25 text-white/80 text-[11px] font-medium px-3 py-1 rounded-full backdrop-blur-sm">
+              <div className="absolute top-3 right-3 z-20">
+                <span className="inline-flex items-center bg-white/15 border border-white/25 text-white/80 text-[11px] font-medium px-2.5 py-1 rounded-full backdrop-blur-sm">
                   Past event
                 </span>
               </div>
             )}
             <div className="relative z-10">
-              <span className="text-[10px] tracking-widest text-txsn-mint font-semibold uppercase mb-2.5 block">
+              <span className="text-[10px] tracking-widest text-txsn-mint font-semibold uppercase mb-2 block">
                 Annual Meeting
               </span>
               <h3 className="font-serif text-[1.4rem] text-white font-medium leading-snug mb-2">
                 {annualMeeting.title}
               </h3>
-              <div className="flex items-center gap-1.5 text-white/60 text-[12px] mb-1">
-                <Icon name="pin" size={11} />
-                {annualMeeting.location}
+              <div className="space-y-1 mb-3">
+                <p className="flex items-center gap-1.5 text-white/60 text-[12px]">
+                  <Icon name="pin" size={11} /> {annualMeeting.location}
+                </p>
+                <p className="flex items-center gap-1.5 text-white/60 text-[12px]">
+                  <Icon name="calendar" size={11} /> {annualMeeting.dateLabel}
+                </p>
               </div>
-              <div className="flex items-center gap-1.5 text-white/60 text-[12px] mb-4">
-                <Icon name="calendar" size={11} />
-                {annualMeeting.dateLabel}
-              </div>
-              <p className="text-[12.5px] text-white/70 leading-relaxed mb-5 line-clamp-2">
+              <p className="text-white/55 text-[12.5px] leading-relaxed line-clamp-2">
                 {annualMeeting.summary}
               </p>
+            </div>
+            <div className="relative z-10 mt-4">
               <Link
                 href="/annual-meeting"
-                className="inline-flex items-center gap-2 border border-white/40 hover:bg-white hover:text-txsn-teal-deep text-white text-[12.5px] font-semibold px-5 py-2 rounded-md transition-colors"
+                className="inline-flex items-center gap-2 border border-white/40 hover:bg-white hover:text-heritage-navy text-white px-5 py-2 rounded-sm font-semibold text-[12.5px] transition-all"
               >
-                Review program <Icon name="arrow" size={13} />
+                Review program <Icon name="arrow" size={12} />
               </Link>
             </div>
           </div>
 
-          {/* Right — All other upcoming events */}
-          <div className="flex flex-col gap-3">
-            <div className="text-[10px] tracking-widest text-txsn-gold font-semibold uppercase mb-1">
+          {/* Sidebar events list */}
+          <div className="flex flex-col gap-0">
+            <p className="text-[10px] font-semibold uppercase tracking-widest text-amber-accent pb-3 mb-2 border-b border-txsn-mint-soft/60">
               More Upcoming Events
-            </div>
+            </p>
             {others.length > 0 ? (
-              others.map((ev) => {
-                const d = formatDateShort(ev.date);
-                return (
-                  <div
-                    key={ev.slug}
-                    className="flex items-center gap-4 bg-txsn-wash rounded-xl p-4 lg:px-5"
-                  >
-                    <div className="flex-shrink-0 text-center rounded-lg px-3 py-2 bg-txsn-teal text-white">
-                      <div className="text-[9px] tracking-wide">{d.month}</div>
-                      <div className="font-serif text-xl font-medium leading-none">{d.day}</div>
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <div className="text-[13.5px] font-medium text-txsn-teal-deep truncate">
-                        {ev.title}
-                      </div>
-                      <div className="text-[12px] text-txsn-slate mt-0.5 flex items-center gap-1 flex-wrap">
-                        <Icon name={ev.location === "Online" ? "video" : "pin"} size={12} />
-                        {ev.location}
-                        <span className="mx-1">·</span>
-                        {ev.isFree ? (
-                          <span className="text-txsn-teal font-medium">Free</span>
-                        ) : (
-                          <span className="text-txsn-gold font-medium">
-                            Paid{ev.memberDiscount ? " · Member discount" : ""}
-                          </span>
-                        )}
-                      </div>
-                    </div>
-                    <Link
-                      href={ev.href ?? `/events/${ev.slug}`}
-                      className="flex-shrink-0 text-[12px] font-medium text-txsn-teal border border-txsn-mint bg-white px-3 py-1.5 rounded-md hover:bg-txsn-paper transition-colors"
+              <div className="flex flex-col gap-3">
+                {others.map((ev) => {
+                  const d = formatDateShort(ev.date);
+                  return (
+                    <div
+                      key={ev.slug}
+                      className="flex items-center gap-3 bg-txsn-wash rounded-lg p-3.5"
                     >
-                      Details
-                    </Link>
-                  </div>
-                );
-              })
+                      <div className="bg-heritage-navy text-white w-13 h-13 shrink-0 flex flex-col items-center justify-center rounded-lg px-3 py-2 text-center">
+                        <span className="text-[9px] uppercase font-bold tracking-wide block">
+                          {ev.dateLabel ? "TBA" : d.month}
+                        </span>
+                        <span className="text-[18px] font-bold leading-tight block">
+                          {ev.dateLabel ? "—" : d.day}
+                        </span>
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <h4 className="font-semibold text-heritage-navy text-[13px] leading-snug">
+                          {ev.title}
+                        </h4>
+                        <div className="flex items-center gap-1 mt-0.5 flex-wrap text-[11.5px] text-txsn-slate">
+                          <Icon name={ev.location === "Online" ? "video" : "pin"} size={11} />
+                          <span className="truncate">{ev.location}</span>
+                          <span className="mx-0.5">·</span>
+                          {ev.dateLabel ? (
+                            <span className="text-amber-accent font-medium">{ev.dateLabel}</span>
+                          ) : (
+                            <span className={ev.isFree ? "text-txsn-teal font-medium" : "text-amber-accent font-medium"}>
+                              {ev.isFree ? "Free" : "Paid"}
+                            </span>
+                          )}
+                        </div>
+                      </div>
+                      <Link
+                        href={ev.href ?? `/events/${ev.slug}`}
+                        className="flex-shrink-0 text-[12px] font-medium text-heritage-navy border border-txsn-mint-soft bg-white px-3 py-1.5 rounded-sm hover:bg-clinical-blue hover:border-txsn-mint transition-colors"
+                      >
+                        Details
+                      </Link>
+                    </div>
+                  );
+                })}
+              </div>
             ) : (
-              <div className="flex-1 flex items-center justify-center bg-txsn-wash rounded-xl p-6 text-center">
+              <div className="flex items-center justify-center text-center py-8">
                 <div>
                   <Icon name="calendar" size={24} className="text-txsn-mint mx-auto mb-2" />
                   <p className="text-[13px] text-txsn-slate">More events coming soon.</p>
-                  <Link href="/events" className="mt-2 inline-flex items-center gap-1 text-txsn-teal text-[12px] font-medium hover:underline">
-                    View all events <Icon name="arrow" size={12} />
-                  </Link>
                 </div>
               </div>
             )}
@@ -312,37 +322,20 @@ export function EventsPreview({ events }: { events: EventItem[] }) {
   );
 }
 
-export function Partners() {
-  return (
-    <section className="bg-white border-t border-b border-txsn-mint-soft/40">
-      <Container className="py-5">
-        <p className="text-center text-[10px] tracking-widest text-txsn-slate/40 font-medium mb-4 uppercase">
-          Supported by our corporate partners
-        </p>
-        <div className="flex justify-between items-center gap-6">
-          {corporatePartners.map((p) => (
-            <SponsorLogo key={p.name} name={p.name} color={p.color} />
-          ))}
-        </div>
-      </Container>
-    </section>
-  );
-}
-
 export function JoinCTA() {
   return (
-    <section className="bg-txsn-teal-deep">
-      <Container className="py-16 lg:py-20 text-center">
-        <h2 className="font-serif text-[1.75rem] lg:text-[2.25rem] text-white font-medium max-w-2xl mx-auto leading-tight">
+    <section className="bg-heritage-navy">
+      <Container className="py-20 lg:py-24 text-center">
+        <h2 className="font-serif text-[2rem] lg:text-[2.75rem] text-white font-bold max-w-2xl mx-auto leading-tight">
           Join the leading voice for Texas nephrology
         </h2>
-        <p className="mt-4 text-[14px] lg:text-[15px] text-txsn-mint-soft max-w-md mx-auto leading-relaxed">
+        <p className="mt-5 text-[15px] lg:text-[16px] text-white/80 max-w-xl mx-auto leading-relaxed">
           Trainee and full membership tiers. Renew online, register for events,
-          and access members-only resources.
+          and access members-only resources to support your clinical practice.
         </p>
         <Link
           href="/membership"
-          className="mt-7 inline-flex items-center gap-2 bg-txsn-gold hover:bg-txsn-gold/90 text-white text-[14px] font-medium px-6 py-3 rounded-md transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-txsn-gold/50"
+          className="mt-8 inline-flex items-center gap-2 bg-amber-accent hover:opacity-90 text-white text-[15px] font-bold px-10 py-4 rounded-sm transition-all shadow-xl"
         >
           Become a member <Icon name="arrow" size={16} />
         </Link>

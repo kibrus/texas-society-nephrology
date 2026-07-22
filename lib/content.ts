@@ -18,6 +18,7 @@ export type EventItem = {
   slug: string;
   title: string;
   date: string;
+  dateLabel?: string;
   endDate?: string;
   time?: string;
   location: string;
@@ -71,6 +72,7 @@ export function getAllEvents(): EventItem[] {
     slug,
     title: data.title ?? "Untitled",
     date: data.date ?? "",
+    dateLabel: data.dateLabel,
     endDate: data.endDate,
     time: data.time,
     location: data.location ?? "TBD",

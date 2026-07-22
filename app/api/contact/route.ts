@@ -11,7 +11,7 @@ export async function POST(request: Request) {
     }
 
     const apiKey = process.env.RESEND_API_KEY;
-    const to = process.env.CONTACT_EMAIL || "info@txsn.org";
+    const to = process.env.CONTACT_EMAIL || "fdanesh@txsocietyofnephrology.org";
 
     if (!apiKey) {
       // No key configured yet — log and succeed so the UI flow works in preview.
