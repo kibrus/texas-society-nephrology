@@ -7,6 +7,7 @@ import {
   Partners,
   JoinCTA,
 } from "@/components/home/sections";
+import { ScrollRevealInit } from "@/components/home/ScrollRevealInit";
 import { getLatestNews, getUpcomingEvents } from "@/lib/content";
 
 export default function HomePage() {
@@ -16,6 +17,7 @@ export default function HomePage() {
 
   return (
     <>
+      <ScrollRevealInit />
       <Hero />
       {featuredEvent && <FeaturedEvent event={featuredEvent} />}
       <Partners />

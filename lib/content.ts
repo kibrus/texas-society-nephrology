@@ -29,6 +29,9 @@ export type EventItem = {
   href?: string;
   brochurePdf?: string;
   sponsor?: string;
+  image?: string;
+  registrationUrl?: string;
+  hidePricing?: boolean;
 };
 
 function readCollection(folder: string) {
@@ -83,6 +86,9 @@ export function getAllEvents(): EventItem[] {
     href: data.href,
     brochurePdf: data.brochurePdf,
     sponsor: data.sponsor,
+    image: data.image,
+    registrationUrl: data.registrationUrl,
+    hidePricing: data.hidePricing ?? false,
   }));
 
   const upcoming = events.filter((e) => !isPastDate(e.date)).sort((a, b) => (a.date > b.date ? 1 : -1));

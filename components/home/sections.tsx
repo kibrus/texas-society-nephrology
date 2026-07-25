@@ -66,7 +66,7 @@ export function Hero() {
           </p>
           <div className="mt-8 flex flex-wrap gap-3">
             <Link
-              href="/membership"
+              href="/membership/join"
               className="inline-flex items-center gap-2 bg-amber-accent hover:opacity-90 text-white text-[14px] font-semibold px-6 py-3 rounded-sm transition-colors shadow-lg"
             >
               Become a member <Icon name="arrow" size={16} />
@@ -101,11 +101,12 @@ export function Partners() {
   );
 }
 
+
 export function Pillars() {
   return (
     <section className="bg-white">
       <Container className="py-10 lg:py-12">
-        <div className="mb-6">
+        <div className="mb-6" data-reveal>
           <div className="text-[11px] tracking-[0.2em] text-amber-accent font-semibold mb-1 uppercase">
             WHAT WE DO
           </div>
@@ -114,18 +115,20 @@ export function Pillars() {
           </h2>
         </div>
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          {pillars.map((p) => {
+          {pillars.map((p, i) => {
             const isTeal = p.accent === "teal";
             return (
               <div
                 key={p.title}
+                data-reveal
+                data-delay={String(i * 100)}
                 className={`group rounded-lg p-6 flex flex-col transition-all hover:-translate-y-1 hover:shadow-md border-t-4 ${
                   isTeal
                     ? "bg-clinical-blue border-heritage-navy"
                     : "bg-txsn-paper border-amber-accent"
                 }`}
               >
-                <div className={`w-11 h-11 rounded-lg flex items-center justify-center text-white mb-4 flex-shrink-0 ${
+                <div className={`w-11 h-11 rounded-lg flex items-center justify-center text-white mb-4 flex-shrink-0 transition-transform group-hover:scale-110 ${
                   isTeal ? "bg-heritage-navy" : "bg-amber-accent"
                 }`}>
                   <Icon name={p.icon} size={20} />
@@ -149,7 +152,7 @@ export function NewsPreview({ posts }: { posts: NewsPost[] }) {
   return (
     <section className="bg-[#f4f3f7]">
       <Container className="py-10 lg:py-12">
-        <div className="flex items-end justify-between mb-6 gap-4">
+        <div className="flex items-end justify-between mb-6 gap-4" data-reveal>
           <div>
             <div className="text-[11px] tracking-[0.2em] text-amber-accent font-semibold mb-1 uppercase">
               STAY INFORMED
@@ -166,10 +169,12 @@ export function NewsPreview({ posts }: { posts: NewsPost[] }) {
           </Link>
         </div>
         <div className="grid gap-4 md:grid-cols-3">
-          {posts.map((post) => (
+          {posts.map((post, i) => (
             <Link
               key={post.slug}
               href={`/news/${post.slug}`}
+              data-reveal
+              data-delay={String(i * 100)}
               className="group bg-white rounded-lg overflow-hidden border border-txsn-mint-soft/50 hover:border-txsn-mint hover:-translate-y-1 hover:shadow-md transition-all flex flex-col"
             >
               <div className="p-5 flex flex-col flex-1">
@@ -200,7 +205,7 @@ export function EventsPreview({ events }: { events: EventItem[] }) {
   return (
     <section className="bg-white">
       <Container className="py-10 lg:py-12">
-        <div className="flex items-end justify-between mb-6 gap-4">
+        <div className="flex items-end justify-between mb-6 gap-4" data-reveal>
           <div>
             <div className="text-[11px] tracking-[0.2em] text-amber-accent font-semibold mb-1 uppercase">
               MARK YOUR CALENDAR
@@ -220,7 +225,10 @@ export function EventsPreview({ events }: { events: EventItem[] }) {
         <div className="grid grid-cols-1 lg:grid-cols-[5fr_7fr] gap-5 items-start">
 
           {/* Featured Annual Meeting */}
-          <div className="relative rounded-xl overflow-hidden bg-heritage-navy text-white p-5 lg:p-6 flex flex-col justify-between">
+          <div
+            data-reveal
+            className="relative rounded-xl overflow-hidden bg-heritage-navy text-white p-5 lg:p-6 flex flex-col justify-between"
+          >
             {isPastDate(annualMeeting.isoDate) && (
               <div className="absolute top-3 right-3 z-20">
                 <span className="inline-flex items-center bg-white/15 border border-white/25 text-white/80 text-[11px] font-medium px-2.5 py-1 rounded-full backdrop-blur-sm">
@@ -259,17 +267,22 @@ export function EventsPreview({ events }: { events: EventItem[] }) {
 
           {/* Sidebar events list */}
           <div className="flex flex-col gap-0">
-            <p className="text-[10px] font-semibold uppercase tracking-widest text-amber-accent pb-3 mb-2 border-b border-txsn-mint-soft/60">
+            <p
+              data-reveal
+              className="text-[10px] font-semibold uppercase tracking-widest text-amber-accent pb-3 mb-2 border-b border-txsn-mint-soft/60"
+            >
               More Upcoming Events
             </p>
             {others.length > 0 ? (
               <div className="flex flex-col gap-3">
-                {others.map((ev) => {
+                {others.map((ev, i) => {
                   const d = formatDateShort(ev.date);
                   return (
                     <div
                       key={ev.slug}
-                      className="flex items-center gap-3 bg-txsn-wash rounded-lg p-3.5"
+                      data-reveal
+                      data-delay={String(i * 100)}
+                      className="flex items-center gap-3 bg-txsn-wash rounded-lg p-3.5 hover:shadow-sm transition-shadow"
                     >
                       <div className="bg-heritage-navy text-white w-13 h-13 shrink-0 flex flex-col items-center justify-center rounded-lg px-3 py-2 text-center">
                         <span className="text-[9px] uppercase font-bold tracking-wide block">
@@ -286,14 +299,14 @@ export function EventsPreview({ events }: { events: EventItem[] }) {
                         <div className="flex items-center gap-1 mt-0.5 flex-wrap text-[11.5px] text-txsn-slate">
                           <Icon name={ev.location === "Online" ? "video" : "pin"} size={11} />
                           <span className="truncate">{ev.location}</span>
-                          <span className="mx-0.5">·</span>
+                          {(ev.dateLabel || !ev.hidePricing) && <span className="mx-0.5">·</span>}
                           {ev.dateLabel ? (
                             <span className="text-amber-accent font-medium">{ev.dateLabel}</span>
-                          ) : (
+                          ) : !ev.hidePricing ? (
                             <span className={ev.isFree ? "text-txsn-teal font-medium" : "text-amber-accent font-medium"}>
                               {ev.isFree ? "Free" : "Paid"}
                             </span>
-                          )}
+                          ) : null}
                         </div>
                       </div>
                       <Link
@@ -326,19 +339,28 @@ export function JoinCTA() {
   return (
     <section className="bg-heritage-navy">
       <Container className="py-20 lg:py-24 text-center">
-        <h2 className="font-serif text-[2rem] lg:text-[2.75rem] text-white font-bold max-w-2xl mx-auto leading-tight">
+        <h2
+          data-reveal
+          className="font-serif text-[2rem] lg:text-[2.75rem] text-white font-bold max-w-2xl mx-auto leading-tight"
+        >
           Join the leading voice for Texas nephrology
         </h2>
-        <p className="mt-5 text-[15px] lg:text-[16px] text-white/80 max-w-xl mx-auto leading-relaxed">
+        <p
+          data-reveal
+          data-delay="100"
+          className="mt-5 text-[15px] lg:text-[16px] text-white/80 max-w-xl mx-auto leading-relaxed"
+        >
           Trainee and full membership tiers. Renew online, register for events,
           and access members-only resources to support your clinical practice.
         </p>
-        <Link
-          href="/membership"
-          className="mt-8 inline-flex items-center gap-2 bg-amber-accent hover:opacity-90 text-white text-[15px] font-bold px-10 py-4 rounded-sm transition-all shadow-xl"
-        >
-          Become a member <Icon name="arrow" size={16} />
-        </Link>
+        <div data-reveal data-delay="200">
+          <Link
+            href="/membership/join"
+            className="mt-8 inline-flex items-center gap-2 bg-amber-accent hover:opacity-90 text-white text-[15px] font-bold px-10 py-4 rounded-sm transition-all shadow-xl hover:shadow-amber-accent/30 hover:-translate-y-0.5"
+          >
+            Become a member <Icon name="arrow" size={16} />
+          </Link>
+        </div>
       </Container>
     </section>
   );

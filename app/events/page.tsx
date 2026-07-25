@@ -33,17 +33,21 @@ export default function EventsPage() {
                     {past && <PastBadge />}
                   </div>
                   <div className="text-[12px] text-txsn-slate flex items-center gap-1 flex-wrap">
-                    <Icon name="calendar" size={12} /> {formatDate(ev.date)}
+                    <Icon name="calendar" size={12} /> {ev.dateLabel ?? formatDate(ev.date)}
                     <span className="mx-1">·</span>
                     <Icon name={ev.location === "Online" ? "video" : "pin"} size={12} />
                     {ev.location}
-                    <span className="mx-1">·</span>
-                    {ev.isFree ? (
-                      <span className="text-txsn-teal font-medium">Free</span>
-                    ) : (
-                      <span className="text-txsn-gold font-medium">
-                        Paid{ev.memberDiscount ? " · Member discount" : ""}
-                      </span>
+                    {!ev.hidePricing && (
+                      <>
+                        <span className="mx-1">·</span>
+                        {ev.isFree ? (
+                          <span className="text-txsn-teal font-medium">Free</span>
+                        ) : (
+                          <span className="text-txsn-gold font-medium">
+                            Paid{ev.memberDiscount ? " · Member discount" : ""}
+                          </span>
+                        )}
+                      </>
                     )}
                   </div>
                   {ev.excerpt && (

@@ -40,11 +40,13 @@ export default function EventDetailPage({ params }: { params: { slug: string } }
             }`}>
               {past ? "Past Event" : "Upcoming"}
             </span>
-            <span className={`text-[10px] uppercase tracking-wide text-white font-medium px-2.5 py-1 rounded-full ${
-              event.isFree ? "bg-txsn-teal" : "bg-txsn-gold"
-            }`}>
-              {event.isFree ? "Free" : "Paid"}
-            </span>
+            {!event.hidePricing && (
+              <span className={`text-[10px] uppercase tracking-wide text-white font-medium px-2.5 py-1 rounded-full ${
+                event.isFree ? "bg-txsn-teal" : "bg-txsn-gold"
+              }`}>
+                {event.isFree ? "Free" : "Paid"}
+              </span>
+            )}
             {event.sponsor && (
               <span className="text-[10px] uppercase tracking-wide text-txsn-gold font-medium px-2.5 py-1 rounded-full bg-txsn-gold-soft border border-txsn-gold/20">
                 Sponsored by {event.sponsor}
@@ -78,6 +80,13 @@ export default function EventDetailPage({ params }: { params: { slug: string } }
 
           {/* Left — MDX content */}
           <article className="prose-txsn min-w-0">
+            {event.image && (
+              <img
+                src={event.image}
+                alt={`${event.title} flyer`}
+                className="w-full rounded-xl border border-txsn-mint-soft/50 mb-8"
+              />
+            )}
             {event.excerpt && (
               <div className="bg-txsn-teal-deep/5 border-l-4 border-txsn-teal rounded-r-xl px-5 py-4 mb-8">
                 <p className="text-[15px] text-txsn-teal-deep font-medium leading-relaxed m-0">
@@ -94,6 +103,22 @@ export default function EventDetailPage({ params }: { params: { slug: string } }
 
           {/* Right — Sidebar */}
           <aside className="space-y-4">
+
+            {/* Registration */}
+            {event.registrationUrl && (
+              <div className="bg-txsn-gold rounded-xl p-6 text-white">
+                <div className="text-[11px] tracking-widest font-medium text-white/80 uppercase mb-1">Registration</div>
+                <div className="text-[14px] font-semibold mb-4">Reserve your spot for this event</div>
+                <a
+                  href={event.registrationUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center justify-center gap-2 bg-white text-txsn-gold text-[13px] font-semibold px-4 py-2.5 rounded-md hover:bg-txsn-wash transition-colors w-full"
+                >
+                  Register Now <Icon name="external" size={14} />
+                </a>
+              </div>
+            )}
 
             {/* PDF Brochure */}
             {event.brochurePdf && (
@@ -139,12 +164,14 @@ export default function EventDetailPage({ params }: { params: { slug: string } }
                   <div className="text-[10px] text-txsn-slate/60 uppercase tracking-wide font-medium mb-0.5">Location</div>
                   <div className="text-[13.5px] text-txsn-teal-deep font-medium leading-snug">{event.location}</div>
                 </div>
-                <div>
-                  <div className="text-[10px] text-txsn-slate/60 uppercase tracking-wide font-medium mb-0.5">Admission</div>
-                  <div className={`text-[13.5px] font-medium ${event.isFree ? "text-txsn-teal" : "text-txsn-gold"}`}>
-                    {event.isFree ? "Free to attend" : "Paid — member discounts may apply"}
+                {!event.hidePricing && (
+                  <div>
+                    <div className="text-[10px] text-txsn-slate/60 uppercase tracking-wide font-medium mb-0.5">Admission</div>
+                    <div className={`text-[13.5px] font-medium ${event.isFree ? "text-txsn-teal" : "text-txsn-gold"}`}>
+                      {event.isFree ? "Free to attend" : "Paid — member discounts may apply"}
+                    </div>
                   </div>
-                </div>
+                )}
                 {event.sponsor && (
                   <div>
                     <div className="text-[10px] text-txsn-slate/60 uppercase tracking-wide font-medium mb-0.5">Sponsor</div>
