@@ -4,9 +4,9 @@ import {
   Pillars,
   NewsPreview,
   EventsPreview,
-  Partners,
   JoinCTA,
 } from "@/components/home/sections";
+import { Partners } from "@/components/home/Partners";
 import { ScrollRevealInit } from "@/components/home/ScrollRevealInit";
 import { getLatestNews, getUpcomingEvents } from "@/lib/content";
 

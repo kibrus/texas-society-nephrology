@@ -105,14 +105,21 @@ export const leadership = [
   { name: "Treasurer", role: "Board Treasurer", focus: "Finance & sponsorship" },
 ];
 
-// All corporate partners are presented equally for now (no tier distinction).
-export const corporatePartners = [
-  { name: "Partner 1", color: "#1A56A0" },
-  { name: "Partner 2", color: "#1A56A0" },
-  { name: "Partner 3", color: "#1A56A0" },
-  { name: "Partner 4", color: "#1A56A0" },
-  { name: "Partner 5", color: "#1A56A0" },
-  { name: "Partner 6", color: "#1A56A0" },
+export type CorporatePartner = { name: string; slug: string; url?: string; ext?: string };
+
+export const corporatePartners: CorporatePartner[] = [
+  { name: "Alexion",                                slug: "partner1",  url: "https://alexion.com/",                        ext: "svg"  },
+  { name: "US Medical Affairs – Hematology & Nephrology", slug: "partner2", url: "https://alexion.com/"                             },
+  { name: "Otsuka",                                 slug: "partner3",  url: "https://www.otsuka-us.com/",                  ext: "webp" },
+  { name: "CareDx",                                 slug: "partner4",  url: "https://www.caredx.com/"                                 },
+  { name: "Kyowa Kirin",                            slug: "partner5",  url: "https://www.kyowakirin.com/index.html"                   },
+  { name: "Natera",                                 slug: "partner6",  url: "https://www.natera.com/",                     ext: "svg"  },
+  { name: "Apellis",                                slug: "partner7",  url: "https://apellis.com/"                                    },
+  { name: "Calliditas Therapeutics",                slug: "partner8",  url: "https://www.calliditas.se/en/"                           },
+  { name: "Vera Therapeutics",                      slug: "partner9",  url: "https://veratx.com/",                         ext: "svg"  },
+  { name: "Kaneka",                                 slug: "partner10", url: "https://www.kaneka.com/kaneka-americas/"                 },
+  { name: "Keenova",                                slug: "partner11", url: "https://www.keenova.com/"                                },
+  { name: "Vertex",                                 slug: "partner12", url: "https://www.vrtx.com/"                                   },
 ];
 
 export const membershipTiers = [

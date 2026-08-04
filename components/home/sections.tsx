@@ -1,8 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { Icon, Container } from "@/components/ui";
-import { pillars, corporatePartners, annualMeeting } from "@/lib/site";
-import { SponsorLogo } from "./SponsorLogo";
+import { pillars, annualMeeting } from "@/lib/site";
 import { NewsPost, EventItem, formatDate, formatDateShort, isPastDate } from "@/lib/content";
 
 export function FeaturedEvent({ event }: { event: EventItem }) {
@@ -78,23 +77,6 @@ export function Hero() {
               2026 Annual Meeting
             </Link>
           </div>
-        </div>
-      </Container>
-    </section>
-  );
-}
-
-export function Partners() {
-  return (
-    <section className="py-5 border-b border-txsn-mint-soft/40">
-      <Container>
-        <p className="text-center text-[10px] tracking-[0.2em] text-txsn-slate/50 font-medium mb-4 uppercase">
-          Supported by our corporate partners
-        </p>
-        <div className="flex flex-wrap justify-center items-center gap-x-10 gap-y-4 opacity-35">
-          {corporatePartners.map((p) => (
-            <SponsorLogo key={p.name} name={p.name} color={p.color} />
-          ))}
         </div>
       </Container>
     </section>

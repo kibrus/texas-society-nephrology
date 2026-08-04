@@ -157,38 +157,24 @@ body {
   margin-top: 0.15rem;
 }
 
-/* Scroll-triggered reveal */
-[data-reveal] {
-  opacity: 0;
-  transform: translateY(18px);
-  transition: opacity 0.55s ease, transform 0.55s ease;
+/* Scroll-triggered reveal — elements are always visible; animation plays on enter */
+@keyframes revealUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
+
 [data-reveal].revealed {
-  opacity: 1;
-  transform: translateY(0);
+  animation: revealUp 0.5s ease both;
 }
-[data-reveal][data-delay="100"] { transition-delay: 100ms; }
-[data-reveal][data-delay="200"] { transition-delay: 200ms; }
-[data-reveal][data-delay="300"] { transition-delay: 300ms; }
-[data-reveal][data-delay="400"] { transition-delay: 400ms; }
+[data-reveal][data-delay="100"].revealed { animation-delay: 100ms; }
+[data-reveal][data-delay="200"].revealed { animation-delay: 200ms; }
+[data-reveal][data-delay="300"].revealed { animation-delay: 300ms; }
+[data-reveal][data-delay="400"].revealed { animation-delay: 400ms; }
 
 @media (prefers-reduced-motion: reduce) {
-  [data-reveal] {
-    opacity: 1;
-    transform: none;
-    transition: none;
-  }
+  [data-reveal].revealed { animation: none; }
 }
 
-/* Partners marquee */
-@keyframes marquee {
-  from { transform: translateX(0); }
-  to   { transform: translateX(-50%); }
-}
-.marquee-track {
-  animation: marquee 28s linear infinite;
-  will-change: transform;
-}
-.marquee-track:hover {
-  animation-play-state: paused;
-}
+/* Hide scrollbar — used by Partners carousel */
+.hide-scrollbar { scrollbar-width: none; -ms-overflow-style: none; }
+.hide-scrollbar::-webkit-scrollbar { display: none; }

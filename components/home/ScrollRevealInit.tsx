@@ -3,8 +3,6 @@ import { useEffect } from "react";
 
 export function ScrollRevealInit() {
   useEffect(() => {
-    const els = Array.from(document.querySelectorAll("[data-reveal]"));
-
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
@@ -15,10 +13,10 @@ export function ScrollRevealInit() {
           }
         });
       },
-      { threshold: 0.1, rootMargin: "0px 0px -40px 0px" }
+      { threshold: 0 }
     );
 
-    els.forEach((el) => observer.observe(el));
+    document.querySelectorAll("[data-reveal]").forEach((el) => observer.observe(el));
     return () => observer.disconnect();
   }, []);
 
