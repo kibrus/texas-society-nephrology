@@ -10,6 +10,7 @@ export function Partners() {
   const containerRef = useRef<HTMLDivElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
   const [hovered, setHovered] = useState(false);
+  const [touching, setTouching] = useState(false);
   const hoveredRef = useRef(false);
   const pausedRef = useRef(false);
   const rafRef = useRef<number | null>(null);
@@ -18,9 +19,15 @@ export function Partners() {
   const thumbWidthRef = useRef(0);
   const [thumbStyle, setThumbStyle] = useState({ left: 0, width: 0 });
 
+  // Mouse drag state
   const isDragging = useRef(false);
   const dragStartX = useRef(0);
   const dragStartOffset = useRef(0);
+
+  // Touch swipe state
+  const isTouching = useRef(false);
+  const touchStartX = useRef(0);
+  const touchStartOffset = useRef(0);
 
   const syncThumb = useCallback(() => {
     const container = containerRef.current;
@@ -35,6 +42,7 @@ export function Partners() {
     setThumbStyle({ left: l, width: thumbW });
   }, []);
 
+  // ── auto-scroll via RAF + transform ────────────────────────────────────
   const animate = useCallback(() => {
     const track = trackRef.current;
     if (track && !pausedRef.current) {
@@ -52,6 +60,52 @@ export function Partners() {
     return () => { if (rafRef.current !== null) cancelAnimationFrame(rafRef.current); };
   }, [animate]);
 
+  // ── touch swipe on the logo track (mobile) ────────────────────────────
+  useEffect(() => {
+    const container = containerRef.current;
+    if (!container) return;
+
+    const onTouchStart = (e: TouchEvent) => {
+      isTouching.current = true;
+      touchStartX.current = e.touches[0].clientX;
+      touchStartOffset.current = offsetRef.current;
+      pausedRef.current = true;
+      setTouching(true);
+    };
+
+    const onTouchMove = (e: TouchEvent) => {
+      if (!isTouching.current || isDragging.current || !trackRef.current) return;
+      e.preventDefault(); // prevent page from scrolling vertically while swiping logos
+      const dx = touchStartX.current - e.touches[0].clientX;
+      const track = trackRef.current;
+      const halfTrack = track.scrollWidth / 2;
+      const containerW = container.clientWidth;
+      const newOffset = Math.max(0, Math.min(halfTrack - containerW, touchStartOffset.current + dx));
+      offsetRef.current = newOffset;
+      track.style.transform = `translateX(-${newOffset}px)`;
+      syncThumb();
+    };
+
+    const onTouchEnd = () => {
+      isTouching.current = false;
+      // keep scrollbar visible briefly then resume auto-scroll
+      setTimeout(() => {
+        setTouching(false);
+        if (!isDragging.current && !hoveredRef.current) pausedRef.current = false;
+      }, 1500);
+    };
+
+    container.addEventListener("touchstart", onTouchStart, { passive: true });
+    container.addEventListener("touchmove", onTouchMove, { passive: false });
+    container.addEventListener("touchend", onTouchEnd, { passive: true });
+    return () => {
+      container.removeEventListener("touchstart", onTouchStart);
+      container.removeEventListener("touchmove", onTouchMove);
+      container.removeEventListener("touchend", onTouchEnd);
+    };
+  }, [syncThumb]);
+
+  // ── mouse drag on scrollbar thumb (desktop) ───────────────────────────
   const onThumbMouseDown = (e: React.MouseEvent) => {
     isDragging.current = true;
     dragStartX.current = e.clientX;
@@ -89,6 +143,8 @@ export function Partners() {
     };
   }, [syncThumb]);
 
+  const showScrollbar = hovered || touching;
+
   return (
     <section
       className="relative py-6 border-b border-txsn-mint-soft/40"
@@ -118,10 +174,10 @@ export function Partners() {
         </div>
       </div>
 
-      {/* Draggable scrollbar — fades in on hover */}
+      {/* Scrollbar — fades in on hover (desktop) or touch (mobile) */}
       <div
         className={`mx-7 mt-3 h-1.5 rounded-full bg-gray-100 relative select-none transition-opacity duration-200 ${
-          hovered ? "opacity-100" : "opacity-0 pointer-events-none"
+          showScrollbar ? "opacity-100" : "opacity-0 pointer-events-none"
         }`}
       >
         <div
