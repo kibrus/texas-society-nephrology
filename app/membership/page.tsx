@@ -1,7 +1,7 @@
 import { PageHeader, Container, Icon } from "@/components/ui";
 import Link from "next/link";
 
-export const metadata = { title: "Membership · TxSN" };
+export const metadata = { title: "Membership · TSN" };
 
 const benefits = [
   { icon: "school", title: "Education & CME", body: "Year-round webinars and accredited content to stay current." },
@@ -17,7 +17,7 @@ export default function MembershipPage() {
     <>
       <PageHeader
         eyebrow="MEMBERSHIP"
-        title="Why join TxSN"
+        title="Why join TSN"
         intro="Membership connects you to the people, education, and advocacy that strengthen nephrology practice across Texas."
       />
       <Container className="py-14">

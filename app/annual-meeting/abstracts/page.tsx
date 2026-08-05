@@ -2,7 +2,7 @@ import { PageHeader, Container, Icon, PastBadge } from "@/components/ui";
 import { callForAbstracts } from "@/lib/site";
 import { isPastDate } from "@/lib/content";
 
-export const metadata = { title: "Abstract Submission · TxSN" };
+export const metadata = { title: "Abstract Submission · TSN" };
 
 export default function AbstractsPage() {
   const deadlinePassed = isPastDate(callForAbstracts.deadlineIso);

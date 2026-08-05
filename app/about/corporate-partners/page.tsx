@@ -1,7 +1,7 @@
 import { PageHeader, Container } from "@/components/ui";
 import { corporatePartners } from "@/lib/site";
 
-export const metadata = { title: "Corporate Partners · TxSN" };
+export const metadata = { title: "Corporate Partners · TSN" };
 
 const descriptions: Record<string, string> = {
   partner1:
@@ -77,7 +77,7 @@ export default function PartnersPage() {
 
         <div className="mt-12 bg-txsn-gold-soft rounded-xl p-7 text-center">
           <h2 className="font-serif text-xl text-txsn-teal-deep font-medium mb-2">
-            Interested in partnering with TxSN?
+            Interested in partnering with TSN?
           </h2>
           <p className="text-[14px] text-txsn-slate mb-4 max-w-lg mx-auto">
             Corporate partnership connects your organization with kidney care professionals across Texas.

@@ -2,7 +2,7 @@ import { PageHeader, Container, Icon, PastBadge } from "@/components/ui";
 import { annualMeeting } from "@/lib/site";
 import { isPastDate } from "@/lib/content";
 
-export const metadata = { title: "Annual Meeting · TxSN" };
+export const metadata = { title: "Annual Meeting · TSN" };
 
 
 export default function AnnualMeetingPage() {

@@ -1,7 +1,7 @@
 import { PageHeader, Container } from "@/components/ui";
 import { leadership } from "@/lib/site";
 
-export const metadata = { title: "Leadership · TxSN" };
+export const metadata = { title: "Leadership · TSN" };
 
 export default function LeadershipPage() {
   return (

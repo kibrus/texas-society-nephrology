@@ -28,10 +28,10 @@ export async function POST(request: Request) {
     const resend = new Resend(apiKey);
 
     await resend.emails.send({
-      from: "TxSN Website <noreply@txsn.org>",
+      from: "TSN Website <noreply@txsn.org>",
       to,
       reply_to: email,
-      subject: `[TxSN Contact] ${subject || "New message"}`,
+      subject: `[TSN Contact] ${subject || "New message"}`,
       text: `From: ${name} <${email}>\n\n${message}`,
     });
 

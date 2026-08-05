@@ -1,7 +1,7 @@
 import { PageHeader, Container, Icon } from "@/components/ui";
 import Link from "next/link";
 
-export const metadata = { title: "About · TxSN" };
+export const metadata = { title: "About · TSN" };
 
 const audience = [
   "Nephrologists practicing in Texas — both academic and community-based",

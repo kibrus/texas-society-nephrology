@@ -32,7 +32,7 @@ export default function ContactPage() {
     <>
       <PageHeader
         eyebrow="GET IN TOUCH"
-        title="Contact TxSN"
+        title="Contact TSN"
         intro="Questions about membership, events, or partnership? Send us a note and we'll get back to you."
       />
       <Container className="py-14">

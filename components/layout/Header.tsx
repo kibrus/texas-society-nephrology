@@ -1,13 +1,39 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { navigation } from "@/lib/site";
+import { createSupabaseBrowserClient } from "@/lib/supabase/browser";
 import { Logo } from "./Logo";
 
 export function Header() {
+  const router = useRouter();
   const [mobileOpen, setMobileOpen] = useState(false);
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
+  const [signedIn, setSignedIn] = useState(false);
+
+  // Read auth state on the client so the marketing pages stay statically
+  // rendered; the header hydrates the signed-in state after load.
+  useEffect(() => {
+    const supabase = createSupabaseBrowserClient();
+    supabase.auth
+      .getUser()
+      .then(({ data }) => setSignedIn(!!data.user));
+    const { data: sub } = supabase.auth.onAuthStateChange((_event, session) => {
+      setSignedIn(!!session?.user);
+    });
+    return () => sub.subscription.unsubscribe();
+  }, []);
+
+  async function handleSignOut() {
+    const supabase = createSupabaseBrowserClient();
+    await supabase.auth.signOut();
+    setSignedIn(false);
+    setMobileOpen(false);
+    router.push("/");
+    router.refresh();
+  }
 
   return (
     <header className="sticky top-0 z-50">
@@ -16,9 +42,21 @@ export function Header() {
       <div className="hidden lg:block bg-white border-b border-gray-200">
         <div className="mx-auto max-w-content px-5 lg:px-8">
           <div className="flex items-center justify-end gap-5 h-9">
-            <Link href="/sign-in" className="text-[12px] text-txsn-slate hover:text-txsn-teal transition-colors">
-              Sign in
-            </Link>
+            {signedIn ? (
+              <>
+                <Link href="/member" className="text-[12px] text-txsn-slate hover:text-txsn-teal transition-colors">
+                  My Account
+                </Link>
+                <span className="text-gray-300">|</span>
+                <button onClick={handleSignOut} className="text-[12px] text-txsn-slate hover:text-txsn-teal transition-colors">
+                  Sign out
+                </button>
+              </>
+            ) : (
+              <Link href="/sign-in" className="text-[12px] text-txsn-slate hover:text-txsn-teal transition-colors">
+                Sign in
+              </Link>
+            )}
             <span className="text-gray-300">|</span>
             <Link href="/contact" className="text-[12px] text-txsn-slate hover:text-txsn-teal transition-colors">
               Contact Us
@@ -44,7 +82,7 @@ export function Header() {
       <div className="bg-txsn-teal-deep border-b border-white/10">
         <div className="mx-auto max-w-content px-5 lg:px-8">
           <div className="flex items-center justify-between h-[88px]">
-            <Link href="/" aria-label="TxSN home">
+            <Link href="/" aria-label="TSN home">
               <Logo light />
             </Link>
 
@@ -91,7 +129,7 @@ export function Header() {
                 href="/membership/join"
                 className="ml-3 bg-txsn-gold hover:bg-txsn-gold/90 text-white text-[15px] font-medium px-4 py-2 rounded-md transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-txsn-gold/50"
               >
-                Join TxSN
+                Join TSN
               </Link>
             </nav>
 
@@ -143,20 +181,40 @@ export function Header() {
                 </div>
               ))}
               <div className="flex gap-2 mt-3 mb-2">
-                <Link
-                  href="/sign-in"
-                  className="flex-1 text-center text-white border border-white/30 text-[14px] font-medium px-4 py-2.5 rounded-md"
-                  onClick={() => setMobileOpen(false)}
-                >
-                  Sign in
-                </Link>
-                <Link
-                  href="/membership/join"
-                  className="flex-1 text-center bg-txsn-gold text-white text-[14px] font-medium px-4 py-2.5 rounded-md"
-                  onClick={() => setMobileOpen(false)}
-                >
-                  Join TxSN
-                </Link>
+                {signedIn ? (
+                  <>
+                    <Link
+                      href="/member"
+                      className="flex-1 text-center text-white border border-white/30 text-[14px] font-medium px-4 py-2.5 rounded-md"
+                      onClick={() => setMobileOpen(false)}
+                    >
+                      My Account
+                    </Link>
+                    <button
+                      onClick={handleSignOut}
+                      className="flex-1 text-center text-white border border-white/30 text-[14px] font-medium px-4 py-2.5 rounded-md"
+                    >
+                      Sign out
+                    </button>
+                  </>
+                ) : (
+                  <>
+                    <Link
+                      href="/sign-in"
+                      className="flex-1 text-center text-white border border-white/30 text-[14px] font-medium px-4 py-2.5 rounded-md"
+                      onClick={() => setMobileOpen(false)}
+                    >
+                      Sign in
+                    </Link>
+                    <Link
+                      href="/membership/join"
+                      className="flex-1 text-center bg-txsn-gold text-white text-[14px] font-medium px-4 py-2.5 rounded-md"
+                      onClick={() => setMobileOpen(false)}
+                    >
+                      Join TSN
+                    </Link>
+                  </>
+                )}
               </div>
             </nav>
           </div>

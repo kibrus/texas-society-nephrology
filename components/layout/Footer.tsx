@@ -14,7 +14,7 @@ export function Footer() {
             <div className="flex items-center gap-2.5 mb-5 min-w-0">
               <Image
                 src="/images/logo.png"
-                alt="TxSN logo"
+                alt="TSN logo"
                 width={68}
                 height={46}
                 className="object-contain flex-shrink-0"

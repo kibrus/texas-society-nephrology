@@ -7,7 +7,7 @@ export function Logo({ light = false }: { light?: boolean }) {
     <div className="flex items-center gap-2.5 ml-2.5">
       <Image
         src="/images/logo.png"
-        alt="TxSN logo"
+        alt="TSN logo"
         width={100}
         height={67}
         className="object-contain"

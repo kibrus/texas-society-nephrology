@@ -9,7 +9,7 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        // Pulled directly from the TxSN logo — teal mark + gold gradient
+        // Pulled directly from the TSN logo — teal mark + gold gradient
         txsn: {
           teal: "#1A56A0",        // primary brand blue
           "teal-deep": "#0D1F3C", // dark navy — header, footer, headings

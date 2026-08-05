@@ -2,7 +2,7 @@ import { PageHeader, Container, Icon } from "@/components/ui";
 import Link from "next/link";
 import { membershipTiers } from "@/lib/site";
 
-export const metadata = { title: "Membership Tiers · TxSN" };
+export const metadata = { title: "Membership Tiers · TSN" };
 
 export default function TiersPage() {
   return (

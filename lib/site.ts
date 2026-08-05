@@ -3,7 +3,7 @@
 
 export const siteConfig = {
   name: "Texas Society of Nephrology",
-  shortName: "TxSN",
+  shortName: "TSN",
   tagline: "Education · Advocacy · Community",
   description:
     "The professional home for kidney care professionals across Texas, advancing patient care, education, and the future of nephrology.",
