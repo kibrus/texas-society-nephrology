@@ -105,10 +105,10 @@ export const leadership = [
   { name: "Treasurer", role: "Board Treasurer", focus: "Finance & sponsorship" },
 ];
 
-export type CorporatePartner = { name: string; slug: string; url?: string; ext?: string };
+export type CorporatePartner = { name: string; slug: string; url?: string; ext?: string; hidden?: boolean };
 
 export const corporatePartners: CorporatePartner[] = [
-  { name: "Alexion",                                slug: "partner1",  url: "https://alexion.com/",                        ext: "svg"  },
+  { name: "Alexion",                                slug: "partner1",  url: "https://alexion.com/",                        ext: "svg",  hidden: true },
   { name: "US Medical Affairs – Hematology & Nephrology", slug: "partner2", url: "https://alexion.com/"                             },
   { name: "Otsuka",                                 slug: "partner3",  url: "https://www.otsuka-us.com/",                  ext: "webp" },
   { name: "CareDx",                                 slug: "partner4",  url: "https://www.caredx.com/"                                 },

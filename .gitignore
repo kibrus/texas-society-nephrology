@@ -6,3 +6,7 @@
 .DS_Store
 *.tsbuildinfo
 next-env.d.ts
+
+/.claude/
+/.mcp.json
+/claude md/

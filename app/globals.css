@@ -175,6 +175,3 @@ body {
   [data-reveal].revealed { animation: none; }
 }
 
-/* Hide scrollbar — used by Partners carousel */
-.hide-scrollbar { scrollbar-width: none; -ms-overflow-style: none; }
-.hide-scrollbar::-webkit-scrollbar { display: none; }
