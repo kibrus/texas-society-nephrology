@@ -31,7 +31,7 @@ const descriptions: Record<string, string> = {
 };
 
 export default function PartnersPage() {
-  const partners = corporatePartners.filter((p) => p.url);
+  const partners = corporatePartners.filter((p) => p.url && !p.hidden);
 
   return (
     <>
