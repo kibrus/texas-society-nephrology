@@ -61,7 +61,7 @@ export default async function PaymentPage() {
             <div className="flex items-center gap-2 border-t border-txsn-mint-soft/50 bg-txsn-wash/60 px-6 py-3">
               <Icon name="clock" size={14} className="text-txsn-teal" />
               <span className="text-[12.5px] text-txsn-slate">
-                Renews automatically each year — cancel anytime from your account.
+                Renews automatically each year. Cancel anytime from your account.
               </span>
             </div>
           </div>
@@ -75,7 +75,16 @@ export default async function PaymentPage() {
                 </p>
               </div>
             ) : (
-              <PaymentForm clientSecret={result.clientSecret} returnUrl={returnUrl} />
+              <>
+                <PaymentForm clientSecret={result.clientSecret} returnUrl={returnUrl} />
+                <p className="mt-4 text-[11.5px] leading-relaxed text-txsn-slate">
+                  By providing your card information, you allow Texas Society of
+                  Nephrology sandbox to charge your card for the amount above and
+                  to automatically renew your membership each year until you
+                  cancel. You can cancel automatic renewal anytime from your
+                  account.
+                </p>
+              </>
             )}
           </div>
 
@@ -83,7 +92,15 @@ export default async function PaymentPage() {
           <div className="mt-5 flex items-center justify-center gap-2 text-[12px] text-txsn-slate">
             <Icon name="check" size={14} className="text-txsn-teal" />
             <span>
-              Secured by Stripe · Your card details never touch our servers.
+              Secured by{" "}
+              <a
+                href="https://stripe.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="font-medium text-txsn-teal hover:underline"
+              >
+                Stripe
+              </a>
             </span>
           </div>
         </div>

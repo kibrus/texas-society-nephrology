@@ -51,7 +51,7 @@ export default async function PaymentReturnPage({
                 Payment received
               </h1>
               <p className="mx-auto mt-3 max-w-sm text-[14.5px] leading-relaxed text-txsn-slate">
-                Thanks for joining TSN. Your membership is being activated — this
+                Thanks for joining TSN. Your membership is being activated. This
                 usually takes just a few moments.
               </p>
               <div className="mt-7 flex flex-col items-center gap-3">

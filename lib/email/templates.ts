@@ -39,18 +39,18 @@ function layout(opts: {
 }): string {
   const button = opts.button
     ? `<p style="margin:24px 0;">
-         <a href="${opts.button.url}" style="background:#0e7c7b;color:#ffffff;text-decoration:none;font-weight:600;font-size:14px;padding:12px 20px;border-radius:6px;display:inline-block;">${escapeHtml(
+         <a href="${opts.button.url}" style="background:#1A56A0;color:#ffffff;text-decoration:none;font-weight:600;font-size:14px;padding:12px 20px;border-radius:6px;display:inline-block;">${escapeHtml(
            opts.button.label,
          )}</a>
        </p>`
     : "";
   return `<!doctype html>
 <html>
-  <body style="margin:0;background:#f4f7f6;font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif;color:#1f2d2d;">
+  <body style="margin:0;background:#F0F6FC;font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif;color:#0D1F3C;">
     <div style="max-width:520px;margin:0 auto;padding:32px 24px;">
-      <div style="font-size:13px;letter-spacing:0.08em;color:#5b6b6b;text-transform:uppercase;margin-bottom:8px;">Texas Society of Nephrology</div>
+      <div style="font-size:13px;letter-spacing:0.08em;color:#5A6B7B;text-transform:uppercase;margin-bottom:8px;">Texas Society of Nephrology</div>
       <div style="background:#ffffff;border-radius:12px;padding:28px;">
-        <h1 style="font-size:19px;margin:0 0 12px;color:#0b3d3c;">${escapeHtml(opts.heading)}</h1>
+        <h1 style="font-size:19px;margin:0 0 12px;color:#0D1F3C;">${escapeHtml(opts.heading)}</h1>
         ${opts.bodyHtml}
         ${button}
       </div>
