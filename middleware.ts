@@ -10,6 +10,6 @@ export const config = {
   // auth session cookie fresh as members navigate; static marketing pages are
   // still served statically, middleware just refreshes the token beforehand.
   matcher: [
-    "/((?!_next/static|_next/image|favicon.ico|images/|.*\\.(?:svg|png|jpg|jpeg|gif|webp|ico)$).*)",
+    "/((?!_next/static|_next/image|favicon.ico|images/|api/stripe/webhook|.*\\.(?:svg|png|jpg|jpeg|gif|webp|ico)$).*)",
   ],
 };

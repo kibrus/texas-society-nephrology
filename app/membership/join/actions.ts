@@ -57,6 +57,9 @@ export async function startSignup(
   });
 
   if (error) {
+    // Log the real cause (e.g. Supabase SMTP / Resend domain not verified) for
+    // server-side debugging. Safe: this message never contains the password.
+    console.error("[signup] auth.signUp failed:", error.message);
     return { error: "Could not start signup. Please try again." };
   }
 
@@ -87,6 +90,7 @@ export async function startSignup(
   });
 
   if (draftError) {
+    console.error("[signup] signup_drafts upsert failed:", draftError.message);
     return { error: "Could not start signup. Please try again." };
   }
 
