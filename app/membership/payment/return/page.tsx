@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import { PageHeader, Container, Icon } from "@/components/ui";
+import { Container, Icon } from "@/components/ui";
 import { getSessionContext } from "@/lib/auth";
 import { stripe } from "@/lib/stripe/server";
 
@@ -18,7 +18,7 @@ export default async function PaymentReturnPage({
 }) {
   const { user, profile } = await getSessionContext();
   if (!user) redirect("/sign-in");
-  if (!profile) redirect("/membership/join");
+  if (!profile) redirect("/join");
 
   const piParam = searchParams.payment_intent;
   const paymentIntentId = Array.isArray(piParam) ? piParam[0] : piParam;
@@ -39,48 +39,62 @@ export default async function PaymentReturnPage({
   const succeeded = status === "succeeded" || status === "processing";
 
   return (
-    <>
-      <PageHeader eyebrow="MEMBERSHIP" title="Payment status" />
-      <Container className="py-14">
-        <div className="max-w-md">
+    <div className="bg-txsn-paper">
+      <Container className="py-16 lg:py-24">
+        <div className="mx-auto max-w-md">
           {succeeded ? (
-            <div className="flex items-start gap-3 bg-txsn-wash rounded-xl p-6">
-              <div className="text-txsn-teal mt-0.5">
-                <Icon name="check" size={20} />
+            <div className="rounded-2xl border border-txsn-mint-soft bg-white p-8 text-center shadow-sm shadow-txsn-teal-deep/5">
+              <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-txsn-teal text-white">
+                <Icon name="check" size={28} />
               </div>
-              <div>
-                <div className="text-[15px] font-medium text-txsn-teal-deep">
-                  Payment received
-                </div>
-                <p className="text-[14px] text-txsn-slate mt-1">
-                  Thanks for joining TSN. Your membership is being activated —
-                  this usually takes a few moments. You can check your status on
-                  your account page.
-                </p>
+              <h1 className="font-serif text-2xl font-medium text-txsn-teal-deep">
+                Payment received
+              </h1>
+              <p className="mx-auto mt-3 max-w-sm text-[14.5px] leading-relaxed text-txsn-slate">
+                Thanks for joining TSN. Your membership is being activated — this
+                usually takes just a few moments.
+              </p>
+              <div className="mt-7 flex flex-col items-center gap-3">
                 <Link
                   href="/member"
-                  className="inline-flex items-center gap-2 mt-4 bg-txsn-teal hover:bg-txsn-teal-mid text-white text-[14px] font-medium px-5 py-2.5 rounded-md transition-colors"
+                  className="inline-flex w-full items-center justify-center gap-2 rounded-lg bg-txsn-teal px-5 py-3.5 text-[14.5px] font-semibold text-white shadow-sm shadow-txsn-teal-deep/20 transition-all duration-150 hover:bg-txsn-teal-mid hover:shadow-md"
                 >
                   Go to my account
+                  <Icon name="arrow" size={16} />
+                </Link>
+                <Link
+                  href="/member/invoices"
+                  className="text-[13px] font-medium text-txsn-teal hover:underline"
+                >
+                  View invoice
                 </Link>
               </div>
             </div>
           ) : (
-            <div className="bg-txsn-gold-soft rounded-xl p-6 space-y-4">
-              <p className="text-[14px] text-txsn-teal-deep">
-                Your payment wasn&apos;t completed. No charge was made. You can
-                try again to finish activating your membership.
+            <div className="rounded-2xl border border-txsn-mint-soft bg-white p-8 text-center shadow-sm shadow-txsn-teal-deep/5">
+              <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-txsn-gold-soft text-txsn-gold">
+                <Icon name="clock" size={26} />
+              </div>
+              <h1 className="font-serif text-2xl font-medium text-txsn-teal-deep">
+                Payment not completed
+              </h1>
+              <p className="mx-auto mt-3 max-w-sm text-[14.5px] leading-relaxed text-txsn-slate">
+                No charge was made. You can try again to finish activating your
+                membership.
               </p>
-              <Link
-                href="/membership/payment"
-                className="inline-flex items-center gap-2 bg-txsn-teal hover:bg-txsn-teal-mid text-white text-[14px] font-medium px-5 py-2.5 rounded-md transition-colors"
-              >
-                Return to payment
-              </Link>
+              <div className="mt-7">
+                <Link
+                  href="/membership/payment"
+                  className="inline-flex w-full items-center justify-center gap-2 rounded-lg bg-txsn-teal px-5 py-3.5 text-[14.5px] font-semibold text-white shadow-sm shadow-txsn-teal-deep/20 transition-all duration-150 hover:bg-txsn-teal-mid hover:shadow-md"
+                >
+                  Return to payment
+                  <Icon name="arrow" size={16} />
+                </Link>
+              </div>
             </div>
           )}
         </div>
       </Container>
-    </>
+    </div>
   );
 }

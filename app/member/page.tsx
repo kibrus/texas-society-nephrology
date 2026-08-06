@@ -4,6 +4,7 @@ import { PageHeader, Container } from "@/components/ui";
 import { getSessionContext } from "@/lib/auth";
 import { TIER_LABELS, STATUS_LABELS } from "@/lib/membership";
 import { ProfileForm } from "./ProfileForm";
+import { CancelRenewalButton } from "./CancelRenewalButton";
 import { signOut } from "./actions";
 
 // Reads auth state per request.
@@ -54,7 +55,7 @@ export default async function MemberPage() {
               finish joining TSN.
             </p>
             <Link
-              href="/membership/join"
+              href="/join"
               className="inline-flex items-center gap-2 bg-txsn-teal hover:bg-txsn-teal-mid text-white text-[14px] font-medium px-5 py-3 rounded-md transition-colors"
             >
               Join TSN
@@ -127,6 +128,34 @@ export default async function MemberPage() {
                   </Link>
                 </div>
               )}
+
+            {/* Auto-renewal control for active subscribers */}
+            {profile.membership_status === "active" &&
+              profile.stripe_subscription_id && (
+                <div className="mt-4 pt-4 border-t border-txsn-mint-soft/50">
+                  {profile.cancel_at_period_end ? (
+                    <p className="text-[13px] text-txsn-slate">
+                      Automatic renewal is off. Your membership stays active
+                      until{" "}
+                      <span className="font-medium text-txsn-teal-deep">
+                        {formatDate(profile.dues_paid_until)}
+                      </span>
+                      .
+                    </p>
+                  ) : (
+                    <CancelRenewalButton />
+                  )}
+                </div>
+              )}
+
+            <div className="mt-4 pt-4 border-t border-txsn-mint-soft/50">
+              <Link
+                href="/member/invoices"
+                className="text-[13px] text-txsn-teal font-medium hover:underline"
+              >
+                View billing history →
+              </Link>
+            </div>
           </div>
 
           {/* Editable profile */}

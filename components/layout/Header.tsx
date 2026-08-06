@@ -126,7 +126,7 @@ export function Header() {
               ))}
 
               <Link
-                href="/membership/join"
+                href="/join"
                 className="ml-3 bg-txsn-gold hover:bg-txsn-gold/90 text-white text-[15px] font-medium px-4 py-2 rounded-md transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-txsn-gold/50"
               >
                 Join TSN
@@ -207,7 +207,7 @@ export function Header() {
                       Sign in
                     </Link>
                     <Link
-                      href="/membership/join"
+                      href="/join"
                       className="flex-1 text-center bg-txsn-gold text-white text-[14px] font-medium px-4 py-2.5 rounded-md"
                       onClick={() => setMobileOpen(false)}
                     >

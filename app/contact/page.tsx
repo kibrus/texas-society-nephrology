@@ -6,7 +6,7 @@ import { siteConfig } from "@/lib/site";
 
 export default function ContactPage() {
   const [status, setStatus] = useState<"idle" | "sending" | "sent" | "error">("idle");
-  const [form, setForm] = useState({ name: "", email: "", subject: "", message: "" });
+  const [form, setForm] = useState({ name: "", email: "", subject: "", message: "", company: "" });
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -19,7 +19,7 @@ export default function ContactPage() {
       });
       if (!res.ok) throw new Error();
       setStatus("sent");
-      setForm({ name: "", email: "", subject: "", message: "" });
+      setForm({ name: "", email: "", subject: "", message: "", company: "" });
     } catch {
       setStatus("error");
     }
@@ -48,6 +48,17 @@ export default function ContactPage() {
               </div>
             ) : (
               <form onSubmit={handleSubmit} className="space-y-4">
+                {/* Honeypot — hidden from users, catches bots. */}
+                <input
+                  type="text"
+                  name="company"
+                  tabIndex={-1}
+                  autoComplete="off"
+                  aria-hidden="true"
+                  className="hidden"
+                  value={form.company}
+                  onChange={(e) => setForm({ ...form, company: e.target.value })}
+                />
                 <div className="grid sm:grid-cols-2 gap-4">
                   <div>
                     <label htmlFor="name" className="block text-[13px] font-medium text-txsn-teal-deep mb-1.5">Name</label>

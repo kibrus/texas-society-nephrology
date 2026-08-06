@@ -40,12 +40,25 @@ function CheckoutForm({ returnUrl }: { returnUrl: string }) {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-5">
-      <PaymentElement />
-      {error && <p className="text-[13px] text-red-700">{error}</p>}
+      <PaymentElement
+        options={{ wallets: { applePay: "never", googlePay: "never" } }}
+      />
+      {error && (
+        <p
+          role="alert"
+          className="flex items-start gap-2 rounded-lg border border-red-200 bg-red-50 px-3.5 py-2.5 text-[13px] text-red-700"
+        >
+          <span
+            aria-hidden
+            className="mt-1.5 h-1.5 w-1.5 flex-shrink-0 rounded-full bg-red-500"
+          />
+          {error}
+        </p>
+      )}
       <button
         type="submit"
         disabled={!stripe || submitting}
-        className="inline-flex w-full items-center justify-center gap-2 bg-txsn-teal hover:bg-txsn-teal-mid disabled:opacity-60 text-white text-[14px] font-medium px-5 py-3 rounded-md transition-colors"
+        className="inline-flex w-full items-center justify-center gap-2 rounded-lg bg-txsn-teal px-5 py-3.5 text-[14.5px] font-semibold text-white shadow-sm shadow-txsn-teal-deep/20 transition-all duration-150 hover:bg-txsn-teal-mid hover:shadow-md hover:shadow-txsn-teal-deep/25 focus:outline-none focus-visible:ring-4 focus-visible:ring-txsn-mint/30 disabled:opacity-60 disabled:shadow-none"
       >
         {submitting ? "Processing..." : "Pay & activate membership"}
       </button>
@@ -67,7 +80,29 @@ export function PaymentForm({
         clientSecret,
         appearance: {
           theme: "stripe",
-          variables: { colorPrimary: "#0e7c7b" },
+          variables: {
+            colorPrimary: "#1A56A0",
+            colorText: "#0d1e30",
+            colorDanger: "#b91c1c",
+            fontFamily: "Inter, system-ui, sans-serif",
+            borderRadius: "8px",
+            spacingUnit: "4px",
+          },
+          rules: {
+            ".Input": {
+              border: "1px solid #B3D4ED",
+              boxShadow: "none",
+              padding: "12px",
+            },
+            ".Input:focus": {
+              border: "1px solid #1A56A0",
+              boxShadow: "0 0 0 4px rgba(90,159,212,0.25)",
+            },
+            ".Label": {
+              fontWeight: "500",
+              color: "#0D1F3C",
+            },
+          },
         },
       }}
     >

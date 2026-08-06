@@ -74,6 +74,7 @@ export type Database = {
       }
       profiles: {
         Row: {
+          cancel_at_period_end: boolean
           created_at: string
           dues_paid_until: string | null
           email: string
@@ -90,6 +91,7 @@ export type Database = {
           updated_at: string
         }
         Insert: {
+          cancel_at_period_end?: boolean
           created_at?: string
           dues_paid_until?: string | null
           email: string
@@ -106,6 +108,7 @@ export type Database = {
           updated_at?: string
         }
         Update: {
+          cancel_at_period_end?: boolean
           created_at?: string
           dues_paid_until?: string | null
           email?: string
@@ -120,6 +123,27 @@ export type Database = {
           stripe_subscription_id?: string | null
           tier?: string
           updated_at?: string
+        }
+        Relationships: []
+      }
+      email_deliveries: {
+        Row: {
+          dedupe_key: string
+          recipient: string
+          sent_at: string
+          type: string
+        }
+        Insert: {
+          dedupe_key: string
+          recipient: string
+          sent_at?: string
+          type: string
+        }
+        Update: {
+          dedupe_key?: string
+          recipient?: string
+          sent_at?: string
+          type?: string
         }
         Relationships: []
       }

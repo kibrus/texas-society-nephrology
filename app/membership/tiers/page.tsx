@@ -43,7 +43,7 @@ export default function TiersPage() {
           ))}
         </div>
         <div className="mt-8">
-          <Link href="/membership/join" className="inline-flex items-center gap-2 bg-txsn-gold text-white text-[14px] font-medium px-5 py-3 rounded-md hover:bg-txsn-gold/90 transition-colors">
+          <Link href="/join" className="inline-flex items-center gap-2 bg-txsn-gold text-white text-[14px] font-medium px-5 py-3 rounded-md hover:bg-txsn-gold/90 transition-colors">
             Join or renew <Icon name="arrow" size={16} />
           </Link>
         </div>

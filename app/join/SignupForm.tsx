@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import { useFormState } from "react-dom";
 import {
   FieldLabel,
@@ -116,13 +115,6 @@ export function SignupForm() {
       <div className="pt-1">
         <SubmitButton label="Continue to verification" pendingLabel="Creating account..." />
       </div>
-
-      <p className="text-[13px] text-txsn-slate text-center">
-        Already a member?{" "}
-        <Link href="/sign-in" className="text-txsn-teal font-medium hover:underline">
-          Sign in
-        </Link>
-      </p>
     </form>
   );
 }

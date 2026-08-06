@@ -6,7 +6,9 @@ import { redirect } from "next/navigation";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 import { createSupabaseAdminClient } from "@/lib/supabase/admin";
 import { PROFESSION_VALUES, TIER_VALUES } from "@/lib/membership";
-import { SIGNUP_EMAIL_COOKIE } from "../signup-shared";
+import { rateLimit, clientIp } from "@/lib/rate-limit";
+import { headers } from "next/headers";
+import { SIGNUP_EMAIL_COOKIE } from "../membership/signup-shared";
 
 export type SignupState = { error?: string };
 
@@ -31,6 +33,13 @@ export async function startSignup(
   _prev: SignupState,
   formData: FormData,
 ): Promise<SignupState> {
+  // Throttle signup attempts per IP (defense in depth; Supabase Auth also rate
+  // limits on its side). Max 5 per 15 minutes.
+  const ip = clientIp(headers());
+  if (!rateLimit(`signup:${ip}`, 5, 15 * 60_000).ok) {
+    return { error: "Too many attempts. Please try again in a few minutes." };
+  }
+
   const parsed = SignupSchema.safeParse({
     first_name: formData.get("first_name"),
     last_name: formData.get("last_name"),

@@ -1,5 +1,5 @@
 import { redirect } from "next/navigation";
-import { PageHeader, Container } from "@/components/ui";
+import { Container, Icon } from "@/components/ui";
 import { getSessionContext } from "@/lib/auth";
 import { ensurePaymentClientSecret } from "@/lib/stripe/subscription";
 import { publicEnv } from "@/lib/env/public";
@@ -14,7 +14,7 @@ export const dynamic = "force-dynamic";
 export default async function PaymentPage() {
   const { user, profile } = await getSessionContext();
   if (!user) redirect("/sign-in");
-  if (!profile) redirect("/membership/join");
+  if (!profile) redirect("/join");
   if (profile.membership_status === "active") redirect("/member");
 
   const result = await ensurePaymentClientSecret(profile);
@@ -24,42 +24,70 @@ export default async function PaymentPage() {
   const returnUrl = `${publicEnv.NEXT_PUBLIC_SITE_URL}/membership/payment/return`;
 
   return (
-    <>
-      <PageHeader
-        eyebrow="MEMBERSHIP"
-        title="Complete your payment"
-        intro="Enter your payment details to activate your TSN membership."
-      />
-      <Container className="py-14">
-        <div className="max-w-md space-y-6">
-          <div className="bg-txsn-wash rounded-xl p-5 flex items-center justify-between">
-            <div>
-              <div className="text-[12px] text-txsn-slate">Membership tier</div>
-              <div className="text-[15px] font-medium text-txsn-teal-deep">
-                {tier?.label ?? profile.tier}
+    <div className="bg-txsn-paper">
+      <Container className="py-14 lg:py-20">
+        <div className="mx-auto max-w-md">
+          {/* Heading */}
+          <div className="mb-8 text-center">
+            <div className="mb-3 text-[11px] font-semibold uppercase tracking-[0.15em] text-txsn-gold">
+              Membership · Step 3 of 3
+            </div>
+            <h1 className="font-serif text-[2rem] font-medium leading-tight text-txsn-teal-deep">
+              Complete your payment
+            </h1>
+            <p className="mx-auto mt-2.5 max-w-sm text-[14.5px] leading-relaxed text-txsn-slate">
+              Enter your card details to activate your TSN membership.
+            </p>
+          </div>
+
+          {/* Order summary */}
+          <div className="rounded-xl border border-txsn-mint-soft bg-white shadow-sm shadow-txsn-teal-deep/5">
+            <div className="flex items-center justify-between px-6 py-5">
+              <div>
+                <div className="text-[12px] uppercase tracking-wide text-txsn-slate">
+                  Membership tier
+                </div>
+                <div className="mt-0.5 text-[16px] font-semibold text-txsn-teal-deep">
+                  {tier?.label ?? profile.tier}
+                </div>
+              </div>
+              <div className="text-right">
+                <div className="text-[20px] font-bold text-txsn-teal-deep">
+                  {tier?.priceLabel}
+                </div>
+                <div className="text-[12px] text-txsn-slate">per year</div>
               </div>
             </div>
-            <div className="text-[15px] font-medium text-txsn-gold">
-              {tier?.priceLabel}
+            <div className="flex items-center gap-2 border-t border-txsn-mint-soft/50 bg-txsn-wash/60 px-6 py-3">
+              <Icon name="clock" size={14} className="text-txsn-teal" />
+              <span className="text-[12.5px] text-txsn-slate">
+                Renews automatically each year — cancel anytime from your account.
+              </span>
             </div>
           </div>
 
-          {"error" in result ? (
-            <div className="bg-txsn-gold-soft rounded-xl p-5">
-              <p className="text-[14px] text-txsn-teal-deep">
-                {result.error} If this keeps happening, please contact us.
-              </p>
-            </div>
-          ) : (
-            <PaymentForm clientSecret={result.clientSecret} returnUrl={returnUrl} />
-          )}
+          {/* Payment */}
+          <div className="mt-6 rounded-xl border border-txsn-mint-soft bg-white p-6 shadow-sm shadow-txsn-teal-deep/5">
+            {"error" in result ? (
+              <div className="rounded-lg bg-txsn-gold-soft p-5">
+                <p className="text-[14px] text-txsn-teal-deep">
+                  {result.error} If this keeps happening, please contact us.
+                </p>
+              </div>
+            ) : (
+              <PaymentForm clientSecret={result.clientSecret} returnUrl={returnUrl} />
+            )}
+          </div>
 
-          <p className="text-[12px] text-txsn-slate">
-            Dues renew automatically each year. You can cancel anytime from your
-            account.
-          </p>
+          {/* Trust footer */}
+          <div className="mt-5 flex items-center justify-center gap-2 text-[12px] text-txsn-slate">
+            <Icon name="check" size={14} className="text-txsn-teal" />
+            <span>
+              Secured by Stripe · Your card details never touch our servers.
+            </span>
+          </div>
         </div>
       </Container>
-    </>
+    </div>
   );
 }

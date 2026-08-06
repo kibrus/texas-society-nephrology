@@ -36,7 +36,7 @@ export default function MembershipPage() {
           <Link href="/membership/tiers" className="inline-flex items-center gap-2 bg-txsn-teal text-white text-[14px] font-medium px-5 py-3 rounded-md hover:bg-txsn-teal-mid transition-colors">
             Compare membership tiers <Icon name="arrow" size={16} />
           </Link>
-          <Link href="/membership/join" className="inline-flex items-center bg-txsn-gold text-white text-[14px] font-medium px-5 py-3 rounded-md hover:bg-txsn-gold/90 transition-colors">
+          <Link href="/join" className="inline-flex items-center bg-txsn-gold text-white text-[14px] font-medium px-5 py-3 rounded-md hover:bg-txsn-gold/90 transition-colors">
             Join or renew
           </Link>
         </div>

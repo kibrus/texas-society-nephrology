@@ -42,7 +42,7 @@ export const navigation: NavItem[] = [
     children: [
       { label: "Why Join", href: "/membership", phase: 1 },
       { label: "Membership Tiers", href: "/membership/tiers", phase: 1 },
-      { label: "Join / Renew", href: "/membership/join", phase: 2 },
+      { label: "Join / Renew", href: "/join", phase: 2 },
     ],
   },
   {

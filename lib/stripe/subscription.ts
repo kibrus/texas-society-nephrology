@@ -65,14 +65,33 @@ export async function ensurePaymentClientSecret(
       const secret = readClientSecret(existing);
       if (secret) return { clientSecret: secret };
     }
-    // Otherwise (incomplete_expired / canceled) fall through and create a fresh one.
+    // Any other state (incomplete_expired / canceled / past_due / unpaid /
+    // paused) means we're renewing. Cancel a still-live subscription first so a
+    // member never ends up with two active subscriptions, then fall through and
+    // create a fresh one. (canceled / incomplete_expired need no cleanup.)
+    if (
+      existing.status === "past_due" ||
+      existing.status === "unpaid" ||
+      existing.status === "paused"
+    ) {
+      try {
+        await stripe.subscriptions.cancel(existing.id);
+      } catch {
+        // Already gone / not cancelable — safe to proceed.
+      }
+    }
   }
 
   const created = await stripe.subscriptions.create({
     customer: customerId,
     items: [{ price: priceId }],
     payment_behavior: "default_incomplete",
-    payment_settings: { save_default_payment_method: "on_subscription" },
+    payment_settings: {
+      save_default_payment_method: "on_subscription",
+      // Card only — no bank debits, wallets, or other rails. Authoritative:
+      // the invoice PaymentIntent will only accept these method types.
+      payment_method_types: ["card"],
+    },
     billing_mode: { type: "flexible" },
     expand: ["latest_invoice.confirmation_secret"],
     metadata: { profile_id: profile.id, tier: profile.tier },
