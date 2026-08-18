@@ -144,6 +144,17 @@ body {
   color: #3a4f65;
 }
 
+.prose-txsn a {
+  color: #1A56A0;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  font-weight: 500;
+}
+
+.prose-txsn a:hover {
+  color: #0D1F3C;
+}
+
 .prose-txsn strong {
   color: #0D1F3C;
   font-weight: 600;
