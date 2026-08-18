@@ -268,10 +268,10 @@ export function EventsPreview({ events }: { events: EventItem[] }) {
                     >
                       <div className="bg-heritage-navy text-white w-13 h-13 shrink-0 flex flex-col items-center justify-center rounded-lg px-3 py-2 text-center">
                         <span className="text-[9px] uppercase font-bold tracking-wide block">
-                          {ev.dateLabel ? "TBA" : d.month}
+                          {ev.date ? d.month : "TBA"}
                         </span>
                         <span className="text-[18px] font-bold leading-tight block">
-                          {ev.dateLabel ? "—" : d.day}
+                          {ev.date ? d.day : "—"}
                         </span>
                       </div>
                       <div className="flex-1 min-w-0">

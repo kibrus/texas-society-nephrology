@@ -99,10 +99,10 @@ export const pillars = [
 ];
 
 export const leadership = [
-  { name: "President", role: "Board President", focus: "Strategic direction & advocacy" },
-  { name: "Vice President", role: "Board Vice President", focus: "Membership & education" },
-  { name: "Secretary", role: "Board Secretary", focus: "Governance & records" },
-  { name: "Treasurer", role: "Board Treasurer", focus: "Finance & sponsorship" },
+  { name: "Farhad Danesh, MD, FASN", role: "President" },
+  { name: "Kumar Sharma, MD, FASN", role: "Vice President" },
+  { name: "Sreedhar Mandayam, MD, FASN", role: "Secretary" },
+  { name: "Biruh Workeneh, MD, FASN", role: "Treasurer" },
 ];
 
 export type CorporatePartner = { name: string; slug: string; url?: string; ext?: string; hidden?: boolean };

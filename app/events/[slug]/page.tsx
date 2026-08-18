@@ -4,6 +4,18 @@ import { MDXRemote } from "next-mdx-remote/rsc";
 import { Container, Icon } from "@/components/ui";
 import { getAllEvents, getEventBySlug, formatDate, isPastDate } from "@/lib/content";
 
+// External links in event content open in a new tab; internal links stay in-page.
+const mdxComponents = {
+  a: (props: React.AnchorHTMLAttributes<HTMLAnchorElement>) => {
+    const isExternal = props.href?.startsWith("http");
+    return isExternal ? (
+      <a {...props} target="_blank" rel="noopener noreferrer" />
+    ) : (
+      <a {...props} />
+    );
+  },
+};
+
 export function generateStaticParams() {
   return getAllEvents().map((e) => ({ slug: e.slug }));
 }
@@ -95,7 +107,7 @@ export default function EventDetailPage({ params }: { params: { slug: string } }
               </div>
             )}
             {event.content?.trim() ? (
-              <MDXRemote source={event.content} />
+              <MDXRemote source={event.content} components={mdxComponents} />
             ) : (
               <p className="text-txsn-slate text-[15px]">Details for this event will be posted soon.</p>
             )}
