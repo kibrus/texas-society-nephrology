@@ -13,15 +13,15 @@ export const dynamic = "force-dynamic";
 function StatusBadge({ status }: { status: string }) {
   const active = status === "active";
   const classes = active
-    ? "bg-txsn-mint/15 text-txsn-teal ring-1 ring-txsn-mint/30"
-    : "bg-txsn-gold-soft text-txsn-gold ring-1 ring-txsn-gold/20";
+    ? "bg-txsn-mint/20 text-white ring-1 ring-txsn-mint/50"
+    : "bg-txsn-gold/25 text-white ring-1 ring-txsn-gold/50";
   return (
     <span
       className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-[12px] font-semibold ${classes}`}
     >
       <span
         aria-hidden
-        className={`h-1.5 w-1.5 rounded-full ${active ? "bg-txsn-teal" : "bg-txsn-gold"}`}
+        className={`h-1.5 w-1.5 rounded-full ${active ? "bg-txsn-mint-soft" : "bg-txsn-gold"}`}
       />
       {STATUS_LABELS[status] ?? status}
     </span>
@@ -103,7 +103,7 @@ export default async function MemberPage() {
         <Container className="relative py-12 lg:py-16">
           <div className="flex flex-wrap items-center justify-between gap-4">
             <div>
-              <div className="text-[11px] font-semibold uppercase tracking-[0.15em] text-txsn-mint">
+              <div className="text-[11px] font-semibold uppercase tracking-[0.15em] text-txsn-mint-soft">
                 My account
               </div>
               <h1 className="mt-1.5 font-serif text-[2rem] font-medium leading-tight text-white">
