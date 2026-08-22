@@ -3,7 +3,6 @@
 import { useFormState } from "react-dom";
 import Link from "next/link";
 import { AuthShell } from "@/components/auth/AuthShell";
-import { Icon } from "@/components/ui";
 import {
   FieldLabel,
   FormError,
@@ -21,7 +20,7 @@ export default function ForgotPasswordPage() {
     <AuthShell
       eyebrow="Member access"
       title="Reset your password"
-      subtitle="Enter your email and we'll send you a link to set a new password."
+      subtitle="Enter your email and we'll send you a 6-digit code to reset your password."
       footer={
         <p className="text-center text-[13.5px] text-txsn-slate">
           <Link
@@ -33,39 +32,24 @@ export default function ForgotPasswordPage() {
         </p>
       }
     >
-      {state.sent ? (
-        <div className="rounded-xl border border-txsn-mint-soft bg-white p-7 text-center shadow-sm shadow-txsn-teal-deep/5">
-          <div className="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-txsn-teal text-white">
-            <Icon name="check" size={24} />
-          </div>
-          <h2 className="mb-1 font-serif text-xl font-medium text-txsn-teal-deep">
-            Check your email
-          </h2>
-          <p className="text-[14px] text-txsn-slate">
-            If an account exists for that address, a password reset link is on
-            its way.
-          </p>
+      <form action={formAction} className="space-y-5">
+        <div>
+          <FieldLabel htmlFor="email">Email</FieldLabel>
+          <input
+            id="email"
+            name="email"
+            type="email"
+            autoComplete="email"
+            required
+            placeholder="you@example.com"
+            className={authField}
+          />
         </div>
-      ) : (
-        <form action={formAction} className="space-y-5">
-          <div>
-            <FieldLabel htmlFor="email">Email</FieldLabel>
-            <input
-              id="email"
-              name="email"
-              type="email"
-              autoComplete="email"
-              required
-              placeholder="you@example.com"
-              className={authField}
-            />
-          </div>
 
-          <FormError message={state.error} />
+        <FormError message={state.error} />
 
-          <SubmitButton label="Send reset link" pendingLabel="Sending..." />
-        </form>
-      )}
+        <SubmitButton label="Send code" pendingLabel="Sending..." />
+      </form>
     </AuthShell>
   );
 }

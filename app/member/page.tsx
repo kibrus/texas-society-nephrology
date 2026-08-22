@@ -205,6 +205,16 @@ export default async function MemberPage() {
                   <Icon name="arrow" size={14} />
                 </Link>
               </div>
+
+              <div className="border-t border-txsn-mint-soft/60 px-6 py-4">
+                <Link
+                  href="/member/password"
+                  className="inline-flex items-center gap-1.5 text-[13.5px] font-semibold text-txsn-teal hover:underline"
+                >
+                  Change password
+                  <Icon name="arrow" size={14} />
+                </Link>
+              </div>
             </div>
           </div>
 

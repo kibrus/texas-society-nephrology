@@ -1,14 +1,15 @@
 "use server";
 
 import { z } from "zod";
-import { headers } from "next/headers";
+import { cookies, headers } from "next/headers";
+import { redirect } from "next/navigation";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 import { rateLimit, clientIp } from "@/lib/rate-limit";
-import { publicEnv } from "@/lib/env/public";
+import { RESET_EMAIL_COOKIE } from "./shared";
 
-export type ForgotState = { sent?: boolean; error?: string };
+export type ForgotState = { error?: string };
 
-const Schema = z.object({ email: z.string().email() });
+const Schema = z.object({ email: z.string().trim().email() });
 
 export async function requestPasswordReset(
   _prev: ForgotState,
@@ -25,14 +26,23 @@ export async function requestPasswordReset(
     return { error: "Enter a valid email address." };
   }
 
+  const email = parsed.data.email.toLowerCase();
   const supabase = createSupabaseServerClient();
-  // The link lands on /auth/callback, which exchanges the code for a recovery
-  // session and forwards to /reset-password.
-  await supabase.auth.resetPasswordForEmail(parsed.data.email, {
-    redirectTo: `${publicEnv.NEXT_PUBLIC_SITE_URL}/auth/callback?next=/reset-password`,
+
+  // Sends the recovery email. With the "Reset Password" template configured to
+  // include {{ .Token }}, this delivers a 6-digit code the user enters next.
+  // We don't inspect the result: Supabase doesn't error for unknown emails, and
+  // we redirect to the code step regardless so we never leak which addresses
+  // have accounts.
+  await supabase.auth.resetPasswordForEmail(email);
+
+  cookies().set(RESET_EMAIL_COOKIE, email, {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: "lax",
+    path: "/",
+    maxAge: 60 * 30,
   });
 
-  // Always report success regardless of whether the email is registered, so we
-  // do not leak which addresses have accounts.
-  return { sent: true };
+  redirect("/forgot-password/verify");
 }
