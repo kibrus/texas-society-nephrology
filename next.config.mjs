@@ -23,10 +23,9 @@ const csp = [
 ].join("; ");
 
 const securityHeaders = [
-  // Report-only first: browsers log violations to the console but DON'T block,
-  // so we can validate the policy risk-free. Flip the key to
-  // "Content-Security-Policy" to enforce once the console is clean.
-  { key: "Content-Security-Policy-Report-Only", value: csp },
+  // Enforced: validated risk-free in report-only across signup, OTP verify,
+  // payment, and account pages with a clean console, then switched to enforcing.
+  { key: "Content-Security-Policy", value: csp },
   {
     key: "Strict-Transport-Security",
     value: "max-age=63072000; includeSubDomains; preload",

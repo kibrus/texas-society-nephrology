@@ -206,15 +206,6 @@ export default async function MemberPage() {
                 </Link>
               </div>
             </div>
-
-            <form action={signOut} className="mt-5">
-              <button
-                type="submit"
-                className="text-[13.5px] font-medium text-txsn-slate transition-colors hover:text-txsn-teal"
-              >
-                Sign out
-              </button>
-            </form>
           </div>
 
           {/* Editable profile */}
@@ -231,6 +222,17 @@ export default async function MemberPage() {
               />
             </div>
           </div>
+        </div>
+
+        <div className="mx-auto mt-8 flex max-w-5xl justify-end border-t border-txsn-mint-soft/60 pt-6">
+          <form action={signOut}>
+            <button
+              type="submit"
+              className="inline-flex items-center gap-2 rounded-lg border border-txsn-mint-soft px-5 py-2.5 text-[13.5px] font-medium text-txsn-slate transition-colors hover:bg-white hover:text-txsn-teal"
+            >
+              Sign out
+            </button>
+          </form>
         </div>
       </Container>
     </div>
