@@ -1,8 +1,10 @@
 "use server";
 
 import { z } from "zod";
+import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
+import { rateLimit, clientIp } from "@/lib/rate-limit";
 
 export type ResetState = { error?: string };
 
@@ -20,6 +22,12 @@ export async function updatePassword(
   _prev: ResetState,
   formData: FormData,
 ): Promise<ResetState> {
+  // Throttle per IP as defense in depth on the recovery-session update.
+  const ip = clientIp(headers());
+  if (!rateLimit(`pwupdate:${ip}`, 5, 15 * 60_000).ok) {
+    return { error: "Too many attempts. Please try again in a few minutes." };
+  }
+
   const parsed = Schema.safeParse({
     password: formData.get("password"),
     confirm: formData.get("confirm"),

@@ -1,10 +1,11 @@
 "use server";
 
 import { z } from "zod";
-import { cookies } from "next/headers";
+import { cookies, headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 import { createSupabaseAdminClient } from "@/lib/supabase/admin";
+import { rateLimit, clientIp } from "@/lib/rate-limit";
 import { SIGNUP_EMAIL_COOKIE } from "../signup-shared";
 
 export type VerifyState = { error?: string; resent?: boolean };
@@ -19,6 +20,13 @@ export async function verifyEmail(
   _prev: VerifyState,
   formData: FormData,
 ): Promise<VerifyState> {
+  // Throttle OTP attempts per IP so the 6-digit code can't be brute-forced
+  // (defense in depth; Supabase Auth also limits verifyOtp on its side).
+  const ip = clientIp(headers());
+  if (!rateLimit(`verify:${ip}`, 10, 10 * 60_000).ok) {
+    return { error: "Too many attempts. Please try again in a few minutes." };
+  }
+
   const email = pendingEmail();
   if (!email) {
     return { error: "Your signup session expired. Please start again." };
@@ -91,6 +99,12 @@ export async function resendCode(
   _prev: VerifyState,
   _formData: FormData,
 ): Promise<VerifyState> {
+  // Throttle resends per IP so the endpoint can't be used to spam OTP emails.
+  const ip = clientIp(headers());
+  if (!rateLimit(`verify-resend:${ip}`, 3, 10 * 60_000).ok) {
+    return { error: "Too many requests. Please wait a few minutes before resending." };
+  }
+
   const email = pendingEmail();
   if (!email) {
     return { error: "Your signup session expired. Please start again." };

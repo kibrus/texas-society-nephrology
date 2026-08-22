@@ -1,7 +1,9 @@
 "use server";
 
 import { z } from "zod";
+import { headers } from "next/headers";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
+import { rateLimit, clientIp } from "@/lib/rate-limit";
 import { publicEnv } from "@/lib/env/public";
 
 export type ForgotState = { sent?: boolean; error?: string };
@@ -12,6 +14,12 @@ export async function requestPasswordReset(
   _prev: ForgotState,
   formData: FormData,
 ): Promise<ForgotState> {
+  // Throttle per IP so this can't be used to spam reset emails at addresses.
+  const ip = clientIp(headers());
+  if (!rateLimit(`pwreset:${ip}`, 3, 15 * 60_000).ok) {
+    return { error: "Too many requests. Please try again in a few minutes." };
+  }
+
   const parsed = Schema.safeParse({ email: formData.get("email") });
   if (!parsed.success) {
     return { error: "Enter a valid email address." };

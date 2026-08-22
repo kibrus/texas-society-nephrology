@@ -47,20 +47,7 @@ export default function SignInPage() {
           />
         </div>
         <div>
-          <div className="mb-1.5 flex items-center justify-between">
-            <label
-              htmlFor="password"
-              className="text-[13px] font-medium text-txsn-teal-deep"
-            >
-              Password
-            </label>
-            <Link
-              href="/forgot-password"
-              className="text-[12px] font-medium text-txsn-teal hover:underline"
-            >
-              Forgot password?
-            </Link>
-          </div>
+          <FieldLabel htmlFor="password">Password</FieldLabel>
           <input
             id="password"
             name="password"
@@ -75,6 +62,15 @@ export default function SignInPage() {
         <FormError message={state.error} />
 
         <SubmitButton label="Sign in" pendingLabel="Signing in..." />
+
+        <p className="text-center text-[13px]">
+          <Link
+            href="/forgot-password"
+            className="font-medium text-txsn-teal hover:underline"
+          >
+            Forgot password?
+          </Link>
+        </p>
       </form>
     </AuthShell>
   );
