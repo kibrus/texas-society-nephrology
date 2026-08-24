@@ -92,6 +92,42 @@ export default function EventDetailPage({ params }: { params: { slug: string } }
 
           {/* Left — MDX content */}
           <article className="prose-txsn min-w-0">
+            {(event.speakerPhoto || event.speakerName) && (
+              <div className="mb-8 flex flex-col items-center gap-5 rounded-2xl border border-txsn-mint-soft bg-txsn-wash/50 p-5 text-center sm:flex-row sm:gap-6 sm:p-6 sm:text-left">
+                {event.speakerPhoto && (
+                  <img
+                    src={event.speakerPhoto}
+                    alt={event.speakerName ?? "Speaker"}
+                    className="h-40 w-40 flex-shrink-0 rounded-xl object-cover object-top shadow-sm ring-1 ring-txsn-mint-soft"
+                  />
+                )}
+                <div className="min-w-0">
+                  <div className="mb-1.5 text-[11px] font-semibold uppercase tracking-[0.15em] text-txsn-gold">
+                    Speaker
+                  </div>
+                  {event.speakerName && (
+                    <div className="font-serif text-xl font-medium text-txsn-teal-deep">
+                      {event.speakerName}
+                    </div>
+                  )}
+                  {event.speakerTitle && (
+                    <div className="mt-1 text-[13.5px] leading-relaxed text-txsn-slate">
+                      {event.speakerTitle}
+                    </div>
+                  )}
+                  {event.talkTitle && (
+                    <div className="mt-3.5 border-t border-txsn-mint-soft/70 pt-3.5">
+                      <div className="text-[11px] uppercase tracking-wide text-txsn-slate">
+                        Presentation
+                      </div>
+                      <div className="mt-0.5 text-[15px] font-semibold text-txsn-teal-deep">
+                        &ldquo;{event.talkTitle}&rdquo;
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </div>
+            )}
             {event.image && (
               <img
                 src={event.image}
@@ -154,6 +190,32 @@ export default function EventDetailPage({ params }: { params: { slug: string } }
                   className="flex items-center justify-center gap-2 bg-white text-txsn-teal-deep text-[13px] font-semibold px-4 py-2.5 rounded-md hover:bg-txsn-wash transition-colors w-full"
                 >
                   <Icon name="file" size={15} /> View / Download PDF
+                </a>
+              </div>
+            )}
+
+            {/* Flyer (image) */}
+            {event.flyerImage && (
+              <div className="bg-txsn-teal-deep rounded-xl p-6 text-white">
+                <div className="flex items-center gap-3 mb-3">
+                  <div className="w-10 h-10 rounded-lg bg-white/15 flex items-center justify-center flex-shrink-0">
+                    <Icon name="file" size={20} />
+                  </div>
+                  <div>
+                    <div className="text-[11px] tracking-widest font-medium text-txsn-mint uppercase mb-0.5">Event Flyer</div>
+                    <div className="text-[14px] font-semibold">Full details</div>
+                  </div>
+                </div>
+                <p className="text-[12.5px] text-white/70 leading-relaxed mb-4">
+                  View the event flyer with the full program and speaker details.
+                </p>
+                <a
+                  href={event.flyerImage}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center justify-center gap-2 bg-white text-txsn-teal-deep text-[13px] font-semibold px-4 py-2.5 rounded-md hover:bg-txsn-wash transition-colors w-full"
+                >
+                  <Icon name="file" size={15} /> View flyer
                 </a>
               </div>
             )}
