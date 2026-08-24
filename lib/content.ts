@@ -28,6 +28,11 @@ export type EventItem = {
   content: string;
   href?: string;
   brochurePdf?: string;
+  flyerImage?: string;
+  speakerName?: string;
+  speakerTitle?: string;
+  speakerPhoto?: string;
+  talkTitle?: string;
   sponsor?: string;
   image?: string;
   registrationUrl?: string;
@@ -85,6 +90,11 @@ export function getAllEvents(): EventItem[] {
     content,
     href: data.href,
     brochurePdf: data.brochurePdf,
+    flyerImage: data.flyerImage,
+    speakerName: data.speakerName,
+    speakerTitle: data.speakerTitle,
+    speakerPhoto: data.speakerPhoto,
+    talkTitle: data.talkTitle,
     sponsor: data.sponsor,
     image: data.image,
     registrationUrl: data.registrationUrl,
