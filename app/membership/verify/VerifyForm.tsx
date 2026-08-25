@@ -37,6 +37,7 @@ export function VerifyForm({ email }: { email: string }) {
       </p>
 
       <p className="rounded-lg bg-txsn-wash px-3.5 py-2.5 text-[12.5px] text-txsn-slate">
+        <span className="font-medium text-txsn-teal-deep">Don&apos;t see it?</span>{" "}
         Please check your spam or junk folder.
       </p>
 
