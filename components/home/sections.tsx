@@ -278,17 +278,23 @@ export function EventsPreview({ events }: { events: EventItem[] }) {
                         <h4 className="font-semibold text-heritage-navy text-[13px] leading-snug">
                           {ev.title}
                         </h4>
-                        <div className="flex items-center gap-1 mt-0.5 flex-wrap text-[11.5px] text-txsn-slate">
-                          <Icon name={ev.location === "Online" ? "video" : "pin"} size={11} />
-                          <span className="truncate">{ev.location}</span>
-                          {(ev.dateLabel || !ev.hidePricing) && <span className="mx-0.5">·</span>}
-                          {ev.dateLabel ? (
-                            <span className="text-amber-accent font-medium">{ev.dateLabel}</span>
-                          ) : !ev.hidePricing ? (
-                            <span className={ev.isFree ? "text-txsn-teal font-medium" : "text-amber-accent font-medium"}>
-                              {ev.isFree ? "Free" : "Paid"}
-                            </span>
-                          ) : null}
+                        <div className="flex items-start gap-1 mt-0.5 text-[11.5px] text-txsn-slate">
+                          <Icon
+                            name={ev.location === "Online" ? "video" : "pin"}
+                            size={11}
+                            className="mt-0.5 flex-shrink-0"
+                          />
+                          <span>
+                            {ev.location}
+                            {(ev.dateLabel || !ev.hidePricing) && <span className="mx-0.5">·</span>}
+                            {ev.dateLabel ? (
+                              <span className="text-amber-accent font-medium">{ev.dateLabel}</span>
+                            ) : !ev.hidePricing ? (
+                              <span className={ev.isFree ? "text-txsn-teal font-medium" : "text-amber-accent font-medium"}>
+                                {ev.isFree ? "Free" : "Paid"}
+                              </span>
+                            ) : null}
+                          </span>
                         </div>
                       </div>
                       <Link
