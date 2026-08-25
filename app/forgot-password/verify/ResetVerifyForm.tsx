@@ -41,8 +41,7 @@ export function ResetVerifyForm({ email }: { email: string }) {
       </p>
 
       <p className="rounded-lg bg-txsn-wash px-3.5 py-2.5 text-[12.5px] text-txsn-slate">
-        <span className="font-medium text-txsn-teal-deep">Don&apos;t see it?</span>{" "}
-        Check your spam or junk folder — it can take a minute to arrive.
+        Please check your spam or junk folder.
       </p>
 
       <form action={formAction} className="space-y-4">
