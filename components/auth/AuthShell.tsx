@@ -72,7 +72,7 @@ export function AuthShell({
 
         <div className="relative z-10 max-w-sm">
           <h2 className="font-serif text-[2rem] font-medium leading-[1.2] text-white">
-            The professional home for kidney care in Texas.
+            The benefits of membership.
           </h2>
           <ul className="mt-9 space-y-5">
             {TRUST_POINTS.map((point) => (

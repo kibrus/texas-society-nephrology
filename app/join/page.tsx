@@ -61,7 +61,7 @@ export default async function JoinPage() {
               </span>
               <span className="text-[13.5px] leading-relaxed text-txsn-slate">
                 <span className="font-semibold text-txsn-teal-deep">{b.title}</span>
-                {" — "}
+                {" - "}
                 {b.body}
               </span>
             </li>
