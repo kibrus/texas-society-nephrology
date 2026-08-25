@@ -6,16 +6,16 @@ import { Icon } from "@/components/ui";
 // the auth flow reinforces why someone is signing in / joining.
 const TRUST_POINTS = [
   {
-    title: "Education & CME",
-    body: "Year-round accredited content that keeps your practice current.",
+    title: "Special conference pricing",
+    body: "Discounted registration for TSN conferences and events across Texas.",
   },
   {
-    title: "A statewide community",
-    body: "Connect with nephrology peers and leaders across Texas.",
+    title: "Knowledge Library access",
+    body: "World-class lectures on nephrology and medicine, available on demand.",
   },
   {
-    title: "A unified voice",
-    body: "Advocacy on the issues shaping kidney care.",
+    title: "Education & community",
+    body: "Accredited CME and a statewide network of kidney care peers.",
   },
 ];
 
