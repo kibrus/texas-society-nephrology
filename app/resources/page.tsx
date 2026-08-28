@@ -1,12 +1,12 @@
 import { PageHeader, Container, Icon } from "@/components/ui";
 import Link from "next/link";
 
-export const metadata = { title: "Resources · TxSN" };
+export const metadata = { title: "Resources · TSN" };
 
 const groups = [
   { href: "/resources/clinical", icon: "file", title: "Clinical Resources", body: "Guidelines, references, and tools for everyday nephrology practice.", accent: "teal" },
   { href: "/resources/education", icon: "school", title: "Education & CME", body: "Webinars, recordings, and accredited continuing education.", accent: "gold" },
-  { href: "/resources/member", icon: "users", title: "Member Resources", body: "Exclusive materials available to TxSN members.", accent: "teal" },
+  { href: "/resources/member", icon: "users", title: "Member Resources", body: "Exclusive materials available to TSN members.", accent: "teal" },
   { href: "/news", icon: "speakerphone", title: "News", body: "Latest updates, announcements, and stories from the Texas nephrology community.", accent: "gold" },
   { href: "/careers", icon: "research", title: "Careers", body: "Job opportunities and career resources for nephrology professionals in Texas.", accent: "teal" },
 ];

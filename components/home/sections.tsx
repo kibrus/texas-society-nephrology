@@ -65,7 +65,7 @@ export function Hero() {
           </p>
           <div className="mt-8 flex flex-wrap gap-3">
             <Link
-              href="/membership/join"
+              href="/join"
               className="inline-flex items-center gap-2 bg-amber-accent hover:opacity-90 text-white text-[14px] font-semibold px-6 py-3 rounded-sm transition-colors shadow-lg"
             >
               Become a member <Icon name="arrow" size={16} />
@@ -343,7 +343,7 @@ export function JoinCTA() {
         </p>
         <div data-reveal data-delay="200">
           <Link
-            href="/membership/join"
+            href="/join"
             className="mt-8 inline-flex items-center gap-2 bg-amber-accent hover:opacity-90 text-white text-[15px] font-bold px-10 py-4 rounded-sm transition-all shadow-xl hover:shadow-amber-accent/30 hover:-translate-y-0.5"
           >
             Become a member <Icon name="arrow" size={16} />

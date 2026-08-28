@@ -2,7 +2,7 @@ import { PageHeader, Container, Icon } from "@/components/ui";
 import Link from "next/link";
 import { getAllNews, formatDate } from "@/lib/content";
 
-export const metadata = { title: "News · TxSN" };
+export const metadata = { title: "News · TSN" };
 
 export default function NewsIndexPage() {
   const posts = getAllNews();

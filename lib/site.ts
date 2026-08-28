@@ -3,7 +3,7 @@
 
 export const siteConfig = {
   name: "Texas Society of Nephrology",
-  shortName: "TxSN",
+  shortName: "TSN",
   tagline: "Education · Advocacy · Community",
   description:
     "The professional home for kidney care professionals across Texas, advancing patient care, education, and the future of nephrology.",
@@ -42,7 +42,7 @@ export const navigation: NavItem[] = [
     children: [
       { label: "Why Join", href: "/membership", phase: 1 },
       { label: "Membership Tiers", href: "/membership/tiers", phase: 1 },
-      { label: "Join / Renew", href: "/membership/join", phase: 2 },
+      { label: "Join / Renew", href: "/join", phase: 2 },
     ],
   },
   {

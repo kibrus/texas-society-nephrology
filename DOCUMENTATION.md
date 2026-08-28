@@ -1,6 +1,6 @@
 # Texas Society of Nephrology — Phase 1 Documentation
 
-**Project:** TxSN public website
+**Project:** TSN public website
 **Phase:** 1 of 3 (public website)
 **Stack:** Next.js 14 · Tailwind CSS · MDX · Resend · Vercel
 **Status:** Mockup / foundation build — navigable, production-grade code
@@ -27,7 +27,7 @@
 
 ## 1. Overview
 
-This is the Phase 1 build of the Texas Society of Nephrology (TxSN) website — a public-facing site that presents the society, its annual meeting, news, resources, and membership information to physicians, fellows, and kidney care professionals across Texas.
+This is the Phase 1 build of the Texas Society of Nephrology (TSN) website — a public-facing site that presents the society, its annual meeting, news, resources, and membership information to physicians, fellows, and kidney care professionals across Texas.
 
 Phase 1 deliberately contains **no login, no payments, and no database**. All content is stored as text files in the codebase. This keeps the build fast, cheap to host, and simple to maintain. Features that require accounts and payment processing — member login, online dues, event registration, abstract submission — are scoped to later phases and appear in the navigation as "coming soon" placeholders so the site's structure is complete from day one.
 
@@ -194,7 +194,7 @@ Create a new file in `content/news/`, for example `spring-symposium.mdx`:
 ---
 title: "Spring symposium registration is open"
 date: "2026-04-01"
-author: "TxSN"
+author: "TSN"
 excerpt: "One-line summary that appears on the news card."
 category: "Education"
 ---
@@ -254,7 +254,7 @@ Navigation, leadership, corporate partners, membership tiers, and the annual-mee
 
 ## 7. Design system
 
-The visual identity is derived directly from the TxSN logo: a deep teal mark and wordmark over a teal-to-gold Texas silhouette. The site makes teal the primary color, gold the accent, and uses the Texas shape as a recurring motif.
+The visual identity is derived directly from the TSN logo: a deep teal mark and wordmark over a teal-to-gold Texas silhouette. The site makes teal the primary color, gold the accent, and uses the Texas shape as a recurring motif.
 
 ### Color tokens
 

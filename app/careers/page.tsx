@@ -1,6 +1,6 @@
 import { PageHeader, Container, Icon } from "@/components/ui";
 
-export const metadata = { title: "Careers · TxSN" };
+export const metadata = { title: "Careers · TSN" };
 
 export default function CareersPage() {
   return (

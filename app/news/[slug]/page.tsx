@@ -10,7 +10,7 @@ export function generateStaticParams() {
 
 export function generateMetadata({ params }: { params: { slug: string } }) {
   const post = getNewsBySlug(params.slug);
-  return { title: post ? `${post.title} · TxSN` : "News · TxSN" };
+  return { title: post ? `${post.title} · TSN` : "News · TSN" };
 }
 
 export default function NewsArticlePage({ params }: { params: { slug: string } }) {

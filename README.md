@@ -8,7 +8,7 @@ navigation as "coming soon" so the structure is complete from day one.
 ## Stack
 
 - **Next.js 14** (App Router) — framework
-- **Tailwind CSS** — styling, with TxSN brand tokens in `tailwind.config.ts`
+- **Tailwind CSS** — styling, with TSN brand tokens in `tailwind.config.ts`
 - **MDX** — news posts and events live as text files in `content/`
 - **Resend** — contact form email delivery
 - Deploys to **Vercel**
@@ -38,7 +38,7 @@ Add a news post by copying an existing `.mdx` file and editing it:
 ---
 title: "Your headline"
 date: "2026-04-01"        # YYYY-MM-DD, controls ordering
-author: "TxSN"
+author: "TSN"
 excerpt: "One-line summary shown on cards."
 category: "Education"      # optional label
 ---

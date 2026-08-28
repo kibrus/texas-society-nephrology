@@ -1,37 +1,42 @@
 import { NextResponse } from "next/server";
+import { serverEnv } from "@/lib/env/server";
+import { rateLimit, clientIp } from "@/lib/rate-limit";
 
-// Contact form handler. Sends the submission via Resend when an API key
-// is configured; otherwise logs it (so the form works in local/dev preview).
+// Contact form handler. Delivers submissions to the public contact inbox
+// (CONTACT_RECIPIENT_EMAIL = contact@txsocietyofnephrology.org) via Resend,
+// sent from the verified EMAIL_FROM sender with the submitter set as reply-to.
 export async function POST(request: Request) {
   try {
-    const { name, email, subject, message } = await request.json();
+    // Throttle abuse: max 5 submissions per IP per 10 minutes.
+    const ip = clientIp(request.headers);
+    const limit = rateLimit(`contact:${ip}`, 5, 10 * 60_000);
+    if (!limit.ok) {
+      return NextResponse.json(
+        { error: "Too many messages. Please try again later." },
+        { status: 429, headers: { "Retry-After": String(limit.retryAfterSec) } },
+      );
+    }
+
+    const { name, email, subject, message, company } = await request.json();
+
+    // Honeypot: real users never fill the hidden "company" field. Silently
+    // accept so bots don't learn they were caught.
+    if (typeof company === "string" && company.trim() !== "") {
+      return NextResponse.json({ ok: true });
+    }
 
     if (!name || !email || !message) {
       return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
     }
 
-    const apiKey = process.env.RESEND_API_KEY;
-    const to = process.env.CONTACT_EMAIL || "fdanesh@txsocietyofnephrology.org";
-
-    if (!apiKey) {
-      // No key configured yet — log and succeed so the UI flow works in preview.
-      console.log("[contact] (no RESEND_API_KEY set) submission:", {
-        name,
-        email,
-        subject,
-        message,
-      });
-      return NextResponse.json({ ok: true, mode: "logged" });
-    }
-
     const { Resend } = await import("resend");
-    const resend = new Resend(apiKey);
+    const resend = new Resend(serverEnv.RESEND_API_KEY);
 
     await resend.emails.send({
-      from: "TxSN Website <noreply@txsn.org>",
-      to,
+      from: serverEnv.EMAIL_FROM,
+      to: serverEnv.CONTACT_RECIPIENT_EMAIL,
       reply_to: email,
-      subject: `[TxSN Contact] ${subject || "New message"}`,
+      subject: `[TSN Contact] ${subject || "New message"}`,
       text: `From: ${name} <${email}>\n\n${message}`,
     });
 

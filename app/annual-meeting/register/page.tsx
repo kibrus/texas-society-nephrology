@@ -1,6 +1,6 @@
 import { EmptySpace, PageHeader } from "@/components/ui";
 
-export const metadata = { title: "Register · TxSN Annual Meeting" };
+export const metadata = { title: "Register · TSN Annual Meeting" };
 
 export default function RegisterPage() {
   return (

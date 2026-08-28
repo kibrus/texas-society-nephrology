@@ -2,7 +2,7 @@ import { PageHeader, Container, PastBadge } from "@/components/ui";
 import { annualMeeting } from "@/lib/site";
 import { isPastDate } from "@/lib/content";
 
-export const metadata = { title: "Schedule · TxSN Annual Meeting" };
+export const metadata = { title: "Schedule · TSN Annual Meeting" };
 
 export default function SchedulePage() {
   const past = isPastDate(annualMeeting.isoDate);

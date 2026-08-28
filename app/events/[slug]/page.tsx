@@ -22,7 +22,7 @@ export function generateStaticParams() {
 
 export function generateMetadata({ params }: { params: { slug: string } }) {
   const event = getEventBySlug(params.slug);
-  return { title: event ? `${event.title} · TxSN` : "Event · TxSN" };
+  return { title: event ? `${event.title} · TSN` : "Event · TSN" };
 }
 
 export default function EventDetailPage({ params }: { params: { slug: string } }) {

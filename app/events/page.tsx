@@ -2,7 +2,7 @@ import Link from "next/link";
 import { PageHeader, Container, Icon, PastBadge } from "@/components/ui";
 import { getAllEvents, formatDate, isPastDate } from "@/lib/content";
 
-export const metadata = { title: "All Events · TxSN" };
+export const metadata = { title: "All Events · TSN" };
 
 export default function EventsPage() {
   const events = getAllEvents();
@@ -12,7 +12,7 @@ export default function EventsPage() {
       <PageHeader
         eyebrow="EVENTS"
         title="All Events"
-        intro="Every TxSN gathering, past and upcoming, in one place."
+        intro="Every TSN gathering, past and upcoming, in one place."
       />
       <Container className="py-14">
         <div className="space-y-3 max-w-3xl">

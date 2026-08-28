@@ -2,7 +2,7 @@ import { PageHeader, Container, Icon } from "@/components/ui";
 import Link from "next/link";
 import { membershipTiers } from "@/lib/site";
 
-export const metadata = { title: "Membership Tiers · TxSN" };
+export const metadata = { title: "Membership Tiers · TSN" };
 
 export default function TiersPage() {
   return (
@@ -43,7 +43,7 @@ export default function TiersPage() {
           ))}
         </div>
         <div className="mt-8">
-          <Link href="/membership/join" className="inline-flex items-center gap-2 bg-txsn-gold text-white text-[14px] font-medium px-5 py-3 rounded-md hover:bg-txsn-gold/90 transition-colors">
+          <Link href="/join" className="inline-flex items-center gap-2 bg-txsn-gold text-white text-[14px] font-medium px-5 py-3 rounded-md hover:bg-txsn-gold/90 transition-colors">
             Join or renew <Icon name="arrow" size={16} />
           </Link>
         </div>

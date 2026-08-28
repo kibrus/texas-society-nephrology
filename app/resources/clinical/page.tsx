@@ -1,6 +1,6 @@
 import { PageHeader, Container, Icon } from "@/components/ui";
 
-export const metadata = { title: "Clinical Resources · TxSN" };
+export const metadata = { title: "Clinical Resources · TSN" };
 
 const resources = [
   { title: "CKD management reference", type: "PDF", desc: "Quick-reference guide for chronic kidney disease staging and management." },

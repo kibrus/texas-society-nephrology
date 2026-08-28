@@ -1,6 +1,6 @@
 import { PageHeader, Container, Icon } from "@/components/ui";
 
-export const metadata = { title: "Education & CME · TxSN" };
+export const metadata = { title: "Education & CME · TSN" };
 
 const sessions = [
   { title: "Transplant Updates 2026", date: "July 2026", cme: "1.0 CME" },
