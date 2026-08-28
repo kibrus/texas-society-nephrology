@@ -33,7 +33,15 @@ export async function updateSession(request: NextRequest) {
   // Do NOT run any code between creating the client and getUser(). getUser()
   // revalidates the token with Supabase and triggers the cookie refresh; code
   // in between can cause the session to be intermittently dropped.
-  await supabase.auth.getUser();
+  //
+  // Guard it with a timeout: this middleware runs site-wide, so if a slow or
+  // unavailable Supabase Auth response hangs getUser(), every route would 504.
+  // On timeout we serve the page without refreshing the session this cycle; the
+  // next request refreshes normally once Supabase is responsive again.
+  await Promise.race([
+    supabase.auth.getUser(),
+    new Promise((resolve) => setTimeout(resolve, 3000)),
+  ]);
 
   return supabaseResponse;
 }
