@@ -6,10 +6,17 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  // Run on all routes except Next internals and static image assets. Keeps the
-  // auth session cookie fresh as members navigate; static marketing pages are
-  // still served statically, middleware just refreshes the token beforehand.
+  // Only run on routes whose server code reads the auth session, so a Supabase
+  // Auth call is never on the path of a marketing page (faster, and insulated
+  // from any auth-service slowness). The header reads auth on the client, so
+  // marketing pages don't need the server-side session refresh.
   matcher: [
-    "/((?!_next/static|_next/image|favicon.ico|images/|api/stripe/webhook|api/cron|.*\\.(?:svg|png|jpg|jpeg|gif|webp|ico)$).*)",
+    "/member/:path*",
+    "/membership/:path*",
+    "/join",
+    "/sign-in",
+    "/forgot-password/:path*",
+    "/reset-password",
+    "/auth/:path*",
   ],
 };
