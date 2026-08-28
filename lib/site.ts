@@ -7,7 +7,7 @@ export const siteConfig = {
   tagline: "Education · Advocacy · Community",
   description:
     "The professional home for kidney care professionals across Texas, advancing patient care, education, and the future of nephrology.",
-  email: "fdanesh@txsocietyofnephrology.org",
+  email: "contact@txsocietyofnephrology.org",
   social: {
     linkedin: "https://www.linkedin.com/",
     x: "https://x.com/",
