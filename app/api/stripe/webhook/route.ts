@@ -186,6 +186,8 @@ async function handleInvoicePaid(invoice: Stripe.Invoice) {
       tier: profile.tier,
       amountCents: invoice.amount_paid ?? 0,
       activeUntil: periodEnd,
+      invoiceUrl: invoice.hosted_invoice_url ?? null,
+      invoicePdfUrl: invoice.invoice_pdf ?? null,
     });
     await sendTransactionalEmail({
       dedupeKey: `admin_new_member:${profile.id}`,

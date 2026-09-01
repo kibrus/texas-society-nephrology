@@ -119,6 +119,8 @@ export function adminNewMemberEmail(args: {
   tier: string;
   amountCents: number;
   activeUntil: string | null;
+  invoiceUrl: string | null; // Stripe hosted invoice/receipt (same as the member's)
+  invoicePdfUrl: string | null;
 }): Email {
   const fullName = `${args.firstName} ${args.lastName}`.trim();
   const tierLabel = TIER_LABELS[args.tier] ?? args.tier;
@@ -133,6 +135,9 @@ export function adminNewMemberEmail(args: {
     ["Active through", formatDate(args.activeUntil)],
   ];
   const subject = `New TSN member: ${fullName}`;
+  const pdfLink = args.invoicePdfUrl
+    ? `<p style="font-size:13px;line-height:1.6;margin:4px 0 0;"><a href="${args.invoicePdfUrl}" style="color:#1A56A0;">Download the invoice PDF</a></p>`
+    : "";
   const bodyHtml = `
     <p style="font-size:14px;line-height:1.6;margin:0 0 12px;">A new member has completed payment and been activated. Their registration details:</p>
     <table style="width:100%;font-size:14px;border-collapse:collapse;margin:16px 0;">
@@ -142,13 +147,25 @@ export function adminNewMemberEmail(args: {
             `<tr><td style="padding:6px 0;color:#5b6b6b;">${escapeHtml(k)}</td><td style="padding:6px 0;text-align:right;font-weight:600;">${escapeHtml(v)}</td></tr>`,
         )
         .join("")}
-    </table>`;
-  const html = layout({ heading: "New member activated", bodyHtml });
+    </table>
+    ${pdfLink}`;
+  const html = layout({
+    heading: "New member activated",
+    bodyHtml,
+    button: args.invoiceUrl
+      ? { label: "View invoice / receipt", url: args.invoiceUrl }
+      : undefined,
+  });
   const text = [
     "A new member has completed payment and been activated.",
     "",
     ...rows.map(([k, v]) => `${k}: ${v}`),
-  ].join("\n");
+    "",
+    args.invoiceUrl ? `Invoice / receipt: ${args.invoiceUrl}` : "",
+    args.invoicePdfUrl ? `Invoice PDF: ${args.invoicePdfUrl}` : "",
+  ]
+    .filter(Boolean)
+    .join("\n");
   return { subject, html, text };
 }
 
