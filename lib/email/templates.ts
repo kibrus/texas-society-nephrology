@@ -1,6 +1,6 @@
 import "server-only";
 import { publicEnv } from "@/lib/env/public";
-import { TIER_LABELS } from "@/lib/membership";
+import { TIER_LABELS, PROFESSION_LABELS } from "@/lib/membership";
 
 // Plain, inline-styled transactional emails. Kept intentionally simple (no
 // external template engine) — these render reliably across mail clients.
@@ -104,6 +104,51 @@ export function receiptEmail(args: {
     args.invoiceUrl ? `View invoice: ${args.invoiceUrl}` : `Account: ${SITE}/member`,
   ].join("\n");
 
+  return { subject, html, text };
+}
+
+// Internal admin alert — sent to staff when a NEW member activates (first paid
+// invoice only, not renewals). Contains the applicant's registration details so
+// the board can follow up. No payment-card data is ever included.
+export function adminNewMemberEmail(args: {
+  firstName: string;
+  lastName: string;
+  email: string;
+  phone: string | null;
+  profession: string;
+  tier: string;
+  amountCents: number;
+  activeUntil: string | null;
+}): Email {
+  const fullName = `${args.firstName} ${args.lastName}`.trim();
+  const tierLabel = TIER_LABELS[args.tier] ?? args.tier;
+  const professionLabel = PROFESSION_LABELS[args.profession] ?? args.profession;
+  const rows: [string, string][] = [
+    ["Name", fullName],
+    ["Email", args.email],
+    ["Phone", args.phone || "—"],
+    ["Profession", professionLabel],
+    ["Membership tier", tierLabel],
+    ["Amount paid", formatUsd(args.amountCents)],
+    ["Active through", formatDate(args.activeUntil)],
+  ];
+  const subject = `New TSN member: ${fullName}`;
+  const bodyHtml = `
+    <p style="font-size:14px;line-height:1.6;margin:0 0 12px;">A new member has completed payment and been activated. Their registration details:</p>
+    <table style="width:100%;font-size:14px;border-collapse:collapse;margin:16px 0;">
+      ${rows
+        .map(
+          ([k, v]) =>
+            `<tr><td style="padding:6px 0;color:#5b6b6b;">${escapeHtml(k)}</td><td style="padding:6px 0;text-align:right;font-weight:600;">${escapeHtml(v)}</td></tr>`,
+        )
+        .join("")}
+    </table>`;
+  const html = layout({ heading: "New member activated", bodyHtml });
+  const text = [
+    "A new member has completed payment and been activated.",
+    "",
+    ...rows.map(([k, v]) => `${k}: ${v}`),
+  ].join("\n");
   return { subject, html, text };
 }
 

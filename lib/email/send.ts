@@ -5,7 +5,7 @@ import { createSupabaseAdminClient } from "@/lib/supabase/admin";
 type SendArgs = {
   dedupeKey: string; // e.g. "receipt:in_123" — unique per logical email
   type: string; // category, for the ledger (receipt | payment_failed | cancellation)
-  to: string;
+  to: string | string[]; // one recipient, or several (e.g. admin notifications)
   subject: string;
   html: string;
   text: string;
@@ -19,9 +19,10 @@ type SendArgs = {
 export async function sendTransactionalEmail(args: SendArgs): Promise<void> {
   const admin = createSupabaseAdminClient();
 
+  const recipient = Array.isArray(args.to) ? args.to.join(",") : args.to;
   const { error: claimError } = await admin
     .from("email_deliveries")
-    .insert({ dedupe_key: args.dedupeKey, type: args.type, recipient: args.to });
+    .insert({ dedupe_key: args.dedupeKey, type: args.type, recipient });
 
   if (claimError) {
     // 23505 = unique_violation → already sent, nothing to do. Any other error:

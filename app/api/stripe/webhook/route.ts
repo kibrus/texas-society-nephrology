@@ -4,7 +4,11 @@ import { stripe } from "@/lib/stripe/server";
 import { serverEnv } from "@/lib/env/server";
 import { createSupabaseAdminClient } from "@/lib/supabase/admin";
 import { sendTransactionalEmail } from "@/lib/email/send";
-import { receiptEmail, paymentFailedEmail } from "@/lib/email/templates";
+import {
+  receiptEmail,
+  paymentFailedEmail,
+  adminNewMemberEmail,
+} from "@/lib/email/templates";
 
 // Stripe webhook endpoint. This is the ONLY place membership is activated or
 // renewed — never trust the browser. Signature is verified against the raw
@@ -100,11 +104,16 @@ async function handleInvoicePaid(invoice: Stripe.Invoice) {
 
   const { data: profile } = await admin
     .from("profiles")
-    .select("id, tier, email, first_name")
+    .select(
+      "id, tier, email, first_name, last_name, phone, profession, membership_status",
+    )
     .eq("stripe_customer_id", customerId)
     .maybeSingle();
 
   if (!profile) return; // No member for this customer — nothing to activate.
+
+  // First activation vs a yearly renewal — only the former is a "new member".
+  const isNewMember = profile.membership_status !== "active";
 
   // Coverage window comes from the invoice line, not the browser.
   const line = invoice.lines?.data?.[0];
@@ -160,6 +169,31 @@ async function handleInvoicePaid(invoice: Stripe.Invoice) {
     to: profile.email,
     ...receipt,
   });
+
+  // Notify staff when a brand-new member joins (not on renewals). Deduped per
+  // member so a webhook redelivery won't double-send. Best-effort; never blocks.
+  const adminRecipients = (serverEnv.MEMBER_NOTIFICATION_EMAILS ?? "")
+    .split(",")
+    .map((e) => e.trim())
+    .filter(Boolean);
+  if (isNewMember && adminRecipients.length > 0) {
+    const notice = adminNewMemberEmail({
+      firstName: profile.first_name,
+      lastName: profile.last_name,
+      email: profile.email,
+      phone: profile.phone,
+      profession: profile.profession,
+      tier: profile.tier,
+      amountCents: invoice.amount_paid ?? 0,
+      activeUntil: periodEnd,
+    });
+    await sendTransactionalEmail({
+      dedupeKey: `admin_new_member:${profile.id}`,
+      type: "admin_new_member",
+      to: adminRecipients,
+      ...notice,
+    });
+  }
 }
 
 // A dues charge failed — the first attempt or a renewal. Stripe keeps retrying

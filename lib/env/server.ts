@@ -26,6 +26,9 @@ const ServerEnvSchema = z.object({
   // Operational (introduced in later stages; optional until then)
   CRON_SECRET: z.string().min(1).optional(),
   ADMIN_ESCALATION_EMAIL: z.string().email().optional(),
+  // Comma-separated list of admin addresses notified when a new member
+  // activates. Unset = feature off. e.g. "a@x.org,b@x.org"
+  MEMBER_NOTIFICATION_EMAILS: z.string().optional(),
 });
 
 const parsed = ServerEnvSchema.safeParse(process.env);
