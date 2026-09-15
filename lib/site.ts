@@ -98,11 +98,43 @@ export const pillars = [
   },
 ];
 
-export const leadership = [
-  { name: "Farhad Danesh, MD, FASN", role: "President" },
-  { name: "Kumar Sharma, MD, FASN", role: "Vice President" },
-  { name: "Sreedhar Mandayam, MD, FASN", role: "Secretary" },
-  { name: "Biruh Workeneh, MD, FASN", role: "Treasurer" },
+export type Leader = {
+  name: string;
+  role: string;
+  photo: string;
+  bio: string;
+  profileUrl: string;
+};
+
+export const leadership: Leader[] = [
+  {
+    name: "Farhad Danesh, MD, FASN",
+    role: "President",
+    photo: "/images/leadership/farhad-danesh.jpg",
+    bio: "Chief of the Section of Nephrology at UT MD Anderson Cancer Center and a tenured Professor of Medicine at MD Anderson and Baylor College of Medicine. His research investigates the molecular mechanisms that drive diabetic kidney disease, and he serves as an Associate Editor of the Journal of the American Society of Nephrology.",
+    profileUrl: "https://faculty.mdanderson.org/profiles/farhad_danesh.html",
+  },
+  {
+    name: "Kumar Sharma, MD, FASN",
+    role: "Vice President",
+    photo: "/images/leadership/kumar-sharma.jpg",
+    bio: "Chief of the Division of Nephrology at UT Health San Antonio, where he also serves as Vice Chair for Research and Director of the Center for Precision Medicine. A leader in diabetic kidney disease and precision medicine, he holds major NIH funding and contributes to the NIH Kidney Precision Medicine Project.",
+    profileUrl: "https://directory.uthscsa.edu/academics/profile/sharmak3",
+  },
+  {
+    name: "Sreedhar Mandayam, MD, FASN",
+    role: "Secretary",
+    photo: "/images/leadership/sreedhar-mandayam.jpg",
+    bio: "Professor in the Section of Nephrology at UT MD Anderson Cancer Center, specializing in cancer-related kidney complications, chronic kidney disease, and kidney care for patients with cancer. An award-winning clinician and educator, he has authored more than 40 peer-reviewed publications.",
+    profileUrl: "https://faculty.mdanderson.org/profiles/sreedhar_mandayam.html",
+  },
+  {
+    name: "Biruh Workeneh, MD, FASN",
+    role: "Treasurer",
+    photo: "/images/leadership/biruh-workeneh.jpg",
+    bio: "Professor in the Section of Nephrology and Medical Director of Nephrology at UT MD Anderson Cancer Center, with expertise in onco-nephrology, the care of kidney disease in patients with cancer. He co-founded and chairs MD Anderson's annual Onco-Nephrology Symposium and is a recognized teaching faculty member.",
+    profileUrl: "https://faculty.mdanderson.org/profiles/biruh_workeneh.html",
+  },
 ];
 
 export type CorporatePartner = { name: string; slug: string; url?: string; ext?: string; hidden?: boolean };
