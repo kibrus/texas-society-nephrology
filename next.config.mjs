@@ -2,6 +2,7 @@ const isDev = process.env.NODE_ENV === "development";
 
 // Content-Security-Policy tuned for this app's third parties:
 //   - Stripe.js + Payment Element (scripts, frames, api.stripe.com)
+//   - YouTube (privacy-enhanced embeds for member recordings)
 //   - Supabase (auth + REST over https/wss)
 //   - Google Fonts (Merriweather + Inter: CSS from fonts.googleapis.com, files from fonts.gstatic.com)
 //   - Remote images (Unsplash / Clearbit / Wikimedia, plus https data/blob)
@@ -15,7 +16,7 @@ const csp = [
   "img-src 'self' data: blob: https:",
   "font-src 'self' data: https://fonts.gstatic.com",
   "connect-src 'self' https://api.stripe.com https://*.supabase.co wss://*.supabase.co",
-  "frame-src https://js.stripe.com https://hooks.stripe.com",
+  "frame-src https://js.stripe.com https://hooks.stripe.com https://www.youtube-nocookie.com https://www.youtube.com",
   "frame-ancestors 'none'",
   "base-uri 'self'",
   "form-action 'self'",
