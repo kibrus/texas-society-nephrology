@@ -123,7 +123,7 @@ export default async function MemberVideoPage({
                     <div className="relative aspect-video w-32 flex-shrink-0 overflow-hidden rounded-lg bg-txsn-teal-deep">
                       {/* eslint-disable-next-line @next/next/no-img-element */}
                       <img
-                        src={`https://i.ytimg.com/vi/${m.youtubeId}/hqdefault.jpg`}
+                        src={m.videoThumbnail ?? `https://i.ytimg.com/vi/${m.youtubeId}/hqdefault.jpg`}
                         alt={m.talkTitle ?? m.title}
                         className="h-full w-full object-cover"
                       />

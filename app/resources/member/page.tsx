@@ -57,7 +57,7 @@ export default async function MemberResourcesPage() {
                 <div className="relative aspect-video overflow-hidden bg-txsn-teal-deep">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
-                    src={thumb(v.youtubeId as string)}
+                    src={v.videoThumbnail ?? thumb(v.youtubeId as string)}
                     alt={v.talkTitle ?? v.title}
                     className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.05]"
                   />

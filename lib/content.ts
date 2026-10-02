@@ -40,6 +40,9 @@ export type EventItem = {
   // YouTube video id (the part after watch?v= or youtu.be/) for the member-only
   // recording of this event. Empty/absent = no recording yet.
   youtubeId?: string;
+  // Optional custom poster image for the recording (e.g. a branded thumbnail).
+  // Falls back to YouTube's auto thumbnail when absent.
+  videoThumbnail?: string;
 };
 
 function readCollection(folder: string) {
@@ -103,6 +106,7 @@ export function getAllEvents(): EventItem[] {
     registrationUrl: data.registrationUrl,
     hidePricing: data.hidePricing ?? false,
     youtubeId: typeof data.youtubeId === "string" ? data.youtubeId.trim() : undefined,
+    videoThumbnail: data.videoThumbnail,
   }));
 
   const upcoming = events.filter((e) => !isPastDate(e.date)).sort((a, b) => (a.date > b.date ? 1 : -1));
