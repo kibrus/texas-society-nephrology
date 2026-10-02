@@ -17,6 +17,8 @@ const paths: Record<string, ReactNode> = {
   check: <path d="M20 6L9 17l-5-5" />,
   clock: <path d="M12 6v6l4 2M12 22a10 10 0 100-20 10 10 0 000 20z" />,
   external: <path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6M15 3h6v6M10 14L21 3" />,
+  play: <path d="M6 4l14 8-14 8V4z" />,
+  lock: <path d="M5 11h14a1 1 0 011 1v8a1 1 0 01-1 1H5a1 1 0 01-1-1v-8a1 1 0 011-1zM8 11V7a4 4 0 018 0v4" />,
 };
 
 export function Icon({

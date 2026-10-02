@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import { MDXRemote } from "next-mdx-remote/rsc";
 import { Container, Icon } from "@/components/ui";
+import { WatchRecordingCard } from "@/components/events/WatchRecordingCard";
 import { getAllEvents, getEventBySlug, formatDate, isPastDate } from "@/lib/content";
 
 // External links in event content open in a new tab; internal links stay in-page.
@@ -151,6 +152,9 @@ export default function EventDetailPage({ params }: { params: { slug: string } }
 
           {/* Right — Sidebar */}
           <aside className="space-y-4">
+
+            {/* Member-only recording (shown once a video is attached) */}
+            {event.youtubeId && <WatchRecordingCard slug={event.slug} />}
 
             {/* Registration */}
             {event.registrationUrl && (

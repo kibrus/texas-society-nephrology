@@ -37,6 +37,9 @@ export type EventItem = {
   image?: string;
   registrationUrl?: string;
   hidePricing?: boolean;
+  // YouTube video id (the part after watch?v= or youtu.be/) for the member-only
+  // recording of this event. Empty/absent = no recording yet.
+  youtubeId?: string;
 };
 
 function readCollection(folder: string) {
@@ -99,6 +102,7 @@ export function getAllEvents(): EventItem[] {
     image: data.image,
     registrationUrl: data.registrationUrl,
     hidePricing: data.hidePricing ?? false,
+    youtubeId: typeof data.youtubeId === "string" ? data.youtubeId.trim() : undefined,
   }));
 
   const upcoming = events.filter((e) => !isPastDate(e.date)).sort((a, b) => (a.date > b.date ? 1 : -1));
@@ -114,6 +118,19 @@ export function getEventBySlug(slug: string): EventItem | undefined {
 export function getUpcomingEvents(count = 3): EventItem[] {
   const upcoming = getAllEvents().filter((e) => !isPastDate(e.date));
   return upcoming.slice(0, count);
+}
+
+// Events that have a member-only recording, newest first. Powers the member
+// video library. Adding a `youtubeId` to any event's frontmatter makes it
+// appear here automatically — no separate video list to maintain.
+export function getVideoEvents(): EventItem[] {
+  return getAllEvents()
+    .filter((e) => Boolean(e.youtubeId))
+    .sort((a, b) => (a.date > b.date ? -1 : 1));
+}
+
+export function getVideoEventBySlug(slug: string): EventItem | undefined {
+  return getVideoEvents().find((e) => e.slug === slug);
 }
 
 export function formatDate(iso: string): string {
