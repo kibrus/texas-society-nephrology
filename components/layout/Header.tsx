@@ -61,19 +61,6 @@ export function Header() {
             <Link href="/contact" className="text-[12px] text-txsn-slate hover:text-txsn-teal transition-colors">
               Contact Us
             </Link>
-            <span className="text-gray-300">|</span>
-            <a href="https://www.linkedin.com/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" className="text-txsn-slate hover:text-txsn-teal transition-colors">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                <path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2z"/>
-                <circle cx="4" cy="4" r="2"/>
-              </svg>
-            </a>
-            <a href="mailto:fdanesh@txsocietyofnephrology.org" aria-label="Email" className="text-txsn-slate hover:text-txsn-teal transition-colors">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                <rect x="2" y="4" width="20" height="16" rx="2"/>
-                <path d="M22 7l-10 7L2 7"/>
-              </svg>
-            </a>
           </div>
         </div>
       </div>
