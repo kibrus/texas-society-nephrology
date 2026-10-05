@@ -29,12 +29,24 @@ export function FeaturedEvent({ event }: { event: EventItem }) {
               </div>
             </div>
           </div>
-          <Link
-            href={`/events/${event.slug}`}
-            className="flex-shrink-0 inline-flex items-center gap-2 bg-heritage-navy hover:opacity-90 text-white text-[13px] font-medium px-5 py-2.5 rounded-sm transition-colors"
-          >
-            View event <Icon name="arrow" size={14} />
-          </Link>
+          <div className="flex flex-shrink-0 items-center gap-2">
+            {event.brochurePdf && (
+              <a
+                href={event.brochurePdf}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 border border-heritage-navy/30 bg-white hover:bg-clinical-blue text-heritage-navy text-[13px] font-medium px-4 py-2.5 rounded-sm transition-colors"
+              >
+                <Icon name="file" size={14} /> Brochure
+              </a>
+            )}
+            <Link
+              href={`/events/${event.slug}`}
+              className="inline-flex items-center gap-2 bg-heritage-navy hover:opacity-90 text-white text-[13px] font-medium px-5 py-2.5 rounded-sm transition-colors"
+            >
+              View event <Icon name="arrow" size={14} />
+            </Link>
+          </div>
         </div>
       </Container>
     </section>

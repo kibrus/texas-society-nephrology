@@ -50,11 +50,11 @@ export const navigation: NavItem[] = [
     href: "/resources",
     phase: 1,
     children: [
-      { label: "Clinical Resources", href: "/resources/clinical", phase: 1 },
-      { label: "Education & CME", href: "/resources/education", phase: 1 },
+      // Clinical Resources and Education & CME are hidden for now (placeholder
+      // content). Re-add here when they have real material.
       { label: "Member Resources", href: "/resources/member", phase: 2 },
-      { label: "Careers", href: "/careers", phase: 1 },
       { label: "News", href: "/news", phase: 1 },
+      { label: "Careers", href: "/careers", phase: 1 },
     ],
   },
   { label: "All Events", href: "/events", phase: 1 },
