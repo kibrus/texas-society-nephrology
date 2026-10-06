@@ -1,6 +1,7 @@
 import {
   Hero,
-  FeaturedEvent,
+  // FeaturedEvent, // "Next Event" bar hidden for now — re-add below to restore
+  BrochureFeature,
   Pillars,
   NewsPreview,
   EventsPreview,
@@ -13,13 +14,14 @@ import { getLatestNews, getUpcomingEvents } from "@/lib/content";
 export default function HomePage() {
   const news = getLatestNews(3);
   const events = getUpcomingEvents(3);
-  const featuredEvent = events[0] ?? null;
 
   return (
     <>
       <ScrollRevealInit />
       <Hero />
-      {featuredEvent && <FeaturedEvent event={featuredEvent} />}
+      {/* "Next Event" bar hidden for now:
+          {featuredEvent && <FeaturedEvent event={featuredEvent} />} */}
+      <BrochureFeature />
       <Partners />
       <Pillars />
       <NewsPreview posts={news} />
