@@ -53,6 +53,90 @@ export function FeaturedEvent({ event }: { event: EventItem }) {
   );
 }
 
+// Featured brochure block: shows the first page of a brochure as a clickable
+// preview (opens the full PDF) alongside a short description. Currently wired to
+// the AHHSA symposium; remove this section from the home page once it's over.
+export function BrochureFeature() {
+  const pdf = "/documents/events/ahhsa-symposium-2026.pdf";
+  return (
+    <section className="bg-txsn-paper border-b border-txsn-mint-soft/40">
+      <Container className="py-14 lg:py-16">
+        <div className="grid items-center gap-10 lg:grid-cols-[minmax(0,360px)_1fr] lg:gap-14">
+          {/* Brochure first page — clickable, opens full PDF */}
+          <a
+            href={pdf}
+            target="_blank"
+            rel="noopener noreferrer"
+            data-reveal
+            aria-label="Open the full AHHSA 2026 brochure (PDF)"
+            className="group relative mx-auto block w-full max-w-[340px] overflow-hidden rounded-xl shadow-lg shadow-txsn-teal-deep/10 ring-1 ring-txsn-mint-soft transition-all duration-300 hover:-translate-y-1 hover:shadow-xl focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-accent"
+          >
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/images/events/ahhsa-brochure-page1.jpg"
+              alt="2nd Annual AHHSA 2026 symposium brochure, first page"
+              className="block w-full transition-transform duration-500 group-hover:scale-[1.03]"
+            />
+            <div className="absolute inset-0 flex items-center justify-center bg-heritage-navy/0 transition-colors duration-300 group-hover:bg-heritage-navy/35">
+              <span className="flex translate-y-1 items-center gap-2 rounded-full bg-white/95 px-4 py-2 text-[13px] font-semibold text-heritage-navy opacity-0 shadow transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100">
+                <Icon name="file" size={15} /> View full brochure
+              </span>
+            </div>
+          </a>
+
+          {/* Description */}
+          <div data-reveal data-delay="100">
+            <div className="mb-2 text-[11px] font-semibold uppercase tracking-[0.2em] text-amber-accent">
+              Featured Symposium
+            </div>
+            <h2 className="font-serif text-[1.75rem] font-bold leading-tight text-heritage-navy lg:text-[2rem]">
+              2nd Annual AHHSA Symposium
+            </h2>
+            <p className="mt-2 text-[15px] italic text-txsn-slate">
+              Advances in Human Health through Spatial Omics &amp; AI
+            </p>
+            <p className="mt-1 text-[15px] font-semibold text-heritage-navy">
+              Theme: &ldquo;Entering the Multi-Ome&rdquo;
+            </p>
+
+            <div className="mt-4 flex flex-wrap gap-x-5 gap-y-1.5 text-[13.5px] text-txsn-slate">
+              <span className="inline-flex items-center gap-1.5">
+                <Icon name="calendar" size={14} className="text-txsn-teal" /> October 5-6, 2026
+              </span>
+              <span className="inline-flex items-center gap-1.5">
+                <Icon name="pin" size={14} className="text-txsn-teal" /> UT Health San Antonio
+              </span>
+            </div>
+
+            <p className="mt-4 max-w-xl text-[14.5px] leading-relaxed text-txsn-slate">
+              Two days of multidisciplinary science on spatial omics, AI, and systems
+              medicine, hosted by the Center for Precision Medicine. The brochure has the
+              full program, keynote, workshops, and registration details.
+            </p>
+
+            <div className="mt-6 flex flex-wrap gap-3">
+              <a
+                href={pdf}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 rounded-sm bg-heritage-navy px-6 py-3 text-[14px] font-semibold text-white shadow-sm transition-colors hover:opacity-90"
+              >
+                <Icon name="file" size={16} /> View full brochure
+              </a>
+              <Link
+                href="/events/ahhsa-symposium-2026"
+                className="inline-flex items-center gap-2 rounded-sm border border-heritage-navy/30 bg-white px-6 py-3 text-[14px] font-medium text-heritage-navy transition-colors hover:bg-clinical-blue"
+              >
+                Event details <Icon name="arrow" size={15} />
+              </Link>
+            </div>
+          </div>
+        </div>
+      </Container>
+    </section>
+  );
+}
+
 export function Hero() {
   return (
     <section className="relative overflow-hidden">
