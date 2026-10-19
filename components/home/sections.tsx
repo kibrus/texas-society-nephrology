@@ -139,6 +139,103 @@ export function BrochureFeature() {
   );
 }
 
+// Featured partner summit: ISGD Clinical Trials Summit (Nov 2026). Flyer on the
+// right, details on the left. Update or remove once the summit has passed.
+export function SummitFeature() {
+  const flyer = "/images/events/isgd-cts-summit-flyer.webp";
+  const register = "https://www.is-gd.org/2026-cts";
+  const highlights = [
+    "Keynote on how AI is reshaping the pace of clinical trials",
+    "“Voice of the FDA” roundtable with CDER/CBER nephrologists",
+    "Emerging biomarkers and treatment targets in glomerular disease",
+    "Late-breaking trial data not presented at ASN Kidney Week",
+  ];
+  return (
+    <section className="bg-white border-b border-txsn-mint-soft/40">
+      <Container className="py-14 lg:py-16">
+        <div className="grid items-center gap-10 lg:grid-cols-[1fr_minmax(0,340px)] lg:gap-14">
+          {/* Details */}
+          <div data-reveal>
+            <div className="mb-2 text-[11px] font-semibold uppercase tracking-[0.2em] text-amber-accent">
+              Upcoming Summit
+            </div>
+            <h2 className="font-serif text-[1.75rem] font-bold leading-tight text-heritage-navy lg:text-[2rem]">
+              ISGD Clinical Trials Summit
+            </h2>
+            <p className="mt-2 text-[15px] italic text-txsn-slate">
+              Hosted by the International Society of Glomerular Disease &amp; UTMB
+            </p>
+
+            <div className="mt-4 flex flex-wrap gap-x-5 gap-y-1.5 text-[13.5px] text-txsn-slate">
+              <span className="inline-flex items-center gap-1.5">
+                <Icon name="calendar" size={14} className="text-txsn-teal" /> November 13-15, 2026
+              </span>
+              <span className="inline-flex items-center gap-1.5">
+                <Icon name="pin" size={14} className="text-txsn-teal" /> Galveston Island Convention Center
+              </span>
+            </div>
+
+            <p className="mt-4 max-w-xl text-[14.5px] leading-relaxed text-txsn-slate">
+              The inaugural summit brings the entire kidney clinical-trial ecosystem into
+              one room: trialists and investigators, patients and advocates, regulators,
+              pharma and biotech leaders, and AI experts.
+            </p>
+
+            <ul className="mt-4 space-y-2">
+              {highlights.map((h) => (
+                <li key={h} className="flex gap-2 text-[13.5px] text-txsn-slate">
+                  <Icon name="check" size={16} className="mt-0.5 flex-shrink-0 text-txsn-teal" />
+                  <span>{h}</span>
+                </li>
+              ))}
+            </ul>
+
+            <div className="mt-6 flex flex-wrap gap-3">
+              <a
+                href={register}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 rounded-sm bg-heritage-navy px-6 py-3 text-[14px] font-semibold text-white shadow-sm transition-colors hover:opacity-90"
+              >
+                Register <Icon name="external" size={15} />
+              </a>
+              <Link
+                href="/events/isgd-cts-summit-2026"
+                className="inline-flex items-center gap-2 rounded-sm border border-heritage-navy/30 bg-white px-6 py-3 text-[14px] font-medium text-heritage-navy transition-colors hover:bg-clinical-blue"
+              >
+                View details <Icon name="arrow" size={15} />
+              </Link>
+            </div>
+          </div>
+
+          {/* Flyer, clickable, opens full size */}
+          <a
+            href={flyer}
+            target="_blank"
+            rel="noopener noreferrer"
+            data-reveal
+            data-delay="100"
+            aria-label="Open the full ISGD Clinical Trials Summit flyer"
+            className="group relative order-first mx-auto block w-full max-w-[340px] overflow-hidden rounded-xl shadow-lg shadow-txsn-teal-deep/10 ring-1 ring-txsn-mint-soft transition-all duration-300 hover:-translate-y-1 hover:shadow-xl focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-accent lg:order-last"
+          >
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={flyer}
+              alt="ISGD Clinical Trials Summit flyer, November 13-15, 2026"
+              className="block w-full transition-transform duration-500 group-hover:scale-[1.03]"
+            />
+            <div className="absolute inset-0 flex items-center justify-center bg-heritage-navy/0 transition-colors duration-300 group-hover:bg-heritage-navy/35">
+              <span className="flex translate-y-1 items-center gap-2 rounded-full bg-white/95 px-4 py-2 text-[13px] font-semibold text-heritage-navy opacity-0 shadow transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100">
+                <Icon name="file" size={15} /> View flyer
+              </span>
+            </div>
+          </a>
+        </div>
+      </Container>
+    </section>
+  );
+}
+
 export function Hero() {
   return (
     <section className="relative overflow-hidden">

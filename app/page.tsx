@@ -2,6 +2,7 @@ import {
   Hero,
   // FeaturedEvent, // "Next Event" bar hidden for now — re-add below to restore
   BrochureFeature,
+  SummitFeature,
   Pillars,
   NewsPreview,
   EventsPreview,
@@ -22,6 +23,7 @@ export default function HomePage() {
       {/* "Next Event" bar hidden for now:
           {featuredEvent && <FeaturedEvent event={featuredEvent} />} */}
       <BrochureFeature />
+      <SummitFeature />
       <Partners />
       <Pillars />
       <NewsPreview posts={news} />
