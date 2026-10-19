@@ -24,8 +24,8 @@ export default function HomePage() {
           {featuredEvent && <FeaturedEvent event={featuredEvent} />} */}
       {/* Bean Club feature removed — event has passed:
           <BrochureFeature /> */}
-      <SummitFeature />
       <Partners />
+      <SummitFeature />
       <Pillars />
       <NewsPreview posts={news} />
       <EventsPreview events={events} />
