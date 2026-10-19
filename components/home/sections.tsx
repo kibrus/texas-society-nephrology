@@ -145,10 +145,12 @@ export function SummitFeature() {
   const flyer = "/images/events/isgd-cts-summit-flyer.webp";
   const register = "https://www.is-gd.org/2026-cts";
   const highlights = [
-    "Keynote on how AI is reshaping the pace of clinical trials",
-    "“Voice of the FDA” roundtable with CDER/CBER nephrologists",
-    "Emerging biomarkers and treatment targets in glomerular disease",
-    "Late-breaking trial data not presented at ASN Kidney Week",
+    "Keynote address on how AI is reshaping the pace of clinical trials",
+    "“Voice of the FDA” roundtable with several CDER/CBER nephrologists",
+    "Sessions on emerging biomarkers and treatment targets in glomerular disease",
+    "Dedicated sessions on pediatric and post-transplant recurrent disease trials",
+    "Roundtables featuring venture capital investors and pharmaceutical C-suite executives",
+    "Late-breaking research including new trial data that will not be presented at ASN Kidney Week",
   ];
   return (
     <section className="bg-white border-b border-txsn-mint-soft/40">
@@ -176,12 +178,16 @@ export function SummitFeature() {
             </div>
 
             <p className="mt-4 max-w-xl text-[14.5px] leading-relaxed text-txsn-slate">
-              The inaugural summit brings the entire kidney clinical-trial ecosystem into
-              one room: trialists and investigators, patients and advocates, regulators,
-              pharma and biotech leaders, and AI experts.
+              The International Society of Glomerular Disease (ISGD) and the University of
+              Texas Medical Branch (UTMB) are excited to invite you to the inaugural
+              summit, bringing every stakeholder in the kidney trial ecosystem together in
+              one room.
             </p>
 
-            <ul className="mt-4 space-y-2">
+            <p className="mt-4 text-[13px] font-semibold text-heritage-navy">
+              Program highlights include:
+            </p>
+            <ul className="mt-2 space-y-2">
               {highlights.map((h) => (
                 <li key={h} className="flex gap-2 text-[13.5px] text-txsn-slate">
                   <Icon name="check" size={16} className="mt-0.5 flex-shrink-0 text-txsn-teal" />
