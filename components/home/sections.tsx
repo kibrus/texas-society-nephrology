@@ -55,9 +55,9 @@ export function FeaturedEvent({ event }: { event: EventItem }) {
 
 // Featured upcoming event block: shows the event flyer as a clickable preview
 // (opens the full flyer) alongside a short description. Currently wired to the
-// October Bayou City Bean Club; update or remove once the event has passed.
+// November Bayou City Bean Club; update or remove once the event has passed.
 export function BrochureFeature() {
-  const flyer = "/images/events/bayou-city-bean-club-october-flyer.webp";
+  const flyer = "/images/events/bayou-city-bean-club-november-flyer.webp";
   return (
     <section className="bg-txsn-paper border-b border-txsn-mint-soft/40">
       <Container className="py-14 lg:py-16">
@@ -73,8 +73,8 @@ export function BrochureFeature() {
           >
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
-              src="/images/events/bayou-city-bean-club-october-flyer.webp"
-              alt="Bayou City Bean Club flyer for the October 16, 2026 event"
+              src="/images/events/bayou-city-bean-club-november-flyer.webp"
+              alt="Bayou City Bean Club flyer for the November 20, 2026 event"
               className="block w-full transition-transform duration-500 group-hover:scale-[1.03]"
             />
             <div className="absolute inset-0 flex items-center justify-center bg-heritage-navy/0 transition-colors duration-300 group-hover:bg-heritage-navy/35">
@@ -96,13 +96,12 @@ export function BrochureFeature() {
               A Lunch and Learn
             </p>
             <p className="mt-1 text-[15px] font-semibold text-heritage-navy">
-              &ldquo;What&rsquo;s New about Focal Glomerulosclerosis: Clinical Data,
-              Genetics, and Treatment&rdquo;
+              &ldquo;New Technology and Toys for Critical Care Nephrology&rdquo;
             </p>
 
             <div className="mt-4 flex flex-wrap gap-x-5 gap-y-1.5 text-[13.5px] text-txsn-slate">
               <span className="inline-flex items-center gap-1.5">
-                <Icon name="calendar" size={14} className="text-txsn-teal" /> October 16, 2026
+                <Icon name="calendar" size={14} className="text-txsn-teal" /> November 20, 2026
               </span>
               <span className="inline-flex items-center gap-1.5">
                 <Icon name="pin" size={14} className="text-txsn-teal" /> III at Wolfgang Puck, Houston
@@ -110,10 +109,9 @@ export function BrochureFeature() {
             </div>
 
             <p className="mt-4 max-w-xl text-[14.5px] leading-relaxed text-txsn-slate">
-              Dr. Gerald B. Appel of Columbia University joins us for the next Bayou City
-              Bean Club with the latest on FSGS, from clinical data to genetics and
-              treatment. Lunch provided, with medical-device vendors on site. Join in
-              person or on Zoom.
+              Dr. Mink Chawla joins us for the next Bayou City Bean Club on new technology
+              and toys for critical care nephrology. Lunch provided, with medical-device
+              vendors on site. Join in person or on Zoom.
             </p>
 
             <div className="mt-6 flex flex-wrap gap-3">
@@ -126,7 +124,7 @@ export function BrochureFeature() {
                 <Icon name="file" size={16} /> View full flyer
               </a>
               <Link
-                href="/events/bayou-city-bean-club-october-2026"
+                href="/events/bayou-city-bean-club-november-2026"
                 className="inline-flex items-center gap-2 rounded-sm border border-heritage-navy/30 bg-white px-6 py-3 text-[14px] font-medium text-heritage-navy transition-colors hover:bg-clinical-blue"
               >
                 Event details <Icon name="arrow" size={15} />

@@ -1,8 +1,8 @@
 import {
   Hero,
   // FeaturedEvent, // "Next Event" bar hidden for now — re-add below to restore
-  // BrochureFeature, // Bean Club feature removed (event has passed) — re-add to restore
-  SummitFeature,
+  BrochureFeature,
+  // SummitFeature, // ISGD Summit has passed — re-add below to restore
   Pillars,
   NewsPreview,
   EventsPreview,
@@ -22,10 +22,8 @@ export default function HomePage() {
       <Hero />
       {/* "Next Event" bar hidden for now:
           {featuredEvent && <FeaturedEvent event={featuredEvent} />} */}
-      {/* Bean Club feature removed — event has passed:
-          <BrochureFeature /> */}
       <Partners />
-      <SummitFeature />
+      <BrochureFeature />
       <Pillars />
       <NewsPreview posts={news} />
       <EventsPreview events={events} />
