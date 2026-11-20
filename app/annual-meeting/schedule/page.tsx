@@ -1,6 +1,8 @@
-import { PageHeader, Container, PastBadge } from "@/components/ui";
+import Link from "next/link";
+import { ArrowLink, Container, PageHeader, Status } from "@/components/ui";
 import { annualMeeting } from "@/lib/site";
 import { isPastDate } from "@/lib/content";
+import { splitSession } from "../program";
 
 export const metadata = { title: "Schedule · TSN Annual Meeting" };
 
@@ -10,29 +12,68 @@ export default function SchedulePage() {
   return (
     <>
       <PageHeader
-        eyebrow="ANNUAL MEETING"
+        eyebrow={<Link href="/annual-meeting">Annual Meeting</Link>}
         title="Schedule"
-        intro={`${annualMeeting.dateLabel} · ${annualMeeting.location}`}
-      />
-      <Container className="py-14">
-        {past && <div className="mb-6"><PastBadge /></div>}
-        <div className="max-w-2xl">
-          {annualMeeting.schedule.map((slot, i) => (
-            <div key={i} className="flex gap-5 pb-6 last:pb-0">
-              <div className="flex flex-col items-end">
-                <div className="text-[12.5px] font-medium text-txsn-teal w-32 text-right">{slot.time}</div>
-              </div>
-              <div className="relative flex-1 pb-2">
-                <div className="absolute left-[-13px] top-1.5 w-2.5 h-2.5 rounded-full bg-txsn-teal" />
-                {i < annualMeeting.schedule.length - 1 && (
-                  <div className="absolute left-[-9px] top-4 bottom-[-12px] w-px bg-txsn-mint-soft" />
-                )}
-                <div className="text-[15px] font-medium text-txsn-teal-deep">{slot.session}</div>
-              </div>
+        intro={`${annualMeeting.dateLabel} · ${annualMeeting.timeLabel} · ${annualMeeting.location}`}
+        image="/images/site/annual-meeting/hero.webp"
+      >
+        {past && (
+          <div className="fade-up mt-6" style={{ animationDelay: ".24s" }}>
+            <Status tone="past" className="!text-white/80">
+              Past event
+            </Status>
+          </div>
+        )}
+      </PageHeader>
+
+      <section className="pad">
+        <Container>
+          <div>
+            <h2 className="h-display rv">{annualMeeting.eventName}</h2>
+
+            {/* Column labels (visible from sm up; rows label themselves on mobile) */}
+            <div
+              className="mt-10 hidden grid-cols-[190px_minmax(0,1fr)_120px] gap-6 border-b border-line px-1 pb-3 text-[14px] font-semibold text-muted sm:grid"
+              aria-hidden="true"
+            >
+              <span>Time</span>
+              <span>Session</span>
+              <span>Track</span>
             </div>
-          ))}
-        </div>
-      </Container>
+
+            <ol className="mt-6 sm:mt-0" aria-label="Program schedule">
+              {annualMeeting.schedule.map((slot, i) => {
+                const { title, speaker } = splitSession(slot.session);
+                return (
+                  <li
+                    key={slot.time}
+                    className="rv grid gap-1 border-b border-line px-1 py-5 sm:grid-cols-[190px_minmax(0,1fr)_120px] sm:gap-6"
+                    style={{ transitionDelay: `${Math.min(i, 6) * 0.04}s` }}
+                  >
+                    <span className="text-[15px] font-semibold tabular-nums text-navy">
+                      <span className="sr">Time: </span>
+                      {slot.time}
+                    </span>
+                    <span>
+                      <span className="block text-[17px] font-semibold leading-snug text-ink">{title}</span>
+                      {speaker && <span className="mt-0.5 block text-[15px] text-slate">{speaker}</span>}
+                    </span>
+                    <span className="text-[15px] text-slate">
+                      <span className="sr">Track: </span>
+                      {slot.track}
+                    </span>
+                  </li>
+                );
+              })}
+            </ol>
+
+            <div className="rv mt-10 flex flex-wrap gap-x-8 gap-y-3">
+              <ArrowLink href="/annual-meeting">Annual Meeting overview</ArrowLink>
+              <ArrowLink href="/annual-meeting/abstracts">Call for abstracts</ArrowLink>
+            </div>
+          </div>
+        </Container>
+      </section>
     </>
   );
 }

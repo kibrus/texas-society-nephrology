@@ -1,4 +1,4 @@
-import { PageHeader, Container, Icon } from "@/components/ui";
+import { PageHeader, Container, Icon, Button } from "@/components/ui";
 
 export const metadata = { title: "Careers · TSN" };
 
@@ -6,21 +6,37 @@ export default function CareersPage() {
   return (
     <>
       <PageHeader
-        eyebrow="RESOURCES"
+        eyebrow="Resources"
         title="Nephrology career center"
         intro="Open positions for kidney care professionals across Texas."
+        image="/images/site/careers/hero.webp"
       />
-      <Container className="py-14">
-        <div className="max-w-3xl bg-txsn-wash border border-txsn-mint-soft/50 rounded-xl p-10 text-center">
-          <Icon name="briefcase" size={28} className="text-txsn-teal mx-auto mb-3" />
-          <p className="text-[14px] text-txsn-slate">No open positions are posted right now.</p>
-        </div>
-        <div className="mt-6 bg-txsn-gold-soft rounded-xl p-6 max-w-3xl">
-          <h2 className="font-serif text-lg text-txsn-teal-deep font-medium mb-1">Have a position to post?</h2>
-          <p className="text-[13px] text-txsn-slate mb-3">Send us the details and we'll add it to the career center.</p>
-          <a href="/contact" className="inline-block bg-txsn-gold text-white text-[13px] font-medium px-4 py-2 rounded-md">Submit a posting</a>
-        </div>
-      </Container>
+      <section className="pad">
+        <Container>
+          <div className="grid gap-7 lg:grid-cols-[minmax(0,1.3fr)_minmax(0,1fr)]">
+            <div className="card-line rv flex flex-col items-center justify-center px-8 py-14 text-center">
+              <span className="ic-tile mb-5">
+                <Icon name="briefcase" size={26} />
+              </span>
+              <h2 className="font-serif text-[22px] font-bold text-navy">Open positions</h2>
+              <p className="mt-3 text-[17px] text-slate">No open positions are posted right now.</p>
+            </div>
+            <div className="rv" style={{ transitionDelay: ".08s" }}>
+              <div className="card flex h-full flex-col p-8 md:p-10">
+                <h2 className="font-serif text-[22px] font-bold text-navy">Have a position to post?</h2>
+                <p className="mt-3 flex-1 text-[17px] leading-[1.7] text-slate">
+                  Send us the details and we&apos;ll add it to the career center.
+                </p>
+                <div className="mt-8">
+                  <Button href="/contact" arrow>
+                    Submit a posting
+                  </Button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </Container>
+      </section>
     </>
   );
 }

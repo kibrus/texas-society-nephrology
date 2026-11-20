@@ -2,7 +2,7 @@
 
 import { useFormState } from "react-dom";
 import Link from "next/link";
-import { AuthShell } from "@/components/auth/AuthShell";
+import { AuthShell, authLink } from "@/components/auth/AuthShell";
 import {
   FieldLabel,
   FormError,
@@ -22,11 +22,8 @@ export default function ForgotPasswordPage() {
       title="Reset your password"
       subtitle="Enter your email and we'll send you a 6-digit code to reset your password."
       footer={
-        <p className="text-center text-[13.5px] text-txsn-slate">
-          <Link
-            href="/sign-in"
-            className="font-semibold text-txsn-teal hover:underline"
-          >
+        <p className="text-center text-[15px] text-slate">
+          <Link href="/sign-in" className={authLink}>
             Back to sign in
           </Link>
         </p>

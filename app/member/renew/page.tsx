@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import { PageHeader, Container } from "@/components/ui";
+import { PageHeader, Container, Button, Status } from "@/components/ui";
+import { STATUS_LABELS } from "@/lib/membership";
 import { getSessionContext } from "@/lib/auth";
 
 // Landing for members whose access has lapsed (expired / cancelled). Explains
@@ -35,36 +36,38 @@ export default async function RenewPage() {
   return (
     <>
       <PageHeader
-        eyebrow="MEMBERSHIP"
+        eyebrow="Membership"
         title={isCancelled ? "Rejoin TSN" : "Renew your membership"}
       />
-      <Container className="py-14">
-        <div className="max-w-md space-y-5">
-          <div className="bg-txsn-gold-soft rounded-xl p-6">
-            <p className="text-[14px] text-txsn-teal-deep">
-              {isCancelled
-                ? "Your membership has been cancelled. Rejoin to restore access to member benefits."
-                : expiredOn
-                  ? `Your membership expired on ${expiredOn}. Renew to restore access.`
-                  : "Your membership isn't active. Renew to restore access to member benefits."}
-            </p>
+      <section className="pt-14 pb-4 md:pt-16">
+        <Container>
+          <div className="max-w-lg">
+            <div className="card p-8">
+              <Status tone="past">
+                {STATUS_LABELS[profile.membership_status] ?? profile.membership_status}
+              </Status>
+              <p className="mt-4 text-[17px] leading-[1.65] text-ink">
+                {isCancelled
+                  ? "Your membership has been cancelled. Rejoin to restore access to member benefits."
+                  : expiredOn
+                    ? `Your membership expired on ${expiredOn}. Renew to restore access.`
+                    : "Your membership isn't active. Renew to restore access to member benefits."}
+              </p>
+              <div className="mt-7">
+                <Button href="/membership/payment" arrow>
+                  {isCancelled ? "Rejoin TSN" : "Renew now"}
+                </Button>
+              </div>
+            </div>
+            <div className="mt-8">
+              <Link href="/member" className="link">
+                <span aria-hidden="true">←</span>
+                Back to my account
+              </Link>
+            </div>
           </div>
-          <Link
-            href="/membership/payment"
-            className="inline-flex items-center gap-2 bg-txsn-teal hover:bg-txsn-teal-mid text-white text-[14px] font-medium px-5 py-3 rounded-md transition-colors"
-          >
-            {isCancelled ? "Rejoin TSN" : "Renew now"}
-          </Link>
-          <div>
-            <Link
-              href="/member"
-              className="text-[13px] text-txsn-slate hover:text-txsn-teal transition-colors"
-            >
-              ← Back to my account
-            </Link>
-          </div>
-        </div>
-      </Container>
+        </Container>
+      </section>
     </>
   );
 }

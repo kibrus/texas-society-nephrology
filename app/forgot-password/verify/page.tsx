@@ -1,7 +1,7 @@
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import Link from "next/link";
-import { AuthShell } from "@/components/auth/AuthShell";
+import { AuthShell, authLink } from "@/components/auth/AuthShell";
 import { RESET_EMAIL_COOKIE } from "../shared";
 import { ResetVerifyForm } from "./ResetVerifyForm";
 
@@ -20,12 +20,9 @@ export default function ResetVerifyPage() {
       title="Enter your code"
       subtitle="Check your email for the 6-digit code, then choose a new password."
       footer={
-        <p className="text-center text-[13.5px] text-txsn-slate">
+        <p className="text-center text-[15px] text-slate">
           Wrong email?{" "}
-          <Link
-            href="/forgot-password"
-            className="font-semibold text-txsn-teal hover:underline"
-          >
+          <Link href="/forgot-password" className={authLink}>
             Start over
           </Link>
         </p>

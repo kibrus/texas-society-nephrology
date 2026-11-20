@@ -24,60 +24,61 @@ export default async function PaymentPage() {
   const returnUrl = `${publicEnv.NEXT_PUBLIC_SITE_URL}/membership/payment/return`;
 
   return (
-    <div className="bg-txsn-paper">
+    <div>
       <Container className="py-14 lg:py-20">
-        <div className="mx-auto max-w-md">
+        <div className="mx-auto max-w-lg">
           {/* Heading */}
           <div className="mb-8 text-center">
-            <div className="mb-3 text-[11px] font-semibold uppercase tracking-[0.15em] text-txsn-gold">
+            <div className="mb-3 text-[14px] font-semibold text-navy">
               Membership · Step 3 of 3
             </div>
-            <h1 className="font-serif text-[2rem] font-medium leading-tight text-txsn-teal-deep">
+            <h1 className="font-serif text-[clamp(1.9rem,3vw,2.4rem)] font-bold leading-tight tracking-[-0.015em] text-navy">
               Complete your payment
             </h1>
-            <p className="mx-auto mt-2.5 max-w-sm text-[14.5px] leading-relaxed text-txsn-slate">
+            <p className="mx-auto mt-3 max-w-sm text-[16px] leading-relaxed text-slate">
               Enter your card details to activate your TSN membership.
             </p>
           </div>
 
           {/* Order summary */}
-          <div className="rounded-xl border border-txsn-mint-soft bg-white shadow-sm shadow-txsn-teal-deep/5">
-            <div className="flex items-center justify-between px-6 py-5">
+          <div className="card">
+            <div className="flex items-center justify-between gap-4 px-6 py-5 sm:px-7">
               <div>
-                <div className="text-[12px] uppercase tracking-wide text-txsn-slate">
-                  Membership tier
-                </div>
-                <div className="mt-0.5 text-[16px] font-semibold text-txsn-teal-deep">
+                <div className="text-[14px] text-slate">Membership tier</div>
+                <div className="mt-0.5 font-serif text-[20px] font-bold text-navy">
                   {tier?.label ?? profile.tier}
                 </div>
               </div>
               <div className="text-right">
-                <div className="text-[20px] font-bold text-txsn-teal-deep">
+                <div className="text-[22px] font-bold text-navy">
                   {tier?.priceLabel}
                 </div>
-                <div className="text-[12px] text-txsn-slate">per year</div>
+                <div className="text-[14px] text-slate">per year</div>
               </div>
             </div>
-            <div className="flex items-center gap-2 border-t border-txsn-mint-soft/50 bg-txsn-wash/60 px-6 py-3">
-              <Icon name="clock" size={14} className="text-txsn-teal" />
-              <span className="text-[12.5px] text-txsn-slate">
+            <div className="flex items-start gap-2.5 border-t border-line bg-surface-2 px-6 py-3.5 sm:px-7">
+              <Icon name="clock" size={16} className="mt-0.5 flex-shrink-0 text-navy" />
+              <span className="text-[14px] text-slate">
                 Renews automatically each year. Cancel anytime from your account.
               </span>
             </div>
           </div>
 
           {/* Payment */}
-          <div className="mt-6 rounded-xl border border-txsn-mint-soft bg-white p-6 shadow-sm shadow-txsn-teal-deep/5">
+          <div className="card mt-6 p-6 sm:p-7">
             {"error" in result ? (
-              <div className="rounded-lg bg-txsn-gold-soft p-5">
-                <p className="text-[14px] text-txsn-teal-deep">
+              <div
+                role="alert"
+                className="rounded-[10px] border border-[#fecdca] bg-[#fef3f2] p-5"
+              >
+                <p className="text-[15px] text-[#b42318]">
                   {result.error} If this keeps happening, please contact us.
                 </p>
               </div>
             ) : (
               <>
                 <PaymentForm clientSecret={result.clientSecret} returnUrl={returnUrl} />
-                <p className="mt-4 text-[11.5px] leading-relaxed text-txsn-slate">
+                <p className="mt-5 text-[14px] leading-relaxed text-slate">
                   By providing your card information, you allow Texas Society of
                   Nephrology sandbox to charge your card for the amount above and
                   to automatically renew your membership each year until you
@@ -89,15 +90,15 @@ export default async function PaymentPage() {
           </div>
 
           {/* Trust footer */}
-          <div className="mt-5 flex items-center justify-center gap-2 text-[12px] text-txsn-slate">
-            <Icon name="check" size={14} className="text-txsn-teal" />
+          <div className="mt-6 flex items-center justify-center gap-2 text-[14px] text-slate">
+            <Icon name="lock" size={15} className="text-navy" />
             <span>
               Secured by{" "}
               <a
                 href="https://stripe.com"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="font-medium text-txsn-teal hover:underline"
+                className="font-semibold text-navy underline decoration-navy/30 underline-offset-4 hover:decoration-navy"
               >
                 Stripe
               </a>

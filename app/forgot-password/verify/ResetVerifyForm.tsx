@@ -4,6 +4,7 @@ import { useFormState, useFormStatus } from "react-dom";
 import {
   FieldLabel,
   FormError,
+  FormSuccess,
   SubmitButton,
   authField,
 } from "@/components/auth/AuthUI";
@@ -21,7 +22,7 @@ function ResendButton() {
     <button
       type="submit"
       disabled={pending}
-      className="text-[13px] text-txsn-teal font-medium hover:underline disabled:opacity-60"
+      className="font-semibold text-navy underline decoration-navy/30 underline-offset-4 hover:decoration-navy disabled:cursor-not-allowed disabled:opacity-60"
     >
       {pending ? "Sending..." : "Resend code"}
     </button>
@@ -34,14 +35,14 @@ export function ResetVerifyForm({ email }: { email: string }) {
 
   return (
     <div className="space-y-5">
-      <p className="text-[14px] text-txsn-slate">
+      <p className="text-[16px] leading-relaxed text-slate">
         We sent a 6-digit code to{" "}
-        <span className="font-medium text-txsn-teal-deep">{email}</span>. Enter it
+        <span className="font-semibold text-ink">{email}</span>. Enter it
         below to reset your password.
       </p>
 
-      <p className="rounded-lg bg-txsn-wash px-3.5 py-2.5 text-[12.5px] text-txsn-slate">
-        <span className="font-medium text-txsn-teal-deep">Don&apos;t see it?</span>{" "}
+      <p className="rounded-[10px] border border-line bg-surface px-4 py-3 text-[15px] text-slate">
+        <span className="font-semibold text-ink">Don&apos;t see it?</span>{" "}
         Please check your spam or junk folder.
       </p>
 
@@ -56,22 +57,20 @@ export function ResetVerifyForm({ email }: { email: string }) {
             maxLength={6}
             required
             placeholder="123456"
-            className={`${authField} tracking-[0.3em] text-center`}
+            className={`${authField} text-center !text-[20px] font-semibold tracking-[0.3em]`}
           />
         </div>
         <FormError message={state.error} />
         <SubmitButton label="Verify code" pendingLabel="Verifying..." />
       </form>
 
-      <div className="flex items-center gap-2 text-[13px] text-txsn-slate">
+      <div className="flex flex-wrap items-center gap-2 text-[15px] text-slate">
         <span>Didn&apos;t get it?</span>
         <form action={resendAction}>
           <ResendButton />
         </form>
       </div>
-      {resendState.resent && (
-        <p className="text-[13px] text-txsn-teal">A new code is on its way.</p>
-      )}
+      {resendState.resent && <FormSuccess>A new code is on its way.</FormSuccess>}
       <FormError message={resendState.error} />
     </div>
   );

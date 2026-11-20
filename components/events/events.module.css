@@ -1,0 +1,93 @@
+/* Events list + detail styles (mockup .ev-feature / .ev-item). */
+
+/* ---------- Featured next event ---------- */
+.feature {
+  display: grid;
+  grid-template-columns: minmax(0, 40%) minmax(0, 1fr);
+}
+.featurePhoto {
+  position: relative;
+  min-height: 100%;
+  background: #a9a9a9;
+}
+.featurePhoto img {
+  object-fit: cover;
+}
+.featureDate {
+  position: absolute;
+  left: 20px;
+  top: 20px;
+  z-index: 2;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+  min-width: 78px;
+}
+.featureBody {
+  padding: 32px 34px 34px;
+}
+@media (max-width: 760px) {
+  .feature { grid-template-columns: 1fr; }
+  .featurePhoto { aspect-ratio: 4 / 3; min-height: 0; }
+  .featureBody { padding: 24px 22px 26px; }
+}
+
+/* Whole card clickable without nesting links: the details link stretches
+   over the card; the RSVP button sits above it. */
+.stretch::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  border-radius: inherit;
+}
+.above {
+  position: relative;
+  z-index: 3;
+}
+
+/* ---------- Rows ---------- */
+.row {
+  display: grid;
+  grid-template-columns: 96px minmax(0, 1fr);
+  gap: 18px;
+  align-items: center;
+  padding: 12px;
+  text-decoration: none;
+  color: inherit;
+  transition: box-shadow 0.25s, border-color 0.25s, opacity 0.25s;
+}
+.row:hover {
+  box-shadow: var(--shadow);
+  border-color: transparent;
+}
+.row:hover h3 { color: var(--navy-hover); }
+.rowDate {
+  display: flex;
+  justify-content: center;
+}
+.thumb {
+  position: relative;
+  aspect-ratio: 1;
+  border-radius: 10px;
+  overflow: hidden;
+  background: #eef1f4;
+}
+.thumb img { object-fit: cover; }
+.row.past { background: #fafbfc; }
+.past h3 { color: var(--slate); }
+/* Keep the navy row-hover bar together with the hover shadow */
+.row:global(.row-hover):hover,
+.row:global(.row-hover):focus-visible {
+  box-shadow: inset 3px 0 0 var(--navy), var(--shadow);
+}
+@media (max-width: 520px) {
+  .row { grid-template-columns: 72px minmax(0, 1fr); gap: 14px; }
+}
+
+/* ---------- Detail sidebar ---------- */
+.side {
+  position: sticky;
+  top: 110px;
+}
+@media (max-width: 1023px) {
+  .side { position: static; }
+}

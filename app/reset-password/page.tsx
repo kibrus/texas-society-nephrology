@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { AuthShell } from "@/components/auth/AuthShell";
+import { AuthShell, authLink } from "@/components/auth/AuthShell";
 import { getCurrentUser } from "@/lib/auth";
 import { ResetPasswordForm } from "./ResetPasswordForm";
 
@@ -18,13 +18,13 @@ export default async function ResetPasswordPage() {
       {user ? (
         <ResetPasswordForm />
       ) : (
-        <div className="rounded-xl border border-txsn-mint-soft bg-white p-7 text-center shadow-sm shadow-txsn-teal-deep/5">
-          <p className="text-[14px] text-txsn-slate">
+        <div className="card-line p-7 text-center">
+          <p role="alert" className="text-[16px] text-[#b42318]">
             This reset link is invalid or has expired.
           </p>
           <Link
             href="/forgot-password"
-            className="mt-3 inline-block text-[14px] font-semibold text-txsn-teal hover:underline"
+            className={`${authLink} mt-4 inline-block text-[15px]`}
           >
             Request a new reset link
           </Link>

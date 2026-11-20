@@ -46,11 +46,11 @@ function CheckoutForm({ returnUrl }: { returnUrl: string }) {
       {error && (
         <p
           role="alert"
-          className="flex items-start gap-2 rounded-lg border border-red-200 bg-red-50 px-3.5 py-2.5 text-[13px] text-red-700"
+          className="flex items-start gap-2.5 rounded-[10px] border border-[#fecdca] bg-[#fef3f2] px-4 py-3 text-[15px] leading-snug text-[#b42318]"
         >
           <span
             aria-hidden
-            className="mt-1.5 h-1.5 w-1.5 flex-shrink-0 rounded-full bg-red-500"
+            className="mt-[7px] h-1.5 w-1.5 flex-shrink-0 rounded-full bg-[#b42318]"
           />
           {error}
         </p>
@@ -58,7 +58,8 @@ function CheckoutForm({ returnUrl }: { returnUrl: string }) {
       <button
         type="submit"
         disabled={!stripe || submitting}
-        className="inline-flex w-full items-center justify-center gap-2 rounded-lg bg-txsn-teal px-5 py-3.5 text-[14.5px] font-semibold text-white shadow-sm shadow-txsn-teal-deep/20 transition-all duration-150 hover:bg-txsn-teal-mid hover:shadow-md hover:shadow-txsn-teal-deep/25 focus:outline-none focus-visible:ring-4 focus-visible:ring-txsn-mint/30 disabled:opacity-60 disabled:shadow-none"
+        aria-disabled={!stripe || submitting}
+        className="btn btn-navy w-full"
       >
         {submitting ? "Processing..." : "Pay & activate membership"}
       </button>
@@ -81,26 +82,28 @@ export function PaymentForm({
         appearance: {
           theme: "stripe",
           variables: {
-            colorPrimary: "#1A56A0",
-            colorText: "#0d1e30",
-            colorDanger: "#b91c1c",
+            colorPrimary: "#002855",
+            colorText: "#14202d",
+            colorTextSecondary: "#475a6d",
+            colorDanger: "#b42318",
             fontFamily: "Inter, system-ui, sans-serif",
-            borderRadius: "8px",
+            fontSizeBase: "16px",
+            borderRadius: "10px",
             spacingUnit: "4px",
           },
           rules: {
             ".Input": {
-              border: "1px solid #B3D4ED",
+              border: "1px solid #cdd6e0",
               boxShadow: "none",
               padding: "12px",
             },
             ".Input:focus": {
-              border: "1px solid #1A56A0",
-              boxShadow: "0 0 0 4px rgba(90,159,212,0.25)",
+              border: "1px solid #002855",
+              boxShadow: "0 0 0 3px rgba(0,40,85,0.15)",
             },
             ".Label": {
-              fontWeight: "500",
-              color: "#0D1F3C",
+              fontWeight: "600",
+              color: "#14202d",
             },
           },
         },

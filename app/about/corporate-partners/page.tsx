@@ -1,4 +1,4 @@
-import { PageHeader, Container } from "@/components/ui";
+import { PageHeader, Container, Button } from "@/components/ui";
 import { corporatePartners } from "@/lib/site";
 
 export const metadata = { title: "Corporate Partners · TSN" };
@@ -36,61 +36,65 @@ export default function PartnersPage() {
   return (
     <>
       <PageHeader
-        eyebrow="ABOUT TXSN"
+        eyebrow="About"
         title="Corporate Partners"
         intro="We're grateful to the organizations whose support makes our education, advocacy, and community work possible."
+        image="/images/site/partners/hero.webp"
       />
-      <Container className="py-14">
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {partners.map((p) => {
-            const src = `/images/partners/${p.slug}.${p.ext ?? "png"}`;
-            const desc = descriptions[p.slug] ?? "";
-            return (
-              <a
-                key={p.slug}
-                href={p.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="group bg-white border border-txsn-mint-soft/50 rounded-xl p-6 flex flex-col gap-4 hover:shadow-md hover:border-txsn-mint transition-all"
-              >
-                <div className="h-12 flex items-center">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
-                    src={src}
-                    alt={p.name}
-                    className="h-10 w-auto object-contain max-w-[180px]"
-                  />
-                </div>
-                {desc && (
-                  <p className="text-[13px] text-txsn-slate leading-relaxed">{desc}</p>
-                )}
-                <span className="mt-auto text-[12px] font-semibold text-heritage-navy inline-flex items-center gap-1 group-hover:gap-2 transition-all">
-                  Visit website
-                  <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true">
-                    <path d="M2 10L10 2M10 2H4M10 2v6" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                  </svg>
-                </span>
-              </a>
-            );
-          })}
-        </div>
+      <section className="pad !pb-0">
+        <Container>
+          <ul className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {partners.map((p, i) => {
+              const src = `/images/partners/${p.slug}.${p.ext ?? "png"}`;
+              const desc = descriptions[p.slug] ?? "";
+              return (
+                <li key={p.slug} className="rv flex" style={i % 3 ? { transitionDelay: `${(i % 3) * 0.08}s` } : undefined}>
+                  <a
+                    href={p.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="card card-hover spot group flex w-full flex-col no-underline"
+                  >
+                    <div className="flex h-[148px] items-center justify-center border-b border-line px-8">
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img
+                        src={src}
+                        alt=""
+                        loading="lazy"
+                        className={`w-auto max-w-[200px] object-contain transition-transform duration-300 group-hover:scale-[1.04] ${
+                          p.slug === "partner11" ? "h-10" : "h-14"
+                        }`}
+                      />
+                    </div>
+                    <div className="flex flex-1 flex-col p-6">
+                      <h2 className="font-serif text-[19px] font-bold leading-snug">{p.name}</h2>
+                      {desc && <p className="mt-2.5 text-[16px] leading-relaxed text-slate">{desc}</p>}
+                      <span className="link mt-auto pt-5 text-[15px]">
+                        Visit website
+                        <span className="arrow" aria-hidden="true">→</span>
+                        <span className="sr"> (opens in a new tab)</span>
+                      </span>
+                    </div>
+                  </a>
+                </li>
+              );
+            })}
+          </ul>
 
-        <div className="mt-12 bg-txsn-gold-soft rounded-xl p-7 text-center">
-          <h2 className="font-serif text-xl text-txsn-teal-deep font-medium mb-2">
-            Interested in partnering with TSN?
-          </h2>
-          <p className="text-[14px] text-txsn-slate mb-4 max-w-lg mx-auto">
-            Corporate partnership connects your organization with kidney care professionals across Texas.
-            Reach out to learn about available opportunities.
-          </p>
-          <a
-            href="/contact"
-            className="inline-block bg-txsn-gold text-white text-[13px] font-medium px-5 py-2.5 rounded-md"
-          >
-            Contact us
-          </a>
-        </div>
-      </Container>
+          <div className="card spot rv mt-16 flex flex-col items-start gap-6 p-8 md:flex-row md:items-center md:justify-between lg:p-10">
+            <div className="max-w-2xl">
+              <h2 className="font-serif text-[1.5rem] font-bold">Interested in partnering with TSN?</h2>
+              <p className="mt-2.5 text-[17px] leading-relaxed text-slate">
+                Corporate partnership connects your organization with kidney care professionals across Texas.
+                Reach out to learn about available opportunities.
+              </p>
+            </div>
+            <Button href="/contact" arrow className="flex-shrink-0">
+              Contact us
+            </Button>
+          </div>
+        </Container>
+      </section>
     </>
   );
 }

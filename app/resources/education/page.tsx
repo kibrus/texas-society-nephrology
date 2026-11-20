@@ -11,21 +11,25 @@ const sessions = [
 export default function EducationPage() {
   return (
     <>
-      <PageHeader eyebrow="RESOURCES" title="Education & CME" intro="Our monthly webinar series and accredited continuing education, included with membership." />
-      <Container className="py-14">
-        <div className="grid gap-4 sm:grid-cols-3 max-w-4xl">
-          {sessions.map((s) => (
-            <div key={s.title} className="bg-white border border-txsn-mint-soft/50 rounded-xl p-5">
-              <div className="w-10 h-10 rounded-[10px] bg-txsn-wash flex items-center justify-center text-txsn-teal mb-3">
-                <Icon name="video" size={20} />
+      <PageHeader eyebrow="Resources" title="Education & CME" intro="Our monthly webinar series and accredited continuing education, included with membership." />
+      <section className="pad">
+        <Container>
+          <div className="grid max-w-4xl gap-6 sm:grid-cols-3">
+            {sessions.map((s) => (
+              <div key={s.title} className="card p-6">
+                <span className="mb-5 flex h-11 w-11 items-center justify-center rounded-xl bg-surface-2 text-navy">
+                  <Icon name="video" size={20} />
+                </span>
+                <h2 className="text-[17px] font-semibold leading-snug text-navy">{s.title}</h2>
+                <div className="meta mt-2">
+                  <span className="date">{s.date}</span>
+                  <span className="cat">{s.cme}</span>
+                </div>
               </div>
-              <div className="text-[14px] font-medium text-txsn-teal-deep mb-1">{s.title}</div>
-              <div className="text-[12px] text-txsn-slate">{s.date}</div>
-              <span className="inline-block mt-2 text-[11px] font-medium text-txsn-teal bg-txsn-wash px-2.5 py-0.5 rounded-full">{s.cme}</span>
-            </div>
-          ))}
-        </div>
-      </Container>
+            ))}
+          </div>
+        </Container>
+      </section>
     </>
   );
 }

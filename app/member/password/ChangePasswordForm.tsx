@@ -2,7 +2,7 @@
 
 import { useFormState } from "react-dom";
 import Link from "next/link";
-import { Icon } from "@/components/ui";
+import { Button } from "@/components/ui";
 import {
   FieldLabel,
   FormError,
@@ -18,23 +18,23 @@ export function ChangePasswordForm() {
 
   if (state.success) {
     return (
-      <div className="text-center">
-        <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-txsn-teal text-white">
-          <Icon name="check" size={24} />
+      <div className="text-center" role="status">
+        <div className="mx-auto mb-5 flex h-14 w-14 items-center justify-center rounded-full bg-navy text-white">
+          <svg className="success-check" width="26" height="26" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M20 6L9 17l-5-5" />
+          </svg>
         </div>
-        <h2 className="font-serif text-xl font-medium text-txsn-teal-deep">
+        <h2 className="font-serif text-[22px] font-bold text-navy">
           Password updated
         </h2>
-        <p className="mx-auto mt-2 max-w-xs text-[14px] text-txsn-slate">
+        <p className="mx-auto mt-2 max-w-xs text-[16px] text-slate">
           Your password has been changed successfully.
         </p>
-        <Link
-          href="/member"
-          className="mt-6 inline-flex items-center justify-center gap-2 rounded-lg bg-txsn-teal px-5 py-3 text-[14.5px] font-semibold text-white shadow-sm shadow-txsn-teal-deep/20 transition-all duration-150 hover:bg-txsn-teal-mid hover:shadow-md"
-        >
-          Back to my account
-          <Icon name="arrow" size={16} />
-        </Link>
+        <div className="mt-7">
+          <Button href="/member" arrow>
+            Back to my account
+          </Button>
+        </div>
       </div>
     );
   }
@@ -82,11 +82,11 @@ export function ChangePasswordForm() {
 
       <SubmitButton label="Update password" pendingLabel="Updating..." />
 
-      <p className="text-center text-[13px] text-txsn-slate">
+      <p className="text-center text-[14.5px] text-slate">
         Forgot your current password?{" "}
         <Link
           href="/forgot-password"
-          className="font-medium text-txsn-teal hover:underline"
+          className="font-semibold text-navy underline-offset-4 hover:underline"
         >
           Reset it by email
         </Link>

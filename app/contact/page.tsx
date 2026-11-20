@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { PageHeader, Container, Icon } from "@/components/ui";
+import { PageHeader, Container, Icon, Button } from "@/components/ui";
 import { siteConfig } from "@/lib/site";
 
 export default function ContactPage() {
@@ -25,86 +25,100 @@ export default function ContactPage() {
     }
   }
 
-  const field =
-    "w-full bg-white border border-txsn-mint-soft rounded-md px-3.5 py-2.5 text-[14px] text-txsn-ink placeholder:text-txsn-slate/50 focus:outline-none focus:border-txsn-teal focus:ring-2 focus:ring-txsn-mint/40 transition-colors";
-
   return (
     <>
       <PageHeader
-        eyebrow="GET IN TOUCH"
+        eyebrow="Contact"
         title="Contact TSN"
         intro="Questions about membership, events, or partnership? Send us a note and we'll get back to you."
+        image="/images/site/contact/hero.webp"
+        imagePosition="85% top"
       />
-      <Container className="py-14">
-        <div className="grid lg:grid-cols-[1.3fr_1fr] gap-12 max-w-4xl">
-          <div>
-            {status === "sent" ? (
-              <div className="bg-txsn-wash rounded-xl p-8 text-center">
-                <div className="w-12 h-12 rounded-full bg-txsn-teal flex items-center justify-center text-white mx-auto mb-3">
-                  <Icon name="check" size={24} />
+      <section className="pad !pb-0">
+        <Container>
+          <div className="grid gap-10 lg:grid-cols-[1fr_1.45fr] lg:gap-16">
+            {/* Info */}
+            <div className="rv grid content-start gap-4">
+              <h2 className="h-display">Get in touch</h2>
+              <div className="card-line mt-4 flex items-start gap-4 p-6">
+                <span className="ic-tile">
+                  <Icon name="mail" size={20} />
+                </span>
+                <div>
+                  <div className="text-[14px] font-semibold text-ink">Email</div>
+                  <a href={`mailto:${siteConfig.email}`} className="link mt-0.5 break-all text-[17px]">
+                    {siteConfig.email}
+                  </a>
                 </div>
-                <h2 className="font-serif text-xl text-txsn-teal-deep font-medium mb-1">Message sent</h2>
-                <p className="text-[14px] text-txsn-slate">Thanks for reaching out. We'll be in touch soon.</p>
               </div>
-            ) : (
-              <form onSubmit={handleSubmit} className="space-y-4">
-                {/* Honeypot — hidden from users, catches bots. */}
-                <input
-                  type="text"
-                  name="company"
-                  tabIndex={-1}
-                  autoComplete="off"
-                  aria-hidden="true"
-                  className="hidden"
-                  value={form.company}
-                  onChange={(e) => setForm({ ...form, company: e.target.value })}
-                />
-                <div className="grid sm:grid-cols-2 gap-4">
-                  <div>
-                    <label htmlFor="name" className="block text-[13px] font-medium text-txsn-teal-deep mb-1.5">Name</label>
-                    <input id="name" required className={field} value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} />
-                  </div>
-                  <div>
-                    <label htmlFor="email" className="block text-[13px] font-medium text-txsn-teal-deep mb-1.5">Email</label>
-                    <input id="email" type="email" required className={field} value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} />
-                  </div>
-                </div>
+              <div className="card-line flex items-start gap-4 p-6">
+                <span className="ic-tile">
+                  <Icon name="pin" size={20} />
+                </span>
                 <div>
-                  <label htmlFor="subject" className="block text-[13px] font-medium text-txsn-teal-deep mb-1.5">Subject</label>
-                  <input id="subject" required className={field} value={form.subject} onChange={(e) => setForm({ ...form, subject: e.target.value })} />
+                  <div className="text-[14px] font-semibold text-ink">Serving</div>
+                  <div className="mt-0.5 text-[17px] text-slate">Nephrology professionals across Texas</div>
                 </div>
-                <div>
-                  <label htmlFor="message" className="block text-[13px] font-medium text-txsn-teal-deep mb-1.5">Message</label>
-                  <textarea id="message" required rows={5} className={field} value={form.message} onChange={(e) => setForm({ ...form, message: e.target.value })} />
-                </div>
-                {status === "error" && (
-                  <p className="text-[13px] text-red-700">Something went wrong sending your message. Please email us directly.</p>
-                )}
-                <button
-                  type="submit"
-                  disabled={status === "sending"}
-                  className="inline-flex items-center gap-2 bg-txsn-teal hover:bg-txsn-teal-mid disabled:opacity-60 text-white text-[14px] font-medium px-5 py-3 rounded-md transition-colors"
-                >
-                  {status === "sending" ? "Sending..." : "Send message"} <Icon name="arrow" size={16} />
-                </button>
-              </form>
-            )}
-          </div>
+              </div>
+            </div>
 
-          <div className="space-y-4">
-            <div className="bg-txsn-wash rounded-xl p-6">
-              <Icon name="mail" size={22} className="text-txsn-teal mb-2" />
-              <div className="text-[13px] font-medium text-txsn-teal-deep">Email</div>
-              <a href={`mailto:${siteConfig.email}`} className="text-[13px] text-txsn-teal hover:underline">{siteConfig.email}</a>
-            </div>
-            <div className="bg-txsn-gold-soft rounded-xl p-6">
-              <Icon name="pin" size={22} className="text-txsn-gold mb-2" />
-              <div className="text-[13px] font-medium text-txsn-teal-deep">Serving</div>
-              <div className="text-[13px] text-txsn-slate">Nephrology professionals across Texas</div>
+            {/* Form */}
+            <div className="card rv p-7 sm:p-9 lg:p-10" style={{ transitionDelay: ".08s" }}>
+              {status === "sent" ? (
+                <div role="status" className="py-8 text-center">
+                  <span className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-navy text-white">
+                    <svg className="success-check" width="28" height="28" viewBox="0 0 24 24" aria-hidden="true">
+                      <path d="M5 12.5l4.5 4.5L19 7.5" strokeLinecap="round" strokeLinejoin="round" />
+                    </svg>
+                  </span>
+                  <h2 className="font-serif text-[1.5rem] font-bold">Message sent</h2>
+                  <p className="mt-2 text-[17px] text-slate">Thanks for reaching out. We&apos;ll be in touch soon.</p>
+                </div>
+              ) : (
+                <form onSubmit={handleSubmit} className="space-y-5">
+                  {/* Honeypot — hidden from users, catches bots. */}
+                  <input
+                    type="text"
+                    name="company"
+                    tabIndex={-1}
+                    autoComplete="off"
+                    aria-hidden="true"
+                    className="hidden"
+                    value={form.company}
+                    onChange={(e) => setForm({ ...form, company: e.target.value })}
+                  />
+                  <div className="grid gap-5 sm:grid-cols-2">
+                    <div>
+                      <label htmlFor="name" className="label">Name</label>
+                      <input id="name" required autoComplete="name" className="field" value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} />
+                    </div>
+                    <div>
+                      <label htmlFor="email" className="label">Email</label>
+                      <input id="email" type="email" required autoComplete="email" className="field" value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} />
+                    </div>
+                  </div>
+                  <div>
+                    <label htmlFor="subject" className="label">Subject</label>
+                    <input id="subject" required className="field" value={form.subject} onChange={(e) => setForm({ ...form, subject: e.target.value })} />
+                  </div>
+                  <div>
+                    <label htmlFor="message" className="label">Message</label>
+                    <textarea id="message" required rows={6} className="field" value={form.message} onChange={(e) => setForm({ ...form, message: e.target.value })} />
+                  </div>
+                  {status === "error" && (
+                    <p role="alert" className="text-[15px] text-red-700">
+                      Something went wrong sending your message. Please email us directly.
+                    </p>
+                  )}
+                  <Button type="submit" disabled={status === "sending"} arrow={status !== "sending"}>
+                    {status === "sending" ? "Sending..." : "Send message"}
+                  </Button>
+                </form>
+              )}
             </div>
           </div>
-        </div>
-      </Container>
+        </Container>
+      </section>
     </>
   );
 }

@@ -75,7 +75,12 @@ export function ProfileForm({ firstName, lastName, profession, phone }: Props) {
 
       <FormError message={state.error} />
       {state.ok && (
-        <p className="text-[13px] text-txsn-teal">Your changes have been saved.</p>
+        <p role="status" className="flex items-center gap-2 text-[15px] font-semibold text-navy">
+          <svg className="success-check" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M20 6L9 17l-5-5" />
+          </svg>
+          Your changes have been saved.
+        </p>
       )}
 
       <div className="pt-1">

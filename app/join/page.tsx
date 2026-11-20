@@ -1,6 +1,6 @@
 import { redirect } from "next/navigation";
 import Link from "next/link";
-import { AuthShell } from "@/components/auth/AuthShell";
+import { AuthShell, authLink } from "@/components/auth/AuthShell";
 import { Icon } from "@/components/ui";
 import { getCurrentUser } from "@/lib/auth";
 import { SignupForm } from "./SignupForm";
@@ -37,30 +37,27 @@ export default async function JoinPage() {
       title="Join TSN"
       subtitle="Create your account, verify your email, and choose a membership tier. Dues are billed after verification."
       footer={
-        <p className="text-center text-[13.5px] text-txsn-slate">
+        <p className="text-center text-[15px] text-slate">
           Already a member?{" "}
-          <Link
-            href="/sign-in"
-            className="font-semibold text-txsn-teal hover:underline"
-          >
+          <Link href="/sign-in" className={authLink}>
             Sign in
           </Link>
         </p>
       }
     >
       {/* Benefits — visible on mobile/tablet; desktop shows them in the brand panel */}
-      <div className="mb-8 rounded-xl border border-txsn-mint-soft bg-white p-5 shadow-sm shadow-txsn-teal-deep/5 lg:hidden">
-        <div className="mb-3 text-[11px] font-semibold uppercase tracking-[0.15em] text-txsn-gold">
+      <div className="card-line mb-8 p-5 lg:hidden">
+        <h2 className="mb-3 text-[15px] font-semibold text-navy">
           Membership benefits
-        </div>
+        </h2>
         <ul className="space-y-3">
           {BENEFITS.map((b) => (
             <li key={b.title} className="flex gap-3">
-              <span className="mt-0.5 flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full bg-txsn-mint/15 text-txsn-teal">
+              <span className="mt-1 flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full bg-navy text-white">
                 <Icon name="check" size={13} />
               </span>
-              <span className="text-[13.5px] leading-relaxed text-txsn-slate">
-                <span className="font-semibold text-txsn-teal-deep">{b.title}</span>
+              <span className="text-[15px] leading-relaxed text-slate">
+                <span className="font-semibold text-ink">{b.title}</span>
                 {" - "}
                 {b.body}
               </span>

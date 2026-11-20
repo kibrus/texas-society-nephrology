@@ -1,7 +1,7 @@
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import Link from "next/link";
-import { AuthShell } from "@/components/auth/AuthShell";
+import { AuthShell, authLink } from "@/components/auth/AuthShell";
 import { SIGNUP_EMAIL_COOKIE } from "../signup-shared";
 import { VerifyForm } from "./VerifyForm";
 
@@ -20,12 +20,9 @@ export default function VerifyPage() {
       title="Verify your email"
       subtitle="One quick step to confirm it's really you, then you'll choose your tier and complete payment."
       footer={
-        <p className="text-center text-[13.5px] text-txsn-slate">
+        <p className="text-center text-[15px] text-slate">
           Wrong email?{" "}
-          <Link
-            href="/join"
-            className="font-semibold text-txsn-teal hover:underline"
-          >
+          <Link href="/join" className={authLink}>
             Start over
           </Link>
         </p>

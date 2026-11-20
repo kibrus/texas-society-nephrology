@@ -17,7 +17,7 @@ export function SignupForm() {
 
   return (
     <form action={formAction} className="space-y-5">
-      <div className="grid sm:grid-cols-2 gap-4">
+      <div className="grid gap-4 sm:grid-cols-2">
         <div>
           <FieldLabel htmlFor="first_name">First name</FieldLabel>
           <input id="first_name" name="first_name" required className={authField} />
@@ -41,9 +41,12 @@ export function SignupForm() {
           type="password"
           required
           minLength={8}
+          aria-describedby="password-hint"
           className={authField}
         />
-        <p className="text-[12px] text-txsn-slate mt-1">At least 8 characters.</p>
+        <p id="password-hint" className="mt-1.5 text-[14px] text-slate">
+          At least 8 characters.
+        </p>
       </div>
 
       <div>
@@ -66,14 +69,14 @@ export function SignupForm() {
       </div>
 
       <fieldset>
-        <legend className="block text-[13px] font-medium text-txsn-teal-deep mb-1.5">
+        <legend className="label">
           Membership tier
         </legend>
-        <div className="grid sm:grid-cols-2 gap-3">
+        <div className="grid gap-3 sm:grid-cols-2">
           {TIER_OPTIONS.map((tier, i) => (
             <label
               key={tier.value}
-              className="flex cursor-pointer flex-col gap-1 rounded-lg border border-txsn-mint-soft bg-white p-4 has-[:checked]:border-txsn-teal has-[:checked]:ring-2 has-[:checked]:ring-txsn-mint/40 transition-colors"
+              className="flex cursor-pointer flex-col gap-1 rounded-[12px] border border-[#cdd6e0] bg-white p-4 transition-[border-color,box-shadow] hover:border-navy/50 has-[:checked]:border-navy has-[:checked]:shadow-[0_0_0_3px_rgba(0,40,85,0.15)]"
             >
               <span className="flex items-center gap-2">
                 <input
@@ -81,27 +84,27 @@ export function SignupForm() {
                   name="tier"
                   value={tier.value}
                   defaultChecked={i === 0}
-                  className="accent-txsn-teal"
+                  className="h-4 w-4 accent-navy"
                 />
-                <span className="text-[14px] font-medium text-txsn-teal-deep">
+                <span className="text-[16px] font-semibold text-navy">
                   {tier.label}
                 </span>
               </span>
-              <span className="text-[13px] font-medium text-txsn-gold">
+              <span className="text-[15px] font-semibold text-ink">
                 {tier.priceLabel}
               </span>
-              <span className="text-[12px] text-txsn-slate">{tier.blurb}</span>
+              <span className="text-[14px] leading-snug text-slate">{tier.blurb}</span>
             </label>
           ))}
         </div>
       </fieldset>
 
-      <label className="flex items-start gap-2.5 text-[13px] text-txsn-slate">
+      <label className="flex items-start gap-3 text-[15px] leading-relaxed text-slate">
         <input
           type="checkbox"
           name="consent"
           required
-          className="mt-0.5 accent-txsn-teal"
+          className="mt-1 h-4 w-4 flex-shrink-0 accent-navy"
         />
         {/* [PROD] Replace placeholder terms/privacy copy + links before launch. */}
         <span>

@@ -12,23 +12,25 @@ const resources = [
 export default function ClinicalPage() {
   return (
     <>
-      <PageHeader eyebrow="RESOURCES" title="Clinical resources" intro="References and tools for everyday nephrology practice." />
-      <Container className="py-14">
-        <div className="space-y-2.5 max-w-3xl">
-          {resources.map((r) => (
-            <div key={r.title} className="flex items-center gap-4 bg-white border border-txsn-mint-soft/50 rounded-xl p-4">
-              <div className="flex-shrink-0 w-10 h-10 rounded-lg bg-txsn-wash flex items-center justify-center text-txsn-teal">
-                <Icon name={r.type === "PDF" ? "file" : "arrow"} size={19} />
+      <PageHeader eyebrow="Resources" title="Clinical resources" intro="References and tools for everyday nephrology practice." />
+      <section className="pad">
+        <Container>
+          <div className="max-w-3xl space-y-4">
+            {resources.map((r) => (
+              <div key={r.title} className="card-line flex items-center gap-5 p-5">
+                <span className="flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-xl bg-surface-2 text-navy">
+                  <Icon name={r.type === "PDF" ? "file" : "external"} size={20} />
+                </span>
+                <div className="flex-1">
+                  <h2 className="text-[17px] font-semibold text-navy">{r.title}</h2>
+                  <p className="mt-0.5 text-[15px] text-slate">{r.desc}</p>
+                </div>
+                <span className="text-[13.5px] font-semibold text-muted">{r.type}</span>
               </div>
-              <div className="flex-1">
-                <div className="text-[14px] font-medium text-txsn-teal-deep">{r.title}</div>
-                <div className="text-[12.5px] text-txsn-slate">{r.desc}</div>
-              </div>
-              <span className="text-[11px] font-medium text-txsn-gold bg-txsn-gold-soft px-2.5 py-1 rounded">{r.type}</span>
-            </div>
-          ))}
-        </div>
-      </Container>
+            ))}
+          </div>
+        </Container>
+      </section>
     </>
   );
 }

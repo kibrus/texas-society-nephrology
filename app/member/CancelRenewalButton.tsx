@@ -31,11 +31,15 @@ export function CancelRenewalButton() {
         type="button"
         onClick={onClick}
         disabled={pending}
-        className="text-[13px] font-medium text-txsn-slate hover:text-txsn-teal transition-colors disabled:opacity-60"
+        className="text-[15px] font-semibold text-slate underline-offset-4 transition-colors hover:text-navy hover:underline disabled:opacity-60"
       >
         {pending ? "Cancelling…" : "Cancel automatic renewal"}
       </button>
-      {error && <p className="mt-1 text-[12px] text-txsn-gold">{error}</p>}
+      {error && (
+        <p role="alert" className="mt-2 text-[14px] text-red-700">
+          {error}
+        </p>
+      )}
     </div>
   );
 }

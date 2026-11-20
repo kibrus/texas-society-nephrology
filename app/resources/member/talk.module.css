@@ -1,0 +1,38 @@
+/* Recording cards, matching the home mockup's ".talk" cards. */
+.grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 28px; }
+@media (max-width: 1024px) { .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 680px) { .grid { grid-template-columns: 1fr; } }
+
+.talk { display: flex; flex-direction: column; height: 100%; text-decoration: none; background: #fff; border-radius: 16px; overflow: hidden; box-shadow: var(--shadow); transition: transform 0.3s var(--ease), box-shadow 0.3s; }
+.talk:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); }
+
+.ph { position: relative; aspect-ratio: 16 / 9; overflow: hidden; background: var(--navy); }
+.ph img { object-fit: cover; }
+
+.play { position: absolute; inset: 0; display: grid; place-items: center; background: rgba(7, 26, 51, 0.1); transition: background 0.25s; }
+.talk:hover .play { background: rgba(7, 26, 51, 0.3); }
+.play > span { width: 70px; height: 70px; border-radius: 50%; background: #fff; color: var(--navy); display: grid; place-items: center; box-shadow: 0 12px 30px rgba(0, 0, 0, 0.35); transition: transform 0.25s; }
+.talk:hover .play > span { transform: scale(1.08); }
+.play svg { margin-left: 3px; }
+
+.body { display: flex; flex-direction: column; flex: 1; padding: 24px 26px 26px; }
+.body h2 { font-family: var(--font-merriweather), Georgia, serif; font-size: 20px; font-weight: 700; line-height: 1.35; color: var(--navy); }
+.who { margin-top: 12px; font-weight: 600; color: var(--ink); }
+.role { font-size: 14px; color: var(--slate); }
+.row { margin-top: auto; padding-top: 16px; display: flex; flex-wrap: wrap; align-items: center; gap: 4px 10px; font-size: 14px; color: var(--muted); }
+.lock { display: inline-flex; align-items: center; gap: 6px; font-size: 13.5px; font-weight: 600; color: var(--navy); }
+.lock::before { content: "·"; color: var(--muted); margin-right: 2px; }
+
+/* Small "more recordings" row on the player page */
+.mini { display: flex; align-items: center; gap: 16px; padding: 12px; text-decoration: none; }
+.miniPh { position: relative; flex-shrink: 0; width: 132px; aspect-ratio: 16 / 9; border-radius: 10px; overflow: hidden; background: var(--navy); }
+.miniPh img { object-fit: cover; }
+.miniPlay { position: absolute; inset: 0; display: grid; place-items: center; }
+.miniPlay > span { width: 34px; height: 34px; border-radius: 50%; background: #fff; color: var(--navy); display: grid; place-items: center; }
+.miniPlay svg { margin-left: 2px; }
+
+@media (prefers-reduced-motion: reduce) {
+  .talk, .play, .play > span { transition: none; }
+  .talk:hover { transform: none; }
+  .talk:hover .play > span { transform: none; }
+}

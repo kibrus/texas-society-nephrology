@@ -1,6 +1,6 @@
-import { PageHeader, Container, Icon } from "@/components/ui";
-import Link from "next/link";
+import { PageHeader, Container, Icon, Button, ArrowLink, Status } from "@/components/ui";
 import { membershipTiers } from "@/lib/site";
+import { TIER_OPTIONS } from "@/lib/membership";
 
 export const metadata = { title: "Membership Tiers · TSN" };
 
@@ -8,46 +8,67 @@ export default function TiersPage() {
   return (
     <>
       <PageHeader
-        eyebrow="MEMBERSHIP"
+        eyebrow="Membership"
         title="Membership tiers"
         intro="Two tiers, built for where you are in your career. Pricing is confirmed at renewal."
+        image="/images/site/membership/hero.webp"
       />
-      <Container className="py-14">
-        <div className="grid gap-5 sm:grid-cols-2 max-w-3xl">
-          {membershipTiers.map((tier) => (
-            <div
-              key={tier.name}
-              className={`rounded-xl p-7 border ${
-                tier.featured
-                  ? "bg-white border-txsn-teal border-2"
-                  : "bg-white border-txsn-mint-soft/50"
-              }`}
-            >
-              {tier.featured && (
-                <span className="inline-block text-[11px] font-medium text-txsn-teal bg-txsn-wash px-3 py-1 rounded-full mb-3">
-                  Most members
-                </span>
-              )}
-              <h2 className="font-serif text-2xl text-txsn-teal-deep font-medium">{tier.name}</h2>
-              <div className="text-[13px] text-txsn-gold font-medium mt-1 mb-1">{tier.price} dues</div>
-              <p className="text-[13px] text-txsn-slate mb-5">{tier.audience}</p>
-              <ul className="space-y-2.5">
-                {tier.features.map((f) => (
-                  <li key={f} className="flex gap-2 text-[13.5px] text-txsn-slate">
-                    <Icon name="check" size={17} className="text-txsn-teal flex-shrink-0 mt-0.5" />
-                    {f}
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))}
-        </div>
-        <div className="mt-8">
-          <Link href="/join" className="inline-flex items-center gap-2 bg-txsn-gold text-white text-[14px] font-medium px-5 py-3 rounded-md hover:bg-txsn-gold/90 transition-colors">
-            Join or renew <Icon name="arrow" size={16} />
-          </Link>
-        </div>
-      </Container>
+
+      <section className="pad">
+        <Container>
+          <div className="mx-auto grid max-w-4xl gap-6 md:grid-cols-2">
+            {membershipTiers.map((tier, i) => {
+              // Display price from the signup tier options (same label shown on /join).
+              const option = TIER_OPTIONS.find((t) => t.label === tier.name);
+              return (
+                <article
+                  key={tier.name}
+                  className={`card card-hover spot rv flex flex-col p-8 sm:p-9 ${
+                    tier.featured ? "outline outline-2 -outline-offset-2 outline-navy" : ""
+                  }`}
+                  style={{ transitionDelay: `${i * 0.08}s` }}
+                >
+                  <div className="relative z-[2] flex flex-1 flex-col">
+                    <div className="min-h-[22px]">
+                      {tier.featured && <Status>Most members</Status>}
+                    </div>
+                    <h2 className="mt-3 font-serif text-[1.75rem] font-bold text-navy">{tier.name}</h2>
+                    <p className="mt-1 text-[16px] text-slate">{tier.audience}</p>
+                    <div className="mt-6 border-y border-line py-5">
+                      {option ? (
+                        <>
+                          <div className="font-serif text-[2rem] font-bold leading-none text-navy">
+                            {option.priceLabel}
+                          </div>
+                          <div className="mt-2 text-[14px] text-slate">{tier.price} dues</div>
+                        </>
+                      ) : (
+                        <div className="text-[18px] font-semibold text-navy">{tier.price} dues</div>
+                      )}
+                    </div>
+                    <ul className="mt-6 flex-1 space-y-3">
+                      {tier.features.map((f) => (
+                        <li key={f} className="flex gap-3 text-[16px] text-slate">
+                          <Icon name="check" size={18} className="mt-1 flex-shrink-0 text-navy" />
+                          {f}
+                        </li>
+                      ))}
+                    </ul>
+                    <div className="mt-8">
+                      <Button href="/join" variant={tier.featured ? "navy" : "outline"} arrow className="w-full">
+                        Join or renew
+                      </Button>
+                    </div>
+                  </div>
+                </article>
+              );
+            })}
+          </div>
+          <p className="rv mt-12 text-center">
+            <ArrowLink href="/membership">Why join TSN</ArrowLink>
+          </p>
+        </Container>
+      </section>
     </>
   );
 }

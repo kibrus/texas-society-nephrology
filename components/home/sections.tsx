@@ -1,554 +1,560 @@
 import Link from "next/link";
 import Image from "next/image";
-import { Icon, Container } from "@/components/ui";
-import { pillars, annualMeeting } from "@/lib/site";
-import { NewsPost, EventItem, formatDate, formatDateShort, isPastDate } from "@/lib/content";
+import { ArrowLink, Button, Container, DateTile, Icon, MetaRow, RiseWords, SectionHead } from "@/components/ui";
+import { annualMeeting, pillars } from "@/lib/site";
+import {
+  type EventItem,
+  type NewsPost,
+  formatDate,
+  formatDateShort,
+  isEventPast,
+  isEventTba,
+  isPastDate,
+} from "@/lib/content";
+import { eventThumb } from "@/components/events/EventCards";
+import s from "./home.module.css";
 
-export function FeaturedEvent({ event }: { event: EventItem }) {
-  return (
-    <section className="bg-clinical-blue border-b border-txsn-mint-soft/50">
-      <Container className="py-5">
-        <div className="flex flex-col sm:flex-row sm:items-center gap-4 justify-between">
-          <div className="flex items-center gap-4 min-w-0">
-            <div className="flex-shrink-0 bg-heritage-navy text-white text-[10px] font-semibold tracking-widest uppercase px-3 py-1.5 rounded-full">
-              Next Event
-            </div>
-            <div className="min-w-0">
-              <span className="text-heritage-navy font-semibold text-[15px] truncate block">
-                {event.title}
-              </span>
-              <div className="flex items-center gap-3 mt-0.5 flex-wrap">
-                <span className="flex items-center gap-1 text-txsn-slate/70 text-[12px]">
-                  <Icon name="calendar" size={12} />
-                  {event.dateLabel ?? formatDate(event.date)}{event.time && !event.dateLabel ? ` · ${event.time}` : ""}
-                </span>
-                <span className="flex items-center gap-1 text-txsn-slate/70 text-[12px]">
-                  <Icon name="pin" size={12} />
-                  {event.location}
-                </span>
-              </div>
-            </div>
-          </div>
-          <div className="flex flex-shrink-0 items-center gap-2">
-            {event.brochurePdf && (
-              <a
-                href={event.brochurePdf}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 border border-heritage-navy/30 bg-white hover:bg-clinical-blue text-heritage-navy text-[13px] font-medium px-4 py-2.5 rounded-sm transition-colors"
-              >
-                <Icon name="file" size={14} /> Brochure
-              </a>
-            )}
-            <Link
-              href={`/events/${event.slug}`}
-              className="inline-flex items-center gap-2 bg-heritage-navy hover:opacity-90 text-white text-[13px] font-medium px-5 py-2.5 rounded-sm transition-colors"
-            >
-              View event <Icon name="arrow" size={14} />
-            </Link>
-          </div>
-        </div>
-      </Container>
-    </section>
-  );
+/* ---------- Helpers (derive display text from existing content only) ---------- */
+
+const FALLBACK = "/images/site/events/fallback.webp";
+
+// "III at Wolfgang Puck, …, Houston, TX 77030" → "Houston"
+function cityOf(location: string): string {
+  const parts = location.split(",").map((p) => p.trim());
+  const stateIdx = parts.findIndex((p) => /^TX\b/.test(p));
+  if (stateIdx > 0) return parts[stateIdx - 1];
+  return parts[0] ?? location;
 }
 
-// Featured upcoming event block: shows the event flyer as a clickable preview
-// (opens the full flyer) alongside a short description. Currently wired to the
-// November Bayou City Bean Club; update or remove once the event has passed.
-export function BrochureFeature() {
-  const flyer = "/images/events/bayou-city-bean-club-november-flyer.webp";
-  return (
-    <section className="bg-txsn-paper border-b border-txsn-mint-soft/40">
-      <Container className="py-14 lg:py-16">
-        <div className="grid items-center gap-10 lg:grid-cols-[minmax(0,360px)_1fr] lg:gap-14">
-          {/* Event flyer, clickable, opens full size */}
-          <a
-            href={flyer}
-            target="_blank"
-            rel="noopener noreferrer"
-            data-reveal
-            aria-label="Open the full Bayou City Bean Club flyer"
-            className="group relative mx-auto block w-full max-w-[340px] overflow-hidden rounded-xl shadow-lg shadow-txsn-teal-deep/10 ring-1 ring-txsn-mint-soft transition-all duration-300 hover:-translate-y-1 hover:shadow-xl focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-accent"
-          >
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src="/images/events/bayou-city-bean-club-november-flyer.webp"
-              alt="Bayou City Bean Club flyer for the November 20, 2026 event"
-              className="block w-full transition-transform duration-500 group-hover:scale-[1.03]"
-            />
-            <div className="absolute inset-0 flex items-center justify-center bg-heritage-navy/0 transition-colors duration-300 group-hover:bg-heritage-navy/35">
-              <span className="flex translate-y-1 items-center gap-2 rounded-full bg-white/95 px-4 py-2 text-[13px] font-semibold text-heritage-navy opacity-0 shadow transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100">
-                <Icon name="file" size={15} /> View full flyer
-              </span>
-            </div>
-          </a>
-
-          {/* Description */}
-          <div data-reveal data-delay="100">
-            <div className="mb-2 text-[11px] font-semibold uppercase tracking-[0.2em] text-amber-accent">
-              Upcoming Event
-            </div>
-            <h2 className="font-serif text-[1.75rem] font-bold leading-tight text-heritage-navy lg:text-[2rem]">
-              Bayou City Bean Club
-            </h2>
-            <p className="mt-2 text-[15px] italic text-txsn-slate">
-              A Lunch and Learn
-            </p>
-            <p className="mt-1 text-[15px] font-semibold text-heritage-navy">
-              &ldquo;New Technology and Toys for Critical Care Nephrology&rdquo;
-            </p>
-
-            <div className="mt-4 flex flex-wrap gap-x-5 gap-y-1.5 text-[13.5px] text-txsn-slate">
-              <span className="inline-flex items-center gap-1.5">
-                <Icon name="calendar" size={14} className="text-txsn-teal" /> November 20, 2026
-              </span>
-              <span className="inline-flex items-center gap-1.5">
-                <Icon name="pin" size={14} className="text-txsn-teal" /> III at Wolfgang Puck, Houston
-              </span>
-            </div>
-
-            <p className="mt-4 max-w-xl text-[14.5px] leading-relaxed text-txsn-slate">
-              Dr. Mink Chawla joins us for the next Bayou City Bean Club on new technology
-              and toys for critical care nephrology. Lunch provided, with medical-device
-              vendors on site. Join in person or on Zoom.
-            </p>
-
-            <div className="mt-6 flex flex-wrap gap-3">
-              <a
-                href={flyer}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 rounded-sm bg-heritage-navy px-6 py-3 text-[14px] font-semibold text-white shadow-sm transition-colors hover:opacity-90"
-              >
-                <Icon name="file" size={16} /> View full flyer
-              </a>
-              <Link
-                href="/events/bayou-city-bean-club-november-2026"
-                className="inline-flex items-center gap-2 rounded-sm border border-heritage-navy/30 bg-white px-6 py-3 text-[14px] font-medium text-heritage-navy transition-colors hover:bg-clinical-blue"
-              >
-                Event details <Icon name="arrow" size={15} />
-              </Link>
-            </div>
-          </div>
-        </div>
-      </Container>
-    </section>
-  );
+// First segment = venue ("III at Wolfgang Puck").
+function venueOf(location: string): string {
+  return location.split(",")[0]?.trim() ?? location;
 }
 
-// Featured partner summit: ISGD Clinical Trials Summit (Nov 2026). Flyer on the
-// right, details on the left. Update or remove once the summit has passed.
-export function SummitFeature() {
-  const flyer = "/images/events/isgd-cts-summit-flyer.webp";
-  const register = "https://www.is-gd.org/2026-cts";
-  const highlights = [
-    "Keynote address on how AI is reshaping the pace of clinical trials",
-    "“Voice of the FDA” roundtable with several CDER/CBER nephrologists",
-    "Sessions on emerging biomarkers and treatment targets in glomerular disease",
-    "Dedicated sessions on pediatric and post-transplant recurrent disease trials",
-    "Roundtables featuring venture capital investors and pharmaceutical C-suite executives",
-    "Late-breaking research including new trial data that will not be presented at ASN Kidney Week",
-  ];
-  return (
-    <section className="bg-white border-b border-txsn-mint-soft/40">
-      <Container className="py-14 lg:py-16">
-        <div className="grid items-center gap-10 lg:grid-cols-[1fr_minmax(0,340px)] lg:gap-14">
-          {/* Details */}
-          <div data-reveal>
-            <div className="mb-2 text-[11px] font-semibold uppercase tracking-[0.2em] text-amber-accent">
-              Upcoming Summit
-            </div>
-            <h2 className="font-serif text-[1.75rem] font-bold leading-tight text-heritage-navy lg:text-[2rem]">
-              ISGD Clinical Trials Summit
-            </h2>
-            <p className="mt-2 text-[15px] italic text-txsn-slate">
-              Hosted by the International Society of Glomerular Disease &amp; UTMB
-            </p>
-
-            <div className="mt-4 flex flex-wrap gap-x-5 gap-y-1.5 text-[13.5px] text-txsn-slate">
-              <span className="inline-flex items-center gap-1.5">
-                <Icon name="calendar" size={14} className="text-txsn-teal" /> November 13-15, 2026
-              </span>
-              <span className="inline-flex items-center gap-1.5">
-                <Icon name="pin" size={14} className="text-txsn-teal" /> Galveston Island Convention Center
-              </span>
-            </div>
-
-            <p className="mt-4 max-w-xl text-[14.5px] leading-relaxed text-txsn-slate">
-              The International Society of Glomerular Disease (ISGD) and the University of
-              Texas Medical Branch (UTMB) are excited to invite you to the inaugural
-              summit, bringing every stakeholder in the kidney trial ecosystem together in
-              one room.
-            </p>
-
-            <p className="mt-4 text-[13px] font-semibold text-heritage-navy">
-              Program highlights include:
-            </p>
-            <ul className="mt-2 space-y-2">
-              {highlights.map((h) => (
-                <li key={h} className="flex gap-2 text-[13.5px] text-txsn-slate">
-                  <Icon name="check" size={16} className="mt-0.5 flex-shrink-0 text-txsn-teal" />
-                  <span>{h}</span>
-                </li>
-              ))}
-            </ul>
-
-            <div className="mt-6 flex flex-wrap gap-3">
-              <a
-                href={register}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 rounded-sm bg-heritage-navy px-6 py-3 text-[14px] font-semibold text-white shadow-sm transition-colors hover:opacity-90"
-              >
-                Register <Icon name="external" size={15} />
-              </a>
-              <Link
-                href="/events/isgd-cts-summit-2026"
-                className="inline-flex items-center gap-2 rounded-sm border border-heritage-navy/30 bg-white px-6 py-3 text-[14px] font-medium text-heritage-navy transition-colors hover:bg-clinical-blue"
-              >
-                View details <Icon name="arrow" size={15} />
-              </Link>
-            </div>
-          </div>
-
-          {/* Flyer, clickable, opens full size */}
-          <a
-            href={flyer}
-            target="_blank"
-            rel="noopener noreferrer"
-            data-reveal
-            data-delay="100"
-            aria-label="Open the full ISGD Clinical Trials Summit flyer"
-            className="group relative order-first mx-auto block w-full max-w-[340px] overflow-hidden rounded-xl shadow-lg shadow-txsn-teal-deep/10 ring-1 ring-txsn-mint-soft transition-all duration-300 hover:-translate-y-1 hover:shadow-xl focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-accent lg:order-last"
-          >
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src={flyer}
-              alt="ISGD Clinical Trials Summit flyer, November 13-15, 2026"
-              className="block w-full transition-transform duration-500 group-hover:scale-[1.03]"
-            />
-            <div className="absolute inset-0 flex items-center justify-center bg-heritage-navy/0 transition-colors duration-300 group-hover:bg-heritage-navy/35">
-              <span className="flex translate-y-1 items-center gap-2 rounded-full bg-white/95 px-4 py-2 text-[13px] font-semibold text-heritage-navy opacity-0 shadow transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100">
-                <Icon name="file" size={15} /> View flyer
-              </span>
-            </div>
-          </a>
-        </div>
-      </Container>
-    </section>
-  );
+// "Venue, City" without repeating the city.
+function shortPlace(location: string): string {
+  const venue = venueOf(location);
+  const city = cityOf(location);
+  return venue === city ? venue : `${venue}, ${city}`;
 }
+
+function eventHref(e: EventItem) {
+  return `/events/${e.slug}`;
+}
+
+function longDate(e: EventItem): string {
+  if (e.endDate && e.dateLabel) return e.dateLabel;
+  if (!e.date) return e.dateLabel ?? "";
+  return new Date(e.date + "T00:00:00").toLocaleDateString("en-US", {
+    weekday: "long",
+    month: "long",
+    day: "numeric",
+    year: "numeric",
+  });
+}
+
+function whenLabel(e: EventItem): string {
+  if (isEventTba(e)) return "To be announced";
+  return e.dateLabel ?? formatDate(e.date);
+}
+
+// "Bayou City Bean Club: A Lunch and Learn" → series name "Bayou City Bean Club"
+function seriesOf(title: string) {
+  return title.split(":")[0].trim();
+}
+
+function listTitle(e: EventItem) {
+  return e.talkTitle ? `${seriesOf(e.title)}: ${e.talkTitle}` : e.title;
+}
+
+const thumbFor = eventThumb;
+
+const mentionsZoom = (e: EventItem) => /zoom/i.test(e.content) || /zoom/i.test(e.excerpt);
+
+/* ---------- 1. Hero ---------- */
 
 export function Hero() {
   return (
-    <section className="relative overflow-hidden">
+    <section className={s.hero} data-hero>
       <Image
-        src="/images/hero2.png"
+        src="/images/site/home/hero.webp"
         alt=""
         fill
-        className="hero-img"
         priority
+        sizes="100vw"
+        data-parallax
       />
-      <div className="absolute inset-0 bg-gradient-to-r from-txsn-teal-deep from-[0%] via-txsn-teal-deep/90 via-[45%] to-txsn-teal-deep/10 to-[72%]" />
-
-      <Container className="relative z-10 py-20 lg:py-28">
-        <div className="max-w-2xl reveal">
-          <h1 className="font-serif text-4xl lg:text-[3.5rem] leading-[1.1] text-amber-200 font-medium [text-shadow:0_2px_16px_rgba(0,0,0,0.9),0_0_40px_rgba(0,0,0,0.5)]">
-            The home of kidney care professionals in Texas
-          </h1>
-          <p className="mt-5 text-[16px] lg:text-[17px] leading-relaxed text-amber-100 [text-shadow:0_1px_8px_rgba(0,0,0,0.8)]">
-            We bring together physicians, fellows, and kidney care leaders to
-            advance patient care, sharpen practice, and shape the future of
-            nephrology across the state.
-          </p>
-          <div className="mt-8 flex flex-wrap gap-3">
-            <Link
-              href="/join"
-              className="inline-flex items-center gap-2 bg-amber-accent hover:opacity-90 text-white text-[14px] font-semibold px-6 py-3 rounded-sm transition-colors shadow-lg"
-            >
-              Become a member <Icon name="arrow" size={16} />
-            </Link>
-            <Link
-              href="/annual-meeting"
-              className="inline-flex items-center bg-white/10 hover:bg-white/20 backdrop-blur-sm text-white text-[14px] font-medium px-6 py-3 rounded-sm border border-white/30 transition-colors"
-            >
-              2026 Annual Meeting
-            </Link>
-          </div>
+      <Container className={s.heroInner}>
+        <RiseWords text="The home of kidney care professionals in Texas" className={s.heroTitle} />
+        <p className={`${s.heroText} fade-up`} style={{ animationDelay: ".3s" }}>
+          We bring together physicians, fellows, and kidney care leaders to advance patient care,
+          sharpen practice, and shape the future of nephrology across the state.
+        </p>
+        <div className={`${s.heroCtas} fade-up`} style={{ animationDelay: ".45s" }}>
+          <Button href="/join" variant="white" arrow>
+            Become a member
+          </Button>
+          <Button href="/annual-meeting" variant="glass">
+            2026 Annual Meeting
+          </Button>
         </div>
       </Container>
     </section>
   );
 }
 
+/* ---------- 2. Action bar ---------- */
+
+const quickLinks = [
+  { href: "/join", icon: "user-plus", title: "Join or renew", sub: "Trainee and full membership" },
+  { href: "/resources/member", icon: "play-screen", title: "Watch past talks", sub: "Bayou City Bean Club recordings" },
+  { href: "/events", icon: "calendar", title: "All events", sub: "Meetings, webinars and lunch-and-learns" },
+];
+
+export function ActionBar({ next }: { next: EventItem | null }) {
+  let eventCell;
+  if (next) {
+    const { month, day } = formatDateShort(next.date);
+    const name = next.talkTitle ? seriesOf(next.title) : next.title;
+    const where = [next.speakerName, cityOf(next.location)].filter(Boolean).join(" · ");
+    const go = next.registrationUrl ? "RSVP" : "Details";
+    eventCell = (
+      <Link
+        href={eventHref(next)}
+        className={`${s.qEvent} spot dark`}
+        aria-label={`Next event: ${name}${next.speakerName ? ` with ${next.speakerName}` : ""}, ${longDate(next)}, ${cityOf(next.location)}. ${go}.`}
+      >
+        <span className={s.qKicker}>
+          <span className={s.qDot} aria-hidden="true" />
+          Next event
+        </span>
+        <span className={s.qDate} aria-hidden="true">
+          <span className={s.qm}>{month}</span>
+          <span className={s.qd}>{day}</span>
+        </span>
+        <span>
+          <span className={s.qTitle}>{name}</span>
+          <span className={s.qWhere}>{where}</span>
+          <span className={s.qGo}>
+            {go}{" "}
+            <span className="arrow" aria-hidden="true">
+              →
+            </span>
+          </span>
+        </span>
+      </Link>
+    );
+  } else {
+    eventCell = (
+      <Link href="/events" className={`${s.qEvent} ${s.noDate} spot dark`}>
+        <span className={s.qKicker}>Events</span>
+        <span>
+          <span className={s.qTitle}>See past events and recordings</span>
+          <span className={s.qGo}>
+            All events{" "}
+            <span className="arrow" aria-hidden="true">
+              →
+            </span>
+          </span>
+        </span>
+      </Link>
+    );
+  }
+
+  return (
+    <div className={s.quick}>
+      <Container>
+        <nav aria-label="Quick links" className={`${s.quickGrid} shadow-card-lg`}>
+          {eventCell}
+          {quickLinks.map((q) => (
+            <Link key={q.href} href={q.href} className={`${s.ql} spot`}>
+              <span className={s.qIcon}>
+                <Icon name={q.icon} size={20} />
+              </span>
+              <span className={s.qt}>
+                {q.title}{" "}
+                <span className="arrow" aria-hidden="true">
+                  →
+                </span>
+              </span>
+              <span className={s.qs}>{q.sub}</span>
+            </Link>
+          ))}
+        </nav>
+      </Container>
+    </div>
+  );
+}
+
+/* ---------- 4. Four pillars ---------- */
+
+const pillarExtras: Record<string, { img: string; alt: string; href: string; cta: string }> = {
+  Education: {
+    img: "/images/site/home/pillar-education.webp",
+    alt: "A presenter speaking in front of a screen to a seated audience",
+    href: "/events",
+    cta: "See events",
+  },
+  Advocacy: {
+    img: "/images/site/home/pillar-advocacy.webp",
+    alt: "The Texas State Capitol dome with flags",
+    href: "/about",
+    cta: "Our mission",
+  },
+  Community: {
+    img: "/images/site/home/pillar-community.webp",
+    alt: "A group of people stacking their hands together",
+    href: "/membership",
+    cta: "Why join",
+  },
+  Research: {
+    img: "/images/site/home/pillar-research.webp",
+    alt: "A scientist pipetting samples in a laboratory",
+    href: "/annual-meeting/abstracts",
+    cta: "Abstract submission",
+  },
+};
 
 export function Pillars() {
   return (
-    <section className="bg-white">
-      <Container className="py-10 lg:py-12">
-        <div className="mb-6" data-reveal>
-          <div className="text-[11px] tracking-[0.2em] text-amber-accent font-semibold mb-1 uppercase">
-            WHAT WE DO
-          </div>
-          <h2 className="font-serif text-[1.75rem] lg:text-[2rem] text-heritage-navy font-bold">
-            Four ways we move nephrology forward
-          </h2>
-        </div>
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+    <section className="pad" aria-labelledby="pillars-title">
+      <Container>
+        <SectionHead
+          id="pillars-title"
+          title="Four ways we move nephrology forward"
+          intro="Education, advocacy, community and research for the physicians, fellows and kidney care leaders who care for patients across Texas."
+          action={<ArrowLink href="/about">About TSN</ArrowLink>}
+        />
+        <ul className={s.pillars}>
           {pillars.map((p, i) => {
-            const isTeal = p.accent === "teal";
+            const x = pillarExtras[p.title];
+            if (!x) return null;
             return (
-              <div
-                key={p.title}
-                data-reveal
-                data-delay={String(i * 100)}
-                className={`group rounded-lg p-6 flex flex-col transition-all hover:-translate-y-1 hover:shadow-md border-t-4 ${
-                  isTeal
-                    ? "bg-clinical-blue border-heritage-navy"
-                    : "bg-txsn-paper border-amber-accent"
-                }`}
-              >
-                <div className={`w-11 h-11 rounded-lg flex items-center justify-center text-white mb-4 flex-shrink-0 transition-transform group-hover:scale-110 ${
-                  isTeal ? "bg-heritage-navy" : "bg-amber-accent"
-                }`}>
-                  <Icon name={p.icon} size={20} />
-                </div>
-                <h3 className="text-[15px] font-semibold text-heritage-navy mb-2">
-                  {p.title}
-                </h3>
-                <p className="text-[13px] text-txsn-slate leading-relaxed">
-                  {p.body}
-                </p>
-              </div>
+              <li key={p.title} className="rv" style={{ transitionDelay: `${i * 0.08}s` }}>
+                <Link href={x.href} className={`${s.pillar} card card-hover spot h-full`}>
+                  <div className={`${s.pillarPhoto} settle`}>
+                    <Image
+                      src={x.img}
+                      alt={x.alt}
+                      fill
+                      sizes="(max-width: 560px) 100vw, (max-width: 1000px) 50vw, 25vw"
+                    />
+                    <span className={s.pillarNum} aria-hidden="true">
+                      {String(i + 1).padStart(2, "0")}
+                    </span>
+                  </div>
+                  <div className={s.pillarBody}>
+                    <h3>{p.title}</h3>
+                    <p>{p.body}</p>
+                    <span className="link">
+                      {x.cta}{" "}
+                      <span className="arrow" aria-hidden="true">
+                        →
+                      </span>
+                    </span>
+                  </div>
+                </Link>
+              </li>
             );
           })}
-        </div>
+        </ul>
       </Container>
     </section>
   );
 }
 
-export function NewsPreview({ posts }: { posts: NewsPost[] }) {
+/* ---------- 5. Annual Meeting band ---------- */
+
+export function AnnualMeetingBand() {
+  const past = isPastDate(annualMeeting.isoDate);
+  const highlights = annualMeeting.schedule
+    .map((row) => {
+      const [title, speaker] = row.session.split(" – ");
+      return { time: row.time.split(" – ")[0], title, speaker };
+    })
+    // Talks with a named speaker (the welcome/introduction isn't a talk).
+    .filter((r) => r.speaker && !/^introduction$/i.test(r.title.trim()))
+    .slice(0, 3);
+
   return (
-    <section className="bg-[#f4f3f7]">
-      <Container className="py-10 lg:py-12">
-        <div className="flex items-end justify-between mb-6 gap-4" data-reveal>
-          <div>
-            <div className="text-[11px] tracking-[0.2em] text-amber-accent font-semibold mb-1 uppercase">
-              STAY INFORMED
-            </div>
-            <h2 className="font-serif text-[1.75rem] lg:text-[2rem] text-heritage-navy font-bold">
-              Latest News
-            </h2>
+    <section className={s.am} aria-labelledby="am-title">
+      <Image src="/images/site/home/annual-meeting.webp" alt="" fill sizes="100vw" />
+      <Container className={s.amInner}>
+        <div className="rv">
+          {past && <span className={s.chip}>Past event</span>}
+          <h2 id="am-title" className={s.amTitle}>
+            {annualMeeting.title}
+          </h2>
+          <div className={s.amFacts}>
+            <span>
+              <Icon name="calendar" size={17} />
+              {annualMeeting.dateLabel} · {annualMeeting.timeLabel}
+            </span>
+            <span>
+              <Icon name="pin" size={17} />
+              {shortPlace(annualMeeting.location)}
+            </span>
           </div>
-          <Link
-            href="/news"
-            className="flex-shrink-0 inline-flex items-center gap-1.5 text-heritage-navy text-[13px] font-semibold px-4 py-2 rounded-sm border-2 border-heritage-navy hover:bg-heritage-navy hover:text-white transition-all"
-          >
-            View all news <Icon name="arrow" size={14} />
-          </Link>
+          <p className={s.amLede}>{annualMeeting.summary}</p>
+          <div className={s.amCtas}>
+            <Button href="/annual-meeting" variant="white" arrow>
+              Review program
+            </Button>
+            <Button href="/annual-meeting/schedule" variant="glass">
+              Schedule
+            </Button>
+          </div>
         </div>
-        <div className="grid gap-4 md:grid-cols-3">
-          {posts.map((post, i) => (
-            <Link
-              key={post.slug}
-              href={`/news/${post.slug}`}
-              data-reveal
-              data-delay={String(i * 100)}
-              className="group bg-white rounded-lg overflow-hidden border border-txsn-mint-soft/50 hover:border-txsn-mint hover:-translate-y-1 hover:shadow-md transition-all flex flex-col"
-            >
-              <div className="p-5 flex flex-col flex-1">
-                <div className="text-[10px] uppercase tracking-wider text-amber-accent font-semibold mb-3">
-                  {formatDate(post.date)}
-                </div>
-                <h3 className="text-[14px] font-semibold text-heritage-navy leading-snug mb-3 group-hover:text-amber-accent transition-colors">
-                  {post.title}
-                </h3>
-                <p className="text-[12.5px] text-txsn-slate leading-relaxed mb-4 flex-1">
-                  {post.excerpt}
-                </p>
-                <span className="text-[12px] font-semibold text-heritage-navy inline-flex items-center gap-1.5 group-hover:gap-2.5 transition-all">
-                  Read more <Icon name="arrow" size={13} />
-                </span>
-              </div>
-            </Link>
-          ))}
-        </div>
+        {highlights.length > 0 && (
+          <div className="glass-panel rv" style={{ transitionDelay: ".12s" }}>
+            <h3 className={s.glassTitle}>Program highlights</h3>
+            <ul>
+              {highlights.map((h) => (
+                <li key={h.title} className={s.talkRow}>
+                  <span className={s.time}>{h.time}</span>
+                  <div>
+                    <b>{h.title}</b>
+                    <span className={s.who}>{h.speaker}</span>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
       </Container>
     </section>
   );
 }
 
-export function EventsPreview({ events }: { events: EventItem[] }) {
-  const others = events;
+/* ---------- 6. Events ---------- */
+
+function FeaturedEvent({ e }: { e: EventItem }) {
+  const hasSpeaker = Boolean(e.speakerPhoto);
+  const photo = e.speakerPhoto ?? e.image ?? FALLBACK;
+  const kind = e.talkTitle ? e.title.replace(/:\s*/, " · ") : e.sponsor;
+  const inPersonOrZoom = !/online/i.test(e.location) && mentionsZoom(e);
+  const free = e.isFree && !e.hidePricing;
 
   return (
-    <section className="bg-white">
-      <Container className="py-10 lg:py-12">
-        <div className="flex items-end justify-between mb-6 gap-4" data-reveal>
-          <div>
-            <div className="text-[11px] tracking-[0.2em] text-amber-accent font-semibold mb-1 uppercase">
-              MARK YOUR CALENDAR
-            </div>
-            <h2 className="font-serif text-[1.75rem] lg:text-[2rem] text-heritage-navy font-bold">
-              Events
-            </h2>
-          </div>
-          <Link
-            href="/events"
-            className="flex-shrink-0 inline-flex items-center gap-1.5 text-heritage-navy text-[13px] font-semibold px-4 py-2 rounded-sm border-2 border-heritage-navy hover:bg-heritage-navy hover:text-white transition-all"
-          >
-            View all events <Icon name="arrow" size={14} />
-          </Link>
+    <article className={`${s.evFeature} ${hasSpeaker ? s.speaker : ""} card card-hover spot rv`}>
+      <div className={`${s.evPhoto} settle zoom-img`}>
+        <Image
+          src={photo}
+          alt={hasSpeaker && e.speakerName ? e.speakerName : ""}
+          fill
+          sizes={hasSpeaker ? "(max-width: 700px) 100vw, (max-width: 1000px) 40vw, 300px" : "(max-width: 1000px) 100vw, 60vw"}
+        />
+        <DateTile iso={e.date} showYear className={s.evDate} />
+      </div>
+      <div className={s.evBody}>
+        {kind && <p className={s.evKind}>{kind}</p>}
+        <h3 className={s.evTitle}>
+          <Link href={eventHref(e)}>{e.talkTitle ?? e.title}</Link>
+        </h3>
+        {e.speakerName && <p className={s.evWho}>{e.speakerName}</p>}
+        <ul className={s.evFacts}>
+          <li>
+            <Icon name="calendar" size={16} />
+            {longDate(e)}
+          </li>
+          {e.time && (
+            <li>
+              <Icon name="clock" size={16} />
+              {e.time.replace(/\s-\s/, " – ")}
+            </li>
+          )}
+          <li>
+            <Icon name="pin" size={16} />
+            {shortPlace(e.location)}
+          </li>
+          {inPersonOrZoom && (
+            <li>
+              <Icon name="video" size={16} />
+              In person or on Zoom
+            </li>
+          )}
+        </ul>
+        {e.excerpt && (
+          <p className={s.evDesc}>
+            {e.excerpt}
+            {free ? " Free to attend." : ""}
+          </p>
+        )}
+        <div className={s.evCtas}>
+          {e.registrationUrl && (
+            <Button href={e.registrationUrl} variant="navy" arrow>
+              RSVP
+            </Button>
+          )}
+          <ArrowLink href={eventHref(e)}>View details</ArrowLink>
         </div>
+      </div>
+    </article>
+  );
+}
 
-        <div className="grid grid-cols-1 lg:grid-cols-[5fr_7fr] gap-5 items-start">
+function EventRow({ e, past, delay }: { e: EventItem; past?: boolean; delay: number }) {
+  const city = cityOf(e.location);
+  const sub = [e.speakerName ?? (e.speakerPhoto ? undefined : e.sponsor), past && e.youtubeId ? "Recording available" : undefined]
+    .filter(Boolean)
+    .join(" · ");
+  return (
+    <li className="rv" style={{ transitionDelay: `${delay}s` }}>
+      <Link
+        href={eventHref(e)}
+        className={`${s.evItem} card-line spot ${past ? "is-past" : ""}`}
+      >
+        <div className={s.evThumb}>
+          <Image src={thumbFor(e)} alt="" fill sizes="104px" />
+        </div>
+        <div>
+          <span className={`${s.evWhen} block`}>
+            {whenLabel(e)}
+            {city ? ` · ${city}` : ""}
+          </span>
+          <h3>{listTitle(e)}</h3>
+          {sub && <span className={`${s.evSub} block`}>{sub}</span>}
+        </div>
+      </Link>
+    </li>
+  );
+}
 
-          {/* Featured Annual Meeting */}
-          <div
-            data-reveal
-            className="relative rounded-xl overflow-hidden bg-heritage-navy text-white p-5 lg:p-6 flex flex-col justify-between"
-          >
-            {isPastDate(annualMeeting.isoDate) && (
-              <div className="absolute top-3 right-3 z-20">
-                <span className="inline-flex items-center bg-white/15 border border-white/25 text-white/80 text-[11px] font-medium px-2.5 py-1 rounded-full backdrop-blur-sm">
-                  Past event
-                </span>
-              </div>
+export function EventsSection({
+  next,
+  upcoming,
+  past,
+}: {
+  next: EventItem | null;
+  upcoming: EventItem[];
+  past: EventItem[];
+}) {
+  const others = upcoming.filter((e) => e.slug !== next?.slug && !isEventPast(e));
+  return (
+    <section className="pad" aria-labelledby="events-title">
+      <Container>
+        <SectionHead
+          id="events-title"
+          title="Events"
+          intro="Meetings, summits and lunch-and-learns for kidney care professionals across Texas."
+          action={<ArrowLink href="/events">View all events</ArrowLink>}
+        />
+        <div className={next ? s.evLayout : undefined}>
+          {next && <FeaturedEvent e={next} />}
+          <ul className={s.evList}>
+            {others.map((e, i) => (
+              <EventRow key={e.slug} e={e} delay={i * 0.06} />
+            ))}
+            {past.length > 0 && (
+              <li className={`${s.evSep} sep-label`} aria-hidden="true">
+                <span>Past events</span>
+              </li>
             )}
-            <div className="relative z-10">
-              <span className="text-[10px] tracking-widest text-txsn-mint font-semibold uppercase mb-2 block">
-                Annual Meeting
-              </span>
-              <h3 className="font-serif text-[1.4rem] text-white font-medium leading-snug mb-2">
-                {annualMeeting.title}
-              </h3>
-              <div className="space-y-1 mb-3">
-                <p className="flex items-center gap-1.5 text-white/60 text-[12px]">
-                  <Icon name="pin" size={11} /> {annualMeeting.location}
-                </p>
-                <p className="flex items-center gap-1.5 text-white/60 text-[12px]">
-                  <Icon name="calendar" size={11} /> {annualMeeting.dateLabel}
-                </p>
-              </div>
-              <p className="text-white/55 text-[12.5px] leading-relaxed line-clamp-2">
-                {annualMeeting.summary}
-              </p>
-            </div>
-            <div className="relative z-10 mt-4">
-              <Link
-                href="/annual-meeting"
-                className="inline-flex items-center gap-2 border border-white/40 hover:bg-white hover:text-heritage-navy text-white px-5 py-2 rounded-sm font-semibold text-[12.5px] transition-all"
-              >
-                Review program <Icon name="arrow" size={12} />
+            {past.map((e, i) => (
+              <EventRow key={e.slug} e={e} past delay={(others.length + i) * 0.06} />
+            ))}
+          </ul>
+        </div>
+      </Container>
+    </section>
+  );
+}
+
+/* ---------- 7. News ---------- */
+
+export function NewsRow({ posts }: { posts: NewsPost[] }) {
+  if (posts.length === 0) return null;
+  return (
+    <section className={s.news} aria-labelledby="news-title">
+      <Container>
+        <div className={`${s.colHead} rv`}>
+          <h2 id="news-title" className="h-display">
+            Latest news
+          </h2>
+          <ArrowLink href="/news">View all news</ArrowLink>
+        </div>
+        <ul className={s.newsRow}>
+          {posts.map((p, i) => (
+            <li key={p.slug} className="rv" style={{ transitionDelay: `${i * 0.08}s` }}>
+              <Link href={`/news/${p.slug}`} className={s.nitem}>
+                <MetaRow category={p.category} date={formatDate(p.date)} />
+                <h3>{p.title}</h3>
               </Link>
-            </div>
-          </div>
-
-          {/* Sidebar events list */}
-          <div className="flex flex-col gap-0">
-            <p
-              data-reveal
-              className="text-[10px] font-semibold uppercase tracking-widest text-amber-accent pb-3 mb-2 border-b border-txsn-mint-soft/60"
-            >
-              More Upcoming Events
-            </p>
-            {others.length > 0 ? (
-              <div className="flex flex-col gap-3">
-                {others.map((ev, i) => {
-                  const d = formatDateShort(ev.date);
-                  return (
-                    <div
-                      key={ev.slug}
-                      data-reveal
-                      data-delay={String(i * 100)}
-                      className="flex items-center gap-3 bg-txsn-wash rounded-lg p-3.5 hover:shadow-sm transition-shadow"
-                    >
-                      <div className="bg-heritage-navy text-white w-13 h-13 shrink-0 flex flex-col items-center justify-center rounded-lg px-3 py-2 text-center">
-                        <span className="text-[9px] uppercase font-bold tracking-wide block">
-                          {ev.date ? d.month : "TBA"}
-                        </span>
-                        <span className="text-[18px] font-bold leading-tight block">
-                          {ev.date ? d.day : "—"}
-                        </span>
-                      </div>
-                      <div className="flex-1 min-w-0">
-                        <h4 className="font-semibold text-heritage-navy text-[13px] leading-snug">
-                          {ev.title}
-                        </h4>
-                        <div className="flex items-start gap-1 mt-0.5 text-[11.5px] text-txsn-slate">
-                          <Icon
-                            name={ev.location === "Online" ? "video" : "pin"}
-                            size={11}
-                            className="mt-0.5 flex-shrink-0"
-                          />
-                          <span>
-                            {ev.location}
-                            {(ev.dateLabel || !ev.hidePricing) && <span className="mx-0.5">·</span>}
-                            {ev.dateLabel ? (
-                              <span className="text-amber-accent font-medium">{ev.dateLabel}</span>
-                            ) : !ev.hidePricing ? (
-                              <span className={ev.isFree ? "text-txsn-teal font-medium" : "text-amber-accent font-medium"}>
-                                {ev.isFree ? "Free" : "Paid"}
-                              </span>
-                            ) : null}
-                          </span>
-                        </div>
-                      </div>
-                      <Link
-                        href={ev.href ?? `/events/${ev.slug}`}
-                        className="flex-shrink-0 text-[12px] font-medium text-heritage-navy border border-txsn-mint-soft bg-white px-3 py-1.5 rounded-sm hover:bg-clinical-blue hover:border-txsn-mint transition-colors"
-                      >
-                        Details
-                      </Link>
-                    </div>
-                  );
-                })}
-              </div>
-            ) : (
-              <div className="flex items-center justify-center text-center py-8">
-                <div>
-                  <Icon name="calendar" size={24} className="text-txsn-mint mx-auto mb-2" />
-                  <p className="text-[13px] text-txsn-slate">More events coming soon.</p>
-                </div>
-              </div>
-            )}
-          </div>
-
-        </div>
+            </li>
+          ))}
+        </ul>
       </Container>
     </section>
   );
 }
 
-export function JoinCTA() {
+/* ---------- 8. Talks ---------- */
+
+export function Talks({ talks }: { talks: EventItem[] }) {
+  if (talks.length === 0) return null;
   return (
-    <section className="bg-heritage-navy">
-      <Container className="py-20 lg:py-24 text-center">
-        <h2
-          data-reveal
-          className="font-serif text-[2rem] lg:text-[2.75rem] text-white font-bold max-w-2xl mx-auto leading-tight"
-        >
-          Join the leading voice for Texas nephrology
-        </h2>
-        <p
-          data-reveal
-          data-delay="100"
-          className="mt-5 text-[15px] lg:text-[16px] text-white/80 max-w-xl mx-auto leading-relaxed"
-        >
-          Trainee and full membership tiers. Renew online, register for events,
-          and access members-only resources to support your clinical practice.
-        </p>
-        <div data-reveal data-delay="200">
-          <Link
-            href="/join"
-            className="mt-8 inline-flex items-center gap-2 bg-amber-accent hover:opacity-90 text-white text-[15px] font-bold px-10 py-4 rounded-sm transition-all shadow-xl hover:shadow-amber-accent/30 hover:-translate-y-0.5"
-          >
-            Become a member <Icon name="arrow" size={16} />
-          </Link>
-        </div>
+    <section className="pad" aria-labelledby="talks-title">
+      <Container>
+        <SectionHead
+          id="talks-title"
+          title="Watch past talks"
+          intro="Recordings from the Bayou City Bean Club, our lunch-and-learn series in the Texas Medical Center."
+          action={
+            <Button href="/resources/member" variant="outline">
+              All recordings
+            </Button>
+          }
+        />
+        <ul className={s.talkGrid}>
+          {talks.map((t, i) => (
+            <li key={t.slug} className="rv" style={{ transitionDelay: `${i * 0.1}s` }}>
+              <Link
+                href={`/resources/member/${t.slug}`}
+                className={`${s.talk} card card-hover spot h-full`}
+                data-tilt
+              >
+                <div className={`${s.talkPhoto} tilt`}>
+                  <Image
+                    src={t.videoThumbnail ?? t.speakerPhoto ?? FALLBACK}
+                    alt=""
+                    fill
+                    sizes="(max-width: 800px) 100vw, 50vw"
+                  />
+                  <span className={s.play} aria-hidden="true">
+                    <span>
+                      <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                        <path d="M8 5v14l11-7z" />
+                      </svg>
+                    </span>
+                  </span>
+                </div>
+                <div className={s.talkBody}>
+                  <h3>{t.talkTitle ?? t.title}</h3>
+                  {t.speakerName && <span className={`${s.talkWho} block`}>{t.speakerName}</span>}
+                  {t.speakerTitle && (
+                    <span className={`${s.talkRole} block`}>{t.speakerTitle.split(";")[0].trim()}</span>
+                  )}
+                  <span className={s.talkMeta}>
+                    <span>{formatDate(t.date)}</span>
+                    <span className={s.lock}>
+                      <Icon name="lock" size={12} />
+                      Members only
+                    </span>
+                  </span>
+                </div>
+              </Link>
+            </li>
+          ))}
+        </ul>
       </Container>
     </section>
+  );
+}
+
+export function Divider() {
+  return (
+    <Container>
+      <hr className={s.divider} />
+    </Container>
   );
 }

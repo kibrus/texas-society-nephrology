@@ -1,5 +1,6 @@
-import { PageHeader, Container, Icon } from "@/components/ui";
-import Link from "next/link";
+import Image from "next/image";
+import { PageHeader, Container, Icon, SectionHead, Button, ArrowLink } from "@/components/ui";
+import { TIER_OPTIONS } from "@/lib/membership";
 
 export const metadata = { title: "Membership · TSN" };
 
@@ -16,31 +17,80 @@ export default function MembershipPage() {
   return (
     <>
       <PageHeader
-        eyebrow="MEMBERSHIP"
+        eyebrow="Membership"
         title="Why join TSN"
         intro="Membership connects you to the people, education, and advocacy that strengthen nephrology practice across Texas."
+        image="/images/site/membership/hero.webp"
+        actions={
+          <>
+            <Button href="/join" variant="white" arrow>
+              Join or renew
+            </Button>
+            <Button href="/membership/tiers" variant="glass">
+              Compare membership tiers
+            </Button>
+          </>
+        }
       />
-      <Container className="py-14">
-        <div className="grid gap-3.5 sm:grid-cols-2 lg:grid-cols-3">
-          {benefits.map((b) => (
-            <div key={b.title} className="bg-white border border-txsn-mint-soft/50 rounded-xl p-5">
-              <div className="w-10 h-10 rounded-[10px] bg-txsn-wash flex items-center justify-center text-txsn-teal mb-3">
-                <Icon name={b.icon} size={20} />
-              </div>
-              <div className="font-medium text-txsn-teal-deep text-[15px] mb-1">{b.title}</div>
-              <div className="text-[13px] text-txsn-slate leading-relaxed">{b.body}</div>
+
+      <section className="pad">
+        <Container>
+          <SectionHead title="What membership gives you" />
+          <ul className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {benefits.map((b, i) => (
+              <li
+                key={b.title}
+                className="card card-hover spot rv p-7"
+                style={{ transitionDelay: `${(i % 3) * 0.08}s` }}
+              >
+                <div className="relative z-[2]">
+                  <div className="ic-tile mb-5">
+                    <Icon name={b.icon} size={22} />
+                  </div>
+                  <h3 className="font-serif text-[1.25rem] font-bold text-navy">{b.title}</h3>
+                  <p className="mt-2 text-[16px] leading-relaxed text-slate">{b.body}</p>
+                </div>
+              </li>
+            ))}
+          </ul>
+        </Container>
+      </section>
+
+      <section className="pad">
+        <Container>
+          <div className="grid items-center gap-12 lg:grid-cols-2 lg:gap-16">
+            <div className="settle zoom-img relative aspect-[4/3] overflow-hidden rounded-2xl shadow-card-lg">
+              <Image
+                src="/images/site/membership/card.webp"
+                alt="Three medical trainees in white coats reviewing notes together in a hospital corridor"
+                fill
+                sizes="(max-width: 1024px) 100vw, 50vw"
+                className="object-cover"
+              />
             </div>
-          ))}
-        </div>
-        <div className="mt-10 flex flex-wrap gap-3">
-          <Link href="/membership/tiers" className="inline-flex items-center gap-2 bg-txsn-teal text-white text-[14px] font-medium px-5 py-3 rounded-md hover:bg-txsn-teal-mid transition-colors">
-            Compare membership tiers <Icon name="arrow" size={16} />
-          </Link>
-          <Link href="/join" className="inline-flex items-center bg-txsn-gold text-white text-[14px] font-medium px-5 py-3 rounded-md hover:bg-txsn-gold/90 transition-colors">
-            Join or renew
-          </Link>
-        </div>
-      </Container>
+            <div className="rv">
+              <h2 className="h-display">Two tiers, built for where you are in your career</h2>
+              <ul className="mt-8 space-y-4">
+                {TIER_OPTIONS.map((t) => (
+                  <li key={t.value} className="card-line flex items-center justify-between gap-4 p-5">
+                    <div>
+                      <div className="font-serif text-[1.15rem] font-bold text-navy">{t.label}</div>
+                      <div className="mt-0.5 text-[15px] text-slate">{t.blurb}</div>
+                    </div>
+                    <div className="whitespace-nowrap text-[16px] font-semibold text-ink">{t.priceLabel}</div>
+                  </li>
+                ))}
+              </ul>
+              <div className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-4">
+                <Button href="/join" arrow>
+                  Join or renew
+                </Button>
+                <ArrowLink href="/membership/tiers">Compare membership tiers</ArrowLink>
+              </div>
+            </div>
+          </div>
+        </Container>
+      </section>
     </>
   );
 }

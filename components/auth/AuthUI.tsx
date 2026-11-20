@@ -4,10 +4,9 @@ import { ReactNode } from "react";
 import { useFormStatus } from "react-dom";
 import { Icon } from "@/components/ui";
 
-// Shared field styling. Slightly taller with a clear focus ring for a modern,
-// accessible feel across all auth + membership forms.
-export const authField =
-  "w-full bg-white border border-txsn-mint-soft rounded-lg px-4 py-3 text-[14.5px] text-txsn-ink placeholder:text-txsn-slate/40 shadow-sm shadow-txsn-teal-deep/[0.03] focus:outline-none focus:border-txsn-teal focus:ring-4 focus:ring-txsn-mint/25 transition-all duration-150";
+// Shared field styling for all auth + membership forms. Builds on the global
+// `.field` look (16px text, 10px radius, navy focus ring).
+export const authField = "field placeholder:text-muted";
 
 export function FieldLabel({
   htmlFor,
@@ -17,10 +16,7 @@ export function FieldLabel({
   children: ReactNode;
 }) {
   return (
-    <label
-      htmlFor={htmlFor}
-      className="block text-[13px] font-medium text-txsn-teal-deep mb-1.5"
-    >
+    <label htmlFor={htmlFor} className="label">
       {children}
     </label>
   );
@@ -29,26 +25,47 @@ export function FieldLabel({
 // Centered card the auth pages render their form into.
 export function AuthCard({ children }: { children: ReactNode }) {
   return (
-    <div className="mx-auto max-w-md py-14 px-5">
-      <div className="bg-white border border-txsn-mint-soft rounded-xl shadow-sm shadow-txsn-teal-deep/5 p-7">
-        {children}
-      </div>
+    <div className="mx-auto max-w-md px-5 py-14">
+      <div className="card p-7 sm:p-8">{children}</div>
     </div>
   );
 }
 
+// Inline error. #b42318 on #fef3f2 is ~6.4:1 (passes WCAG AA).
 export function FormError({ message }: { message?: string }) {
   if (!message) return null;
   return (
     <p
       role="alert"
-      className="flex items-start gap-2 rounded-lg border border-red-200 bg-red-50 px-3.5 py-2.5 text-[13px] text-red-700"
+      className="flex items-start gap-2.5 rounded-[10px] border border-[#fecdca] bg-[#fef3f2] px-4 py-3 text-[15px] leading-snug text-[#b42318]"
     >
       <span
         aria-hidden
-        className="mt-1.5 h-1.5 w-1.5 flex-shrink-0 rounded-full bg-red-500"
+        className="mt-[7px] h-1.5 w-1.5 flex-shrink-0 rounded-full bg-[#b42318]"
       />
       {message}
+    </p>
+  );
+}
+
+// Inline success / confirmation message.
+export function FormSuccess({ children }: { children?: ReactNode }) {
+  if (!children) return null;
+  return (
+    <p
+      role="status"
+      className="flex items-start gap-2.5 rounded-[10px] border border-line bg-surface px-4 py-3 text-[15px] leading-snug text-navy"
+    >
+      <svg
+        width="18"
+        height="18"
+        viewBox="0 0 24 24"
+        aria-hidden="true"
+        className="success-check mt-px flex-shrink-0"
+      >
+        <path d="M20 6L9 17l-5-5" strokeLinecap="round" strokeLinejoin="round" />
+      </svg>
+      <span>{children}</span>
     </p>
   );
 }
@@ -66,14 +83,11 @@ export function SubmitButton({
     <button
       type="submit"
       disabled={pending}
-      className="group inline-flex w-full items-center justify-center gap-2 rounded-lg bg-txsn-teal px-5 py-3.5 text-[14.5px] font-semibold text-white shadow-sm shadow-txsn-teal-deep/20 transition-all duration-150 hover:bg-txsn-teal-mid hover:shadow-md hover:shadow-txsn-teal-deep/25 focus:outline-none focus-visible:ring-4 focus-visible:ring-txsn-mint/30 disabled:opacity-60 disabled:shadow-none"
+      aria-disabled={pending}
+      className="btn btn-navy w-full"
     >
       {pending ? pendingLabel : label}
-      <Icon
-        name="arrow"
-        size={16}
-        className="transition-transform duration-150 group-hover:translate-x-0.5"
-      />
+      {!pending && <Icon name="arrow" size={16} className="arrow" />}
     </button>
   );
 }

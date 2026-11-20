@@ -2,7 +2,7 @@
 
 import { useFormState } from "react-dom";
 import Link from "next/link";
-import { AuthShell } from "@/components/auth/AuthShell";
+import { AuthShell, authLink } from "@/components/auth/AuthShell";
 import {
   FieldLabel,
   FormError,
@@ -22,12 +22,9 @@ export default function SignInPage() {
       title="Welcome back"
       subtitle="Sign in to manage your TSN membership, invoices, and account."
       footer={
-        <p className="text-center text-[13.5px] text-txsn-slate">
+        <p className="text-center text-[15px] text-slate">
           Not a member yet?{" "}
-          <Link
-            href="/join"
-            className="font-semibold text-txsn-teal hover:underline"
-          >
+          <Link href="/join" className={authLink}>
             Join TSN
           </Link>
         </p>
@@ -63,11 +60,8 @@ export default function SignInPage() {
 
         <SubmitButton label="Sign in" pendingLabel="Signing in..." />
 
-        <p className="text-center text-[13px]">
-          <Link
-            href="/forgot-password"
-            className="font-medium text-txsn-teal hover:underline"
-          >
+        <p className="text-center text-[15px]">
+          <Link href="/forgot-password" className={authLink}>
             Forgot password?
           </Link>
         </p>

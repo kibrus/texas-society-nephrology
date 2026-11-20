@@ -1,33 +1,44 @@
+import { PartnerStrip } from "@/components/site/PartnerStrip";
 import {
   Hero,
-  // FeaturedEvent, // "Next Event" bar hidden for now — re-add below to restore
-  BrochureFeature,
-  // SummitFeature, // ISGD Summit has passed — re-add below to restore
+  ActionBar,
   Pillars,
-  NewsPreview,
-  EventsPreview,
-  JoinCTA,
+  AnnualMeetingBand,
+  EventsSection,
+  NewsRow,
+  Divider,
+  Talks,
 } from "@/components/home/sections";
-import { Partners } from "@/components/home/Partners";
-import { ScrollRevealInit } from "@/components/home/ScrollRevealInit";
-import { getLatestNews, getUpcomingEvents } from "@/lib/content";
+import {
+  getLatestNews,
+  getNextEvent,
+  getPastEvents,
+  getUpcomingEvents,
+  getVideoEvents,
+} from "@/lib/content";
+
+export const revalidate = 3600;
 
 export default function HomePage() {
+  // Everything below is derived from content/ at request time (ISR), so the
+  // "next" and "past" events move automatically as dates pass.
+  const next = getNextEvent();
+  const upcoming = getUpcomingEvents(4);
+  const past = getPastEvents(3);
   const news = getLatestNews(3);
-  const events = getUpcomingEvents(3);
+  const talks = getVideoEvents().slice(0, 2);
 
   return (
     <>
-      <ScrollRevealInit />
       <Hero />
-      {/* "Next Event" bar hidden for now:
-          {featuredEvent && <FeaturedEvent event={featuredEvent} />} */}
-      <Partners />
-      <BrochureFeature />
+      <ActionBar next={next} />
+      <PartnerStrip />
       <Pillars />
-      <NewsPreview posts={news} />
-      <EventsPreview events={events} />
-      <JoinCTA />
+      <AnnualMeetingBand />
+      <EventsSection next={next} upcoming={upcoming} past={past} />
+      <NewsRow posts={news} />
+      <Divider />
+      <Talks talks={talks} />
     </>
   );
 }

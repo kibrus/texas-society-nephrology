@@ -109,8 +109,8 @@ export function getAllEvents(): EventItem[] {
     videoThumbnail: data.videoThumbnail,
   }));
 
-  const upcoming = events.filter((e) => !isPastDate(e.date)).sort((a, b) => (a.date > b.date ? 1 : -1));
-  const past = events.filter((e) => isPastDate(e.date)).sort((a, b) => (a.date > b.date ? -1 : 1));
+  const upcoming = events.filter((e) => !isEventPast(e)).sort((a, b) => (a.date > b.date ? 1 : -1));
+  const past = events.filter((e) => isEventPast(e)).sort((a, b) => (a.date > b.date ? -1 : 1));
 
   return [...upcoming, ...past];
 }
@@ -119,9 +119,31 @@ export function getEventBySlug(slug: string): EventItem | undefined {
   return getAllEvents().find((e) => e.slug === slug);
 }
 
+// An event is past only once its LAST day is over (multi-day events use endDate).
+export function isEventPast(e: Pick<EventItem, "date" | "endDate">): boolean {
+  return isPastDate(e.endDate || e.date);
+}
+
+// "To be announced" events are parked far in the future (e.g. 2099-12-31) so
+// they sort last; treat them as undated in the UI.
+export function isEventTba(e: Pick<EventItem, "date" | "dateLabel">): boolean {
+  return /to be announced|tba/i.test(e.dateLabel ?? "") || e.date >= "2099";
+}
+
 export function getUpcomingEvents(count = 3): EventItem[] {
-  const upcoming = getAllEvents().filter((e) => !isPastDate(e.date));
+  const upcoming = getAllEvents().filter((e) => !isEventPast(e));
   return upcoming.slice(0, count);
+}
+
+// Past events, most recent first.
+export function getPastEvents(count?: number): EventItem[] {
+  const past = getAllEvents().filter((e) => isEventPast(e));
+  return count === undefined ? past : past.slice(0, count);
+}
+
+// The next dated upcoming event (skips "to be announced" placeholders).
+export function getNextEvent(): EventItem | null {
+  return getAllEvents().find((e) => !isEventPast(e) && !isEventTba(e)) ?? null;
 }
 
 // Events that have a member-only recording, newest first. Powers the member
@@ -147,9 +169,11 @@ export function formatDate(iso: string): string {
   });
 }
 
+// True once the given day (YYYY-MM-DD) has fully ended in Texas (Central time).
+// The server runs in UTC, so anchor the end of day to -06:00 explicitly.
 export function isPastDate(iso: string): boolean {
   if (!iso) return false;
-  const eventDate = new Date(iso + "T23:59:59");
+  const eventDate = new Date(iso + "T23:59:59-06:00");
   return eventDate.getTime() < Date.now();
 }
 

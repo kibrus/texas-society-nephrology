@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import { PageHeader, Container } from "@/components/ui";
+import { PageHeader, Container, Status } from "@/components/ui";
 import { getSessionContext } from "@/lib/auth";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 import { TIER_LABELS } from "@/lib/membership";
@@ -41,91 +41,95 @@ export default async function InvoicesPage() {
 
   return (
     <>
-      <PageHeader eyebrow="MY ACCOUNT" title="Billing history" />
-      <Container className="py-14">
-        <div className="max-w-3xl space-y-6">
-          <Link
-            href="/member"
-            className="inline-flex items-center text-[13px] text-txsn-teal font-medium hover:underline"
-          >
-            ← Back to my account
-          </Link>
+      <PageHeader eyebrow="My account" title="Billing history" />
+      <section className="pt-14 pb-4 md:pt-16">
+        <Container>
+          <div className="max-w-4xl space-y-8">
+            <Link href="/member" className="link">
+              <span aria-hidden="true">←</span>
+              Back to my account
+            </Link>
 
-          {rows.length === 0 ? (
-            <div className="bg-txsn-wash rounded-xl p-6">
-              <p className="text-[14px] text-txsn-slate">
-                You don&apos;t have any payments yet. Once your first dues payment
-                is processed, your invoices will appear here.
-              </p>
-            </div>
-          ) : (
-            <div className="overflow-x-auto rounded-xl border border-txsn-mint-soft/60">
-              <table className="w-full text-left text-[14px]">
-                <thead>
-                  <tr className="bg-txsn-wash text-[12px] text-txsn-slate">
-                    <th className="px-4 py-3 font-medium">Date</th>
-                    <th className="px-4 py-3 font-medium">Period</th>
-                    <th className="px-4 py-3 font-medium">Tier</th>
-                    <th className="px-4 py-3 font-medium">Amount</th>
-                    <th className="px-4 py-3 font-medium">Status</th>
-                    <th className="px-4 py-3 font-medium text-right">Invoice</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {rows.map((p) => (
-                    <tr
-                      key={p.id}
-                      className="border-t border-txsn-mint-soft/50 text-txsn-teal-deep"
-                    >
-                      <td className="px-4 py-3 whitespace-nowrap">
-                        {formatDate(p.created_at.slice(0, 10))}
-                      </td>
-                      <td className="px-4 py-3 whitespace-nowrap text-txsn-slate">
-                        {formatDate(p.period_start)} – {formatDate(p.period_end)}
-                      </td>
-                      <td className="px-4 py-3">
-                        {TIER_LABELS[p.tier] ?? p.tier}
-                      </td>
-                      <td className="px-4 py-3 whitespace-nowrap font-medium">
-                        {formatAmount(p.amount_cents)}
-                      </td>
-                      <td className="px-4 py-3 capitalize">{p.status}</td>
-                      <td className="px-4 py-3 whitespace-nowrap text-right">
-                        <span className="inline-flex items-center gap-3">
-                          {p.stripe_hosted_invoice_url && (
-                            <a
-                              href={p.stripe_hosted_invoice_url}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="text-txsn-teal font-medium hover:underline"
-                            >
-                              View
-                            </a>
-                          )}
-                          {p.stripe_invoice_pdf_url && (
-                            <a
-                              href={p.stripe_invoice_pdf_url}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="text-txsn-teal font-medium hover:underline"
-                            >
-                              Download
-                            </a>
-                          )}
-                          {!p.stripe_hosted_invoice_url &&
-                            !p.stripe_invoice_pdf_url && (
-                              <span className="text-txsn-slate">—</span>
-                            )}
-                        </span>
-                      </td>
+            {rows.length === 0 ? (
+              <div className="card p-8">
+                <p className="text-[17px] leading-[1.65] text-slate">
+                  You don&apos;t have any payments yet. Once your first dues payment
+                  is processed, your invoices will appear here.
+                </p>
+              </div>
+            ) : (
+              <div className="card">
+                <div className="overflow-x-auto">
+                <table className="w-full text-left text-[15px]">
+                  <thead>
+                    <tr className="bg-surface text-[13.5px] text-slate">
+                      <th scope="col" className="px-5 py-4 font-semibold">Date</th>
+                      <th scope="col" className="px-5 py-4 font-semibold">Period</th>
+                      <th scope="col" className="px-5 py-4 font-semibold">Tier</th>
+                      <th scope="col" className="px-5 py-4 font-semibold">Amount</th>
+                      <th scope="col" className="px-5 py-4 font-semibold">Status</th>
+                      <th scope="col" className="px-5 py-4 text-right font-semibold">Invoice</th>
                     </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          )}
-        </div>
-      </Container>
+                  </thead>
+                  <tbody>
+                    {rows.map((p) => (
+                      <tr key={p.id} className="border-t border-line text-ink">
+                        <td className="whitespace-nowrap px-5 py-4">
+                          {formatDate(p.created_at.slice(0, 10))}
+                        </td>
+                        <td className="whitespace-nowrap px-5 py-4 text-slate">
+                          {formatDate(p.period_start)} – {formatDate(p.period_end)}
+                        </td>
+                        <td className="px-5 py-4">{TIER_LABELS[p.tier] ?? p.tier}</td>
+                        <td className="whitespace-nowrap px-5 py-4 font-semibold">
+                          {formatAmount(p.amount_cents)}
+                        </td>
+                        <td className="px-5 py-4">
+                          <Status
+                            tone={p.status === "succeeded" || p.status === "paid" ? "live" : "default"}
+                            className="capitalize"
+                          >
+                            {p.status}
+                          </Status>
+                        </td>
+                        <td className="whitespace-nowrap px-5 py-4 text-right">
+                          <span className="inline-flex items-center gap-4">
+                            {p.stripe_hosted_invoice_url && (
+                              <a
+                                href={p.stripe_hosted_invoice_url}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="font-semibold text-navy underline-offset-4 hover:underline"
+                              >
+                                View
+                              </a>
+                            )}
+                            {p.stripe_invoice_pdf_url && (
+                              <a
+                                href={p.stripe_invoice_pdf_url}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="font-semibold text-navy underline-offset-4 hover:underline"
+                              >
+                                Download
+                              </a>
+                            )}
+                            {!p.stripe_hosted_invoice_url &&
+                              !p.stripe_invoice_pdf_url && (
+                                <span className="text-muted">—</span>
+                              )}
+                          </span>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+                </div>
+              </div>
+            )}
+          </div>
+        </Container>
+      </section>
     </>
   );
 }

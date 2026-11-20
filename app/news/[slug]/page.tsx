@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { MDXRemote } from "next-mdx-remote/rsc";
-import { Container, Icon } from "@/components/ui";
+import { PageHeader, Container, MetaRow, ArrowLink } from "@/components/ui";
 import { getAllNews, getNewsBySlug, formatDate } from "@/lib/content";
 
 export function generateStaticParams() {
@@ -17,30 +17,70 @@ export default function NewsArticlePage({ params }: { params: { slug: string } }
   const post = getNewsBySlug(params.slug);
   if (!post) notFound();
 
+  const more = getAllNews()
+    .filter((p) => p.slug !== post.slug)
+    .slice(0, 3);
+
   return (
     <>
-      <div className="bg-txsn-wash border-b border-txsn-mint-soft/40">
-        <Container className="py-12 lg:py-14">
-          <Link href="/news" className="inline-flex items-center gap-1.5 text-[13px] text-txsn-teal font-medium mb-5 hover:gap-2.5 transition-all">
-            <Icon name="arrow" size={14} className="rotate-180" /> All news
-          </Link>
-          <div className="max-w-2xl">
-            <div className="flex items-center gap-2 mb-3">
-              {post.category && (
-                <span className="text-[10px] uppercase tracking-wide text-txsn-teal bg-white px-2 py-0.5 rounded-full font-medium">{post.category}</span>
-              )}
-              <span className="text-[12px] text-txsn-gold font-medium">{formatDate(post.date)}</span>
+      <PageHeader
+        eyebrow={
+          <>
+            <Link href="/news">News</Link>
+            <span aria-hidden="true">/</span>
+            <span>{post.category ?? "Article"}</span>
+          </>
+        }
+        title={post.title}
+        image="/images/site/news/hero.webp"
+      />
+
+      <section className="pt-16 pb-8 md:pt-20">
+        <Container>
+          <div className="mx-auto max-w-[720px]">
+            <MetaRow
+              category={post.category}
+              date={formatDate(post.date)}
+              extra={post.author ? `By ${post.author}` : undefined}
+              className="mb-8 border-b border-line pb-6"
+            />
+            <article className="prose-txsn">
+              <MDXRemote source={post.content} />
+            </article>
+            <div className="mt-12 border-t border-line pt-8">
+              <Link href="/news" className="link">
+                <span aria-hidden="true">←</span>
+                All news
+              </Link>
             </div>
-            <h1 className="font-serif text-3xl lg:text-[2.5rem] leading-tight text-txsn-teal-deep font-medium">{post.title}</h1>
-            {post.author && <div className="text-[13px] text-txsn-slate mt-4">By {post.author}</div>}
           </div>
         </Container>
-      </div>
-      <Container className="py-12">
-        <article className="prose-txsn max-w-2xl">
-          <MDXRemote source={post.content} />
-        </article>
-      </Container>
+      </section>
+
+      {more.length > 0 && (
+        <section className="pt-16 pb-4">
+          <Container>
+            <div className="mb-8 flex flex-wrap items-end justify-between gap-4">
+              <h2 className="h-display">More news</h2>
+              <ArrowLink href="/news">View all news</ArrowLink>
+            </div>
+            <div className="grid gap-5 md:grid-cols-3">
+              {more.map((p) => (
+                <Link
+                  key={p.slug}
+                  href={`/news/${p.slug}`}
+                  className="card-line row-hover group block p-6"
+                >
+                  <MetaRow category={p.category} date={formatDate(p.date)} />
+                  <h3 className="mt-2 text-[17px] font-semibold leading-[1.4] text-navy group-hover:text-navy-hover">
+                    {p.title}
+                  </h3>
+                </Link>
+              ))}
+            </div>
+          </Container>
+        </section>
+      )}
     </>
   );
 }

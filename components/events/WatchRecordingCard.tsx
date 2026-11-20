@@ -54,46 +54,34 @@ export function WatchRecordingCard({ slug }: { slug: string }) {
         : "The recording of this talk is available to TSN members.";
 
   return (
-    <div className="rounded-xl bg-txsn-teal-deep p-6 text-white">
-      <div className="mb-3 flex items-center gap-3">
-        <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-lg bg-white/15">
-          <Icon name="play" size={20} />
-        </div>
+    <div className="card-line p-7">
+      <div className="flex items-center gap-3">
+        <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-surface-2 text-navy">
+          <Icon name="play-screen" size={20} />
+        </span>
         <div>
-          <div className="mb-0.5 text-[11px] font-medium uppercase tracking-widest text-txsn-mint">
-            Recording
-          </div>
-          <div className="text-[14px] font-semibold">Watch this talk</div>
+          <p className="text-[14px] font-semibold text-muted">Recording</p>
+          <h2 className="text-[16px] font-semibold text-ink">Watch this talk</h2>
         </div>
       </div>
-      <p className="mb-4 text-[12.5px] leading-relaxed text-white/70">{subtext}</p>
+      <p className="mt-3 text-[15px] leading-relaxed text-slate">{subtext}</p>
 
       {access === "loading" ? (
-        <div
-          aria-hidden
-          className="h-[42px] w-full animate-pulse rounded-md bg-white/15"
-        />
+        <div aria-hidden className="mt-5 h-[48px] w-full animate-pulse rounded-full bg-surface-2" />
       ) : (
-        <Link
-          href={cta.href}
-          className="flex w-full items-center justify-center gap-2 rounded-md bg-white px-4 py-2.5 text-[13px] font-semibold text-txsn-teal-deep transition-colors hover:bg-txsn-wash"
-        >
-          {access === "member" ? (
-            <Icon name="play" size={15} />
-          ) : (
-            <Icon name="lock" size={15} />
-          )}
+        <Link href={cta.href} className="btn btn-navy mt-5 w-full">
+          <Icon name={access === "member" ? "play" : "lock"} size={16} />
           {cta.label}
         </Link>
       )}
 
       {access === "guest" && (
-        <Link
-          href="/sign-in"
-          className="mt-3 block text-center text-[12.5px] font-medium text-white/70 underline-offset-2 hover:text-white hover:underline"
-        >
-          Already a member? Sign in
-        </Link>
+        <p className="mt-3 text-center text-[14px] text-slate">
+          Already a member?{" "}
+          <Link href="/sign-in" className="font-semibold text-navy underline underline-offset-2 hover:text-navy-hover">
+            Sign in
+          </Link>
+        </p>
       )}
     </div>
   );

@@ -1,9 +1,12 @@
 import { notFound } from "next/navigation";
+import Image from "next/image";
 import Link from "next/link";
 import { MDXRemote } from "next-mdx-remote/rsc";
-import { Container, Icon } from "@/components/ui";
+import { Button, Container, Icon, PageHeader, Status } from "@/components/ui";
 import { WatchRecordingCard } from "@/components/events/WatchRecordingCard";
-import { getAllEvents, getEventBySlug, formatDate, isPastDate } from "@/lib/content";
+import { eventWhen, isPhotoImage } from "@/components/events/EventCards";
+import styles from "@/components/events/events.module.css";
+import { getAllEvents, getEventBySlug, isEventPast, isEventTba } from "@/lib/content";
 
 // External links in event content open in a new tab; internal links stay in-page.
 const mdxComponents = {
@@ -26,250 +29,188 @@ export function generateMetadata({ params }: { params: { slug: string } }) {
   return { title: event ? `${event.title} · TSN` : "Event · TSN" };
 }
 
+function Fact({ icon, children }: { icon: string; children: React.ReactNode }) {
+  return (
+    <span className="inline-flex items-start gap-2">
+      <Icon name={icon} size={17} className="mt-[3px] shrink-0 opacity-80" />
+      <span>{children}</span>
+    </span>
+  );
+}
+
 export default function EventDetailPage({ params }: { params: { slug: string } }) {
   const event = getEventBySlug(params.slug);
   if (!event) notFound();
 
-  const past = isPastDate(event.date);
+  // Multi-day events stay "upcoming" until their last day is over.
+  const past = isEventPast(event);
+  const tba = isEventTba(event);
+  const when = eventWhen(event);
+  const photoHero = isPhotoImage(event.image);
+  const online = /^online$/i.test(event.location.trim());
+  const showRegister = Boolean(event.registrationUrl) && !past;
 
   return (
     <>
-      {/* Header */}
-      <div className="bg-txsn-wash border-b border-txsn-mint-soft/40">
-        <Container className="py-12 lg:py-14">
-          <Link
-            href="/events"
-            className="inline-flex items-center gap-1.5 text-[13px] text-txsn-teal font-medium mb-6 hover:gap-2.5 transition-all"
-          >
-            <Icon name="arrow" size={14} className="rotate-180" /> All Events
-          </Link>
+      <PageHeader
+        eyebrow={<Link href="/events">Events</Link>}
+        title={event.title}
+        image={photoHero ? event.image : "/images/site/events/hero.webp"}
+        intro={
+          <span className="flex flex-wrap gap-x-7 gap-y-2 text-[16px]">
+            <Fact icon="calendar">{when}</Fact>
+            {event.time && <Fact icon="clock">{event.time}</Fact>}
+            <Fact icon={online ? "video" : "pin"}>{event.location}</Fact>
+          </span>
+        }
+      >
+        <div className="fade-up mt-6 text-white" style={{ animationDelay: ".24s" }}>
+          {past ? (
+            <Status tone="past" className="!text-white/80">
+              Past event
+            </Status>
+          ) : (
+            <Status tone="live" className="!text-white">
+              {tba ? "Date to be announced" : "Upcoming"}
+            </Status>
+          )}
+        </div>
+      </PageHeader>
 
-          {/* Badges */}
-          <div className="flex items-center gap-2 mb-4 flex-wrap">
-            <span className={`text-[10px] uppercase tracking-wide font-medium px-2.5 py-1 rounded-full border ${
-              past
-                ? "text-txsn-slate bg-white border-txsn-mint-soft/60"
-                : "text-txsn-teal bg-white border-txsn-teal/30"
-            }`}>
-              {past ? "Past Event" : "Upcoming"}
-            </span>
-            {!event.hidePricing && (
-              <span className={`text-[10px] uppercase tracking-wide text-white font-medium px-2.5 py-1 rounded-full ${
-                event.isFree ? "bg-txsn-teal" : "bg-txsn-gold"
-              }`}>
-                {event.isFree ? "Free" : "Paid"}
-              </span>
-            )}
-            {event.sponsor && (
-              <span className="text-[10px] uppercase tracking-wide text-txsn-gold font-medium px-2.5 py-1 rounded-full bg-txsn-gold-soft border border-txsn-gold/20">
-                Sponsored by {event.sponsor}
-              </span>
-            )}
-          </div>
-
-          <h1 className="font-serif text-3xl lg:text-[2.5rem] leading-tight text-txsn-teal-deep font-medium max-w-2xl">
-            {event.title}
-          </h1>
-
-          {/* Meta row */}
-          <div className="mt-5 flex flex-wrap gap-x-6 gap-y-2">
-            <div className="flex items-center gap-2 text-[13px] text-txsn-slate">
-              <Icon name="calendar" size={14} className="text-txsn-teal flex-shrink-0" />
-              {event.dateLabel ?? formatDate(event.date)}
-              {event.time && !event.dateLabel && <span className="text-txsn-slate/50 mx-1">·</span>}
-              {event.time && !event.dateLabel && <span>{event.time}</span>}
-            </div>
-            <div className="flex items-center gap-2 text-[13px] text-txsn-slate">
-              <Icon name={event.location === "Online" ? "video" : "pin"} size={14} className="text-txsn-teal flex-shrink-0" />
-              {event.location}
-            </div>
-          </div>
-        </Container>
-      </div>
-
-      {/* Body */}
-      <Container className="py-12">
-        <div className="grid lg:grid-cols-[1fr_300px] gap-10 items-start">
-
-          {/* Left — MDX content */}
-          <article className="prose-txsn min-w-0">
-            {(event.speakerPhoto || event.speakerName) && (
-              <div className="mb-8 flex flex-col items-center gap-5 rounded-2xl border border-txsn-mint-soft bg-txsn-wash/50 p-5 text-center sm:flex-row sm:gap-6 sm:p-6 sm:text-left">
-                {event.speakerPhoto && (
-                  <img
-                    src={event.speakerPhoto}
-                    alt={event.speakerName ?? "Speaker"}
-                    className="h-40 w-40 flex-shrink-0 rounded-xl object-cover object-top shadow-sm ring-1 ring-txsn-mint-soft"
-                  />
-                )}
-                <div className="min-w-0">
-                  <div className="mb-1.5 text-[11px] font-semibold uppercase tracking-[0.15em] text-txsn-gold">
-                    Speaker
+      <section className="pad">
+        <Container>
+          <div className="grid items-start gap-12 lg:grid-cols-[minmax(0,1fr)_340px] lg:gap-16">
+            {/* Main column */}
+            <article className="min-w-0">
+              {(event.speakerPhoto || event.speakerName) && (
+                <div className="card rv mb-10 flex flex-col gap-6 p-6 sm:flex-row sm:items-center sm:p-7">
+                  {event.speakerPhoto && (
+                    <div className="relative h-44 w-44 shrink-0 overflow-hidden rounded-xl bg-surface-2">
+                      <Image
+                        src={event.speakerPhoto}
+                        alt={event.speakerName ?? "Speaker"}
+                        fill
+                        sizes="176px"
+                        className="object-cover object-top"
+                      />
+                    </div>
+                  )}
+                  <div className="min-w-0">
+                    <p className="text-[14px] font-semibold text-muted">Speaker</p>
+                    {event.speakerName && (
+                      <p className="mt-1 font-serif text-[1.35rem] font-bold leading-snug text-navy">
+                        {event.speakerName}
+                      </p>
+                    )}
+                    {event.speakerTitle && (
+                      <p className="mt-1.5 text-[15px] leading-relaxed text-slate">{event.speakerTitle}</p>
+                    )}
+                    {event.talkTitle && (
+                      <div className="mt-4 border-t border-line pt-4">
+                        <p className="text-[14px] font-semibold text-muted">Presentation</p>
+                        <p className="mt-0.5 text-[17px] font-semibold leading-snug text-ink">
+                          &ldquo;{event.talkTitle}&rdquo;
+                        </p>
+                      </div>
+                    )}
                   </div>
-                  {event.speakerName && (
-                    <div className="font-serif text-xl font-medium text-txsn-teal-deep">
-                      {event.speakerName}
-                    </div>
-                  )}
-                  {event.speakerTitle && (
-                    <div className="mt-1 text-[13.5px] leading-relaxed text-txsn-slate">
-                      {event.speakerTitle}
-                    </div>
-                  )}
-                  {event.talkTitle && (
-                    <div className="mt-3.5 border-t border-txsn-mint-soft/70 pt-3.5">
-                      <div className="text-[11px] uppercase tracking-wide text-txsn-slate">
-                        Presentation
-                      </div>
-                      <div className="mt-0.5 text-[15px] font-semibold text-txsn-teal-deep">
-                        &ldquo;{event.talkTitle}&rdquo;
-                      </div>
-                    </div>
-                  )}
                 </div>
-              </div>
-            )}
-            {event.image && (
-              <img
-                src={event.image}
-                alt={`${event.title} flyer`}
-                className="w-full rounded-xl border border-txsn-mint-soft/50 mb-8"
-              />
-            )}
-            {event.excerpt && (
-              <div className="bg-txsn-teal-deep/5 border-l-4 border-txsn-teal rounded-r-xl px-5 py-4 mb-8">
-                <p className="text-[15px] text-txsn-teal-deep font-medium leading-relaxed m-0">
+              )}
+
+              {/* A non-photo `image` (e.g. a flyer graphic) is shown in the body */}
+              {event.image && !photoHero && (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img
+                  src={event.image}
+                  alt={`${event.title} flyer`}
+                  className="mb-10 w-full rounded-2xl border border-line"
+                />
+              )}
+
+              {event.excerpt && (
+                <p className="mb-8 border-l-[3px] border-navy pl-5 text-[19px] font-medium leading-relaxed text-ink">
                   {event.excerpt}
                 </p>
+              )}
+
+              <div className="prose-txsn">
+                {event.content?.trim() ? (
+                  <MDXRemote source={event.content} components={mdxComponents} />
+                ) : (
+                  <p>Details for this event will be posted soon.</p>
+                )}
               </div>
-            )}
-            {event.content?.trim() ? (
-              <MDXRemote source={event.content} components={mdxComponents} />
-            ) : (
-              <p className="text-txsn-slate text-[15px]">Details for this event will be posted soon.</p>
-            )}
-          </article>
+            </article>
 
-          {/* Right — Sidebar */}
-          <aside className="space-y-4">
-
-            {/* Member-only recording (shown once a video is attached) */}
-            {event.youtubeId && <WatchRecordingCard slug={event.slug} />}
-
-            {/* Registration */}
-            {event.registrationUrl && (
-              <div className="bg-txsn-gold rounded-xl p-6 text-white">
-                <div className="text-[11px] tracking-widest font-medium text-white/80 uppercase mb-1">Registration</div>
-                <div className="text-[14px] font-semibold mb-4">Reserve your spot for this event</div>
-                <a
-                  href={event.registrationUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center justify-center gap-2 bg-white text-txsn-gold text-[13px] font-semibold px-4 py-2.5 rounded-md hover:bg-txsn-wash transition-colors w-full"
-                >
-                  Register Now <Icon name="external" size={14} />
-                </a>
-              </div>
-            )}
-
-            {/* PDF Brochure */}
-            {event.brochurePdf && (
-              <div className="bg-txsn-teal-deep rounded-xl p-6 text-white">
-                <div className="flex items-center gap-3 mb-3">
-                  <div className="w-10 h-10 rounded-lg bg-white/15 flex items-center justify-center flex-shrink-0">
-                    <Icon name="file" size={20} />
-                  </div>
-                  <div>
-                    <div className="text-[11px] tracking-widest font-medium text-txsn-mint uppercase mb-0.5">Event Brochure</div>
-                    <div className="text-[14px] font-semibold">Program PDF</div>
-                  </div>
-                </div>
-                <p className="text-[12.5px] text-white/70 leading-relaxed mb-4">
-                  Download the full event brochure including the program schedule and speaker details.
-                </p>
-                <a
-                  href={event.brochurePdf}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center justify-center gap-2 bg-white text-txsn-teal-deep text-[13px] font-semibold px-4 py-2.5 rounded-md hover:bg-txsn-wash transition-colors w-full"
-                >
-                  <Icon name="file" size={15} /> View / Download PDF
-                </a>
-              </div>
-            )}
-
-            {/* Flyer (image) */}
-            {event.flyerImage && (
-              <div className="bg-txsn-teal-deep rounded-xl p-6 text-white">
-                <div className="flex items-center gap-3 mb-3">
-                  <div className="w-10 h-10 rounded-lg bg-white/15 flex items-center justify-center flex-shrink-0">
-                    <Icon name="file" size={20} />
-                  </div>
-                  <div>
-                    <div className="text-[11px] tracking-widest font-medium text-txsn-mint uppercase mb-0.5">Event Flyer</div>
-                    <div className="text-[14px] font-semibold">Full details</div>
-                  </div>
-                </div>
-                <p className="text-[12.5px] text-white/70 leading-relaxed mb-4">
-                  View the event flyer with the full program and speaker details.
-                </p>
-                <a
-                  href={event.flyerImage}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center justify-center gap-2 bg-white text-txsn-teal-deep text-[13px] font-semibold px-4 py-2.5 rounded-md hover:bg-txsn-wash transition-colors w-full"
-                >
-                  <Icon name="file" size={15} /> View flyer
-                </a>
-              </div>
-            )}
-
-            {/* Event details card */}
-            <div className="bg-txsn-wash rounded-xl p-6 border border-txsn-mint-soft/50">
-              <div className="text-[11px] tracking-widest font-medium text-txsn-gold uppercase mb-4">Event Details</div>
-              <div className="space-y-3">
-                <div>
-                  <div className="text-[10px] text-txsn-slate/60 uppercase tracking-wide font-medium mb-0.5">Date</div>
-                  <div className="text-[13.5px] text-txsn-teal-deep font-medium">{event.dateLabel ?? formatDate(event.date)}</div>
-                </div>
-                {event.time && (
-                  <div>
-                    <div className="text-[10px] text-txsn-slate/60 uppercase tracking-wide font-medium mb-0.5">Time</div>
-                    <div className="text-[13.5px] text-txsn-teal-deep font-medium">{event.time}</div>
+            {/* Sidebar */}
+            <aside className={`space-y-5 ${styles.side}`} aria-label="Event information">
+              <div className="card p-7">
+                {(showRegister || event.brochurePdf || event.flyerImage) && (
+                  <div className="mb-7 grid gap-3">
+                    {showRegister && (
+                      <Button href={event.registrationUrl} arrow className="w-full">
+                        {event.registrationUrl!.startsWith("mailto:") ? "RSVP by email" : "Register now"}
+                      </Button>
+                    )}
+                    {event.brochurePdf && (
+                      <Button href={event.brochurePdf} variant="outline" className="w-full">
+                        <Icon name="file" size={17} /> Event brochure (PDF)
+                      </Button>
+                    )}
+                    {event.flyerImage && (
+                      <Button href={event.flyerImage} variant="outline" className="w-full">
+                        <Icon name="file" size={17} /> View flyer
+                      </Button>
+                    )}
                   </div>
                 )}
-                <div>
-                  <div className="text-[10px] text-txsn-slate/60 uppercase tracking-wide font-medium mb-0.5">Location</div>
-                  <div className="text-[13.5px] text-txsn-teal-deep font-medium leading-snug">{event.location}</div>
-                </div>
-                {!event.hidePricing && (
-                  <div>
-                    <div className="text-[10px] text-txsn-slate/60 uppercase tracking-wide font-medium mb-0.5">Admission</div>
-                    <div className={`text-[13.5px] font-medium ${event.isFree ? "text-txsn-teal" : "text-txsn-gold"}`}>
-                      {event.isFree ? "Free to attend" : "Paid — member discounts may apply"}
+
+                <h2 className="text-[15px] font-semibold text-ink">Event details</h2>
+                <dl className="mt-4 divide-y divide-line text-[15px]">
+                  <div className="pb-3">
+                    <dt className="text-[14px] text-muted">Date</dt>
+                    <dd className="mt-0.5 font-medium text-ink">{when}</dd>
+                  </div>
+                  {event.time && (
+                    <div className="py-3">
+                      <dt className="text-[14px] text-muted">Time</dt>
+                      <dd className="mt-0.5 font-medium text-ink">{event.time}</dd>
                     </div>
+                  )}
+                  <div className="py-3">
+                    <dt className="text-[14px] text-muted">Location</dt>
+                    <dd className="mt-0.5 font-medium leading-snug text-ink">{event.location}</dd>
                   </div>
-                )}
-                {event.sponsor && (
-                  <div>
-                    <div className="text-[10px] text-txsn-slate/60 uppercase tracking-wide font-medium mb-0.5">Sponsor</div>
-                    <div className="text-[13.5px] text-txsn-teal-deep font-medium">{event.sponsor}</div>
-                  </div>
-                )}
+                  {!event.hidePricing && (
+                    <div className="py-3">
+                      <dt className="text-[14px] text-muted">Admission</dt>
+                      <dd className="mt-0.5 font-medium text-ink">
+                        {event.isFree ? "Free to attend" : "Paid — member discounts may apply"}
+                      </dd>
+                    </div>
+                  )}
+                  {event.sponsor && (
+                    <div className="pt-3">
+                      <dt className="text-[14px] text-muted">Sponsor</dt>
+                      <dd className="mt-0.5 font-medium leading-snug text-ink">{event.sponsor}</dd>
+                    </div>
+                  )}
+                </dl>
               </div>
-            </div>
 
-            {/* Back to events */}
-            <Link
-              href="/events"
-              className="flex items-center justify-center gap-2 text-txsn-teal text-[13px] font-medium border border-txsn-mint bg-white rounded-xl py-3 hover:bg-txsn-wash transition-colors"
-            >
-              <Icon name="arrow" size={14} className="rotate-180" /> Back to all events
-            </Link>
+              {/* Member-only recording (shown once a video is attached) */}
+              {event.youtubeId && <WatchRecordingCard slug={event.slug} />}
 
-          </aside>
-        </div>
-      </Container>
+              <Link
+                href="/events"
+                className="link px-1 text-[15px]"
+              >
+                <span aria-hidden="true">←</span> Back to all events
+              </Link>
+            </aside>
+          </div>
+        </Container>
+      </section>
     </>
   );
 }
